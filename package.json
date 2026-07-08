@@ -1,23 +1,22 @@
 {
-  "name": "app",
+  "name": "clubcontable",
   "version": "1.0.0",
-  "description": "",
+  "description": "Club Contable - Gestor de tareas multi-empresa",
   "main": "server.js",
   "scripts": {
     "start": "node seed.js && node server.js",
+    "seed": "node seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sandra Caicedo",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^12.11.1",
-    "cors": "^2.8.6",
-    "cron": "^4.4.0",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "nodemailer": "^9.0.3"
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }
