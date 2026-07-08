@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Contable</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f0f4f8; color: #1e293b; min-height: 100vh; }
+        :root { --primary: #0a2e4a; --primary-light: #005780; --primary-medium: #0077b6; --accent: #c8a84e; --bg: #f0f4f8; --card-bg: #ffffff; --text: #1e293b; --success: #2d9e3b; --danger: #d32f2f; --warning: #f59e0b; }
+        
+        /* Login */
+        .login-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #0a2e4a 0%, #005780 100%); }
+        .login-card { background: white; padding: 2.5rem; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 400px; }
+        .login-card h1 { font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; text-align: center; }
+        .login-card p { color: #64748b; text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .input-group { margin-bottom: 1rem; }
+        .input-group label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--text); margin-bottom: 0.3rem; }
+        .input-group input { width: 100%; padding: 0.7rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.95rem; transition: border-color 0.2s; }
+        .input-group input:focus { outline: none; border-color: var(--primary-medium); box-shadow: 0 0 0 3px rgba(0,119,182,0.1); }
+        .btn { width: 100%; padding: 0.75rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
+        .btn-accent { background: var(--accent); color: white; }
+        .btn-accent:hover { background: #b8943e; }
+        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.85rem; width: auto; }
+        .error-msg { color: var(--danger); font-size: 0.85rem; text-align: center; margin-top: 0.5rem; display: none; }
+        
+        /* Layout */
+        .app-container { display: none; min-height: 100vh; }
+        .sidebar { width: 260px; background: var(--primary); color: white; padding: 1.5rem; position: fixed; height: 100vh; overflow-y: auto; }
+        .sidebar h2 { font-size: 1.1rem; margin-bottom: 0.2rem; }
+        .sidebar .subtitle { font-size: 0.75rem; color: #94a3b8; margin-bottom: 1.5rem; }
+        .sidebar nav a { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.8rem; color: #cbd5e1; text-decoration: none; border-radius: 8px; margin-bottom: 0.3rem; font-size: 0.9rem; transition: all 0.2s; }
+        .sidebar nav a:hover, .sidebar nav a.active { background: rgba(255,255,255,0.1); color: white; }
+        .sidebar .user-info { position: absolute; bottom: 1rem; left: 1.5rem; right: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); }
+        .sidebar .user-info p { font-size: 0.85rem; color: #94a3b8; }
+        
+        .main-content { margin-left: 260px; padding: 1.5rem 2rem; flex: 1; }
+        .header { margin-bottom: 1.5rem; }
+        .header h1 { font-size: 1.5rem; color: var(--primary); }
+        .header p { color: #64748b; font-size: 0.9rem; }
+        
+        /* Stats cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--card-bg); border-radius: 12px; padding: 1.2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .stat-card .label { font-size: 0.8rem; color: #64748b; margin-top: 0.2rem; }
+        .stat-card.danger .number { color: var(--danger); }
+        .stat-card.success .number { color: var(--success); }
+        .stat-card.warning .number { color: var(--warning); }
+        
+        /* Tables */
+        .table-container { background: var(--card-bg); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; font-size: 0.9rem; }
+        th { background: #f8fafc; color: #475569; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        tr:not(:last-child) td { border-bottom: 1px solid #f1f5f9; }
+        tr:hover td { background: #f8fafc; }
+        .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 500; }
+        .badge-success { background: #dcfce7; color: #166534; }
+        .badge-danger { background: #fef2f2; color: #991b1b; }
+        .badge-warning { background: #fef3c7; color: #92400e; }
+        
+        /* Tareas */
+        .tarea-checkbox { width: 20px; height: 20px; cursor: pointer; accent-color: var(--success); }
+        .tarea-completada { text-decoration: line-through; color: #94a3b8; }
+        .fecha-vencida { color: var(--danger); font-weight: 500; }
+        .fecha-proxima { color: var(--warning); }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.show { display: flex; }
+        .modal-content { background: white; border-radius: 16px; padding: 2rem; width: 100%; max-width: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+        .modal-content h2 { margin-bottom: 1rem; color: var(--primary); }
+        .modal-content select, .modal-content input, .modal-content textarea { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid #d1d5db; border-radius: 8px; margin-bottom: 0.8rem; font-size: 0.9rem; }
+        .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; }
+        .btn-secondary { background: #e2e8f0; color: var(--text); }
+        .btn-secondary:hover { background: #cbd5e1; }
+        
+        .empty { text-align: center; padding: 2rem; color: #94a3b8; }
+        
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; height: auto; position: relative; padding: 1rem; }
+            .main-content { margin-left: 0; padding: 1rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .table-container { overflow-x: auto; }
+            .sidebar .user-info { position: relative; bottom: auto; left: auto; right: auto; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-card">
+            <h1>🏦 Club Contable</h1>
+            <p>Gestión de tareas y actividades</p>
+            <div class="input-group">
+                <label>Correo electrónico</label>
+                <input type="email" id="loginEmail" placeholder="correo@ejemplo.com">
+            </div>
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" id="loginPass" placeholder="••••••••">
+            </div>
+            <button class="btn btn-primary" onclick="login()">Iniciar sesión</button>
+            <div class="error-msg" id="loginError">Credenciales inválidas</div>
+        </div>
+    </div>
+
+    <!-- App -->
+    <div class="app-container" id="appContainer">
+        <aside class="sidebar">
+            <h2>🏦 Club Contable</h2>
+            <div class="subtitle">Control de Actividades</div>
+            <nav>
+                <a href="#" class="active" onclick="showSection('dashboard')">📊 Dashboard</a>
+                <a href="#" onclick="showSection('tareas')">📋 Mis Tareas</a>
+                <a href="#" onclick="showSection('actividades')">📌 Actividades</a>
+                <a href="#" onclick="showSection('articulos')">📰 Artículos</a>
+                <a href="#" id="adminLink" style="display:none" onclick="showSection('admin')">⚙️ Admin</a>
+            </nav>
+            <div class="user-info">
+                <p id="userName"></p>
+                <button class="btn btn-sm btn-secondary" onclick="logout()" style="margin-top:0.5rem;width:100%;background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);">Cerrar sesión</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="header">
+                <h1 id="sectionTitle">Dashboard</h1>
+                <p id="sectionSubtitle">Resumen general</p>
+            </div>
+
+            <div id="sectionContent">
+                <!-- El contenido se carga dinámicamente -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Nueva Tarea</h2>
+            <div id="modalBody"></div>
+            <div class="modal-actions">
+                <button class="btn btn-sm btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-sm btn-primary" id="modalConfirm" onclick="modalAction()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let token = localStorage.getItem('token');
+        let user = JSON.parse(localStorage.getItem('user') || '{}');
+        let currentSection = 'dashboard';
+
+        // Inicialización
+        if (token) { showApp(); loadDashboard(); }
+
+        async function api(path, options = {}) {
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+            const res = await fetch('/api' + path, { ...options, headers });
+            if (res.status === 401) { logout(); return null; }
+            return res.json();
+        }
+
+        function login() {
+            const correo = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPass').value;
+            if (!correo || !password) { showError('Todos los campos son requeridos'); return; }
+            
+            api('/login', { method: 'POST', body: JSON.stringify({ correo, password }) }).then(data => {
+                if (data.error) { showError(data.error); return; }
+                token = data.token;
+                user = data.user;
+                localStorage.setItem('token', token);
+                localStorage.setItem('user', JSON.stringify(user));
+                showApp();
+                loadDashboard();
+            });
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('loginError');
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+
+        function showApp() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'flex';
+            document.getElementById('userName').textContent = user.nombre + ' (' + user.rol + ')';
+            if (user.rol === 'admin') document.getElementById('adminLink').style.display = 'flex';
+        }
+
+        function logout() {
+            token = null; user = {};
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            document.getElementById('appContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'flex';
+        }
+
+        function showSection(section) {
+            currentSection = section;
+            document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const titles = { dashboard: ['Dashboard', 'Resumen general'], tareas: ['Mis Tareas', 'Tareas asignadas'], actividades: ['Actividades', 'Todas las actividades por empresa'], articulos: ['Artículos Destacados', 'Recursos e información importante'], admin: ['Panel Admin', 'Gestión de usuarios y tareas'] };
+            document.getElementById('sectionTitle').textContent = titles[section][0];
+            document.getElementById('sectionSubtitle').textContent = titles[section][1];
+            
+            const loaders = { dashboard: loadDashboard, tareas: loadTareas, actividades: loadActividades, articulos: loadArticulos, admin: loadAdmin };
+            if (loaders[section]) loaders[section]();
+        }
+
+        function renderStats(stats) {
+            return `
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="number">${stats.total_tareas}</div><div class="label">Total Tareas</div></div>
+                    <div class="stat-card success"><div class="number">${stats.completadas}</div><div class="label">Completadas</div></div>
+                    <div class="stat-card warning"><div class="number">${stats.pendientes}</div><div class="label">Pendientes</div></div>
+                    <div class="stat-card danger"><div class="number">${stats.vencidas}</div><div class="label">Vencidas</div></div>
+                    <div class="stat-card"><div class="number">${stats.proximas}</div><div class="label">Próximas (7 días)</div></div>
+                    ${stats.usuarios !== undefined ? `<div class="stat-card"><div class="number">${stats.usuarios}</div><div class="label">Usuarios</div></div>` : ''}
+                    ${stats.empresas !== undefined ? `<div class="stat-card"><div class="number">${stats.empresas}</div><div class="label">Empresas</div></div>` : ''}
+                </div>`;
+        }
+
+        async function loadDashboard() {
+            const stats = await api('/stats');
+            document.getElementById('sectionContent').innerHTML = renderStats(stats) + '<div class="table-container"><h3 style="padding:1rem;font-size:1rem;">Última actividad</h3><div id="dashboardLogs">Cargando...</div></div>';
+            
+            const logs = await api('/logs');
+            if (!logs || logs.length === 0) { document.getElementById('dashboardLogs').innerHTML = '<div class="empty">Sin actividad reciente</div>'; return; }
+            document.getElementById('dashboardLogs').innerHTML = '<table><tr><th>Usuario</th><th>Acción</th><th>Fecha</th></tr>' + logs.slice(0, 10).map(l => `<tr><td>${l.usuario_nombre}</td><td>${l.accion}</td><td>${l.created_at}</td></tr>`).join('') + '</table>';
+        }
+
+        async function loadTareas() {
+            const tareas = await api('/tareas');
+            if (!tareas || tareas.length === 0) {
+                document.getElementById('sectionContent').innerHTML = '<div class="empty">No tienes tareas asignadas aún</div>';
+                return;
+            }
+            
+            const nombresCat = {legales:'Legales',tributarias:'Tributarias',contables:'Contables',nomina:'Nómina',gerencia:'Gerencia',otras:'Otras'};
+            const coloresCat = {legales:'#1a3a5c',tributarias:'#2d6a9f',contables:'#0d9488',nomina:'#7c3aed',gerencia:'#b8860b',otras:'#64748b'};
+            const iconosCat = {legales:'⚖️',tributarias:'💰',contables:'📊',nomina:'👥',gerencia:'📈',otras:'📋'};
+            
+            // Agrupar por categoria
+            const tareasCat = {};
+            for (const t of tareas) {
+                const cat = t.categoria || 'otras';
+                if (!tareasCat[cat]) tareasCat[cat] = [];
+                tareasCat[cat].push(t);
+            }
+            
+            let html = '';
+            const ordenCat = ['legales','tributarias','contables','nomina','gerencia','otras'];
+            const ordenCat = ['legales','tributarias','contables','nomina','gerencia','otras'];
+            for (const cat of ordenCat) {
+                const tareasList = tareasCat[cat];
+                if (!tareasList || tareasList.length === 0) continue;
+                const ncat = nombresCat[cat] || cat;
+                const color = coloresCat[cat] || '#64748b';
+                const icono = iconosCat[cat] || '📋';
+                html += `<div class="table-container" style="margin-bottom:1rem;border-left:4px solid ${color};"><h4 style="margin:0;padding:0.8rem 1rem;font-size:1rem;color:${color};">${icono} ${ncat} (${tareasList.length})</h4>`;
+                html += '<table><tr><th></th><th>Actividad</th><th>Empresa</th><th>Responsable</th><th>Fecha Entrega</th><th>Estado</th></tr>';
+                for (const t of tareasList) {
+                    const completada = t.completada ? 'checked' : '';
+                    const clase = t.completada ? 'tarea-completada' : '';
+                    const fechaClase = !t.completada && t.fecha_entrega && t.fecha_entrega < new Date().toISOString().slice(0,10) ? 'fecha-vencida' : (!t.completada && t.fecha_entrega ? 'fecha-proxima' : '');
+                    const badge = t.completada ? '<span class="badge badge-success">Completada</span>' : (fechaClase === 'fecha-vencida' ? '<span class="badge badge-danger">Vencida</span>' : '<span class="badge badge-warning">Pendiente</span>');
+                    html += `<tr><td><input type="checkbox" class="tarea-checkbox" ${completada} onclick="completarTarea(${t.id}, this)"></td><td class="${clase}">${t.actividad_nombre}</td><td>${t.empresa_nombre || ''}</td><td>${t.usuario_nombre || user.nombre}</td><td class="${fechaClase}">${t.fecha_entrega || 'Sin fecha'}</td><td>${badge}</td></tr>`;
+                }
+                html += '</table></div>';
+            }
+            document.getElementById('sectionContent').innerHTML = html;
+        }
+
+        async function cambiarCatActividad(id, nuevaCat) {
+            if (!nuevaCat) return;
+            const res = await api('/actividades/' + id + '/categoria', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ categoria: nuevaCat })
+            });
+            if (res && res.success) {
+                loadActividades();
+            }
+        }
+
+        async function completarTarea(id, checkbox) {
+            const data = await api('/tareas/' + id + '/completar', { method: 'POST' });
+            if (data.error) { checkbox.checked = false; alert(data.error); return; }
+            checkbox.checked = true;
+            checkbox.closest('tr').querySelector('td:nth-child(2)').classList.add('tarea-completada');
+        }
+
+        async function loadActividades() {
+            const empresas = await api('/empresas');
+            if (!empresas) return;
+            
+            const nombresCat = {legales:'Legales',tributarias:'Tributarias',contables:'Contables',nomina:'Nómina',gerencia:'Gerencia',cierre_mensual:'Cierre Mensual',cierre_anual:'Cierre de Año',otras:'Otras'};
+            const coloresCat = {legales:'#1a3a5c',tributarias:'#2d6a9f',contables:'#0d9488',nomina:'#7c3aed',gerencia:'#b8860b',cierre_mensual:'#dc2626',cierre_anual:'#ea580c',otras:'#64748b'};
+            const iconosCat = {legales:'⚖️',tributarias:'💰',contables:'📊',nomina:'👥',gerencia:'📈',cierre_mensual:'📅',cierre_anual:'🎯',otras:'📋'};
+            const ordenCat = ['legales','tributarias','contables','cierre_mensual','cierre_anual','nomina','gerencia','otras'];
+            
+            let html = '';
+            for (const emp of empresas) {
+                const res = await api('/actividades/' + emp.id);
+                const agrupadas = res.agrupadas || {};
+                html += `<div class="table-container" style="margin-bottom:1.5rem;"><h3 style="padding:1rem 1rem 0;font-size:1.1rem;">🏢 ${emp.nombre}</h3>`;
+                for (const cat of ordenCat) {
+                    const acts = agrupadas[cat];
+                    if (!acts || acts.length === 0) continue;
+                    const ncat = nombresCat[cat] || cat;
+                    const color = coloresCat[cat] || '#64748b';
+                    const icono = iconosCat[cat] || '📋';
+                    html += `<div style="margin:0.8rem 1rem;padding:0.8rem 1rem;border-radius:8px;border-left:4px solid ${color};background:#f8fafc;">`;
+                    html += `<h4 style="margin:0 0 0.5rem;font-size:1rem;color:${color};">${icono} ${ncat} (${acts.length})</h4>`;
+                    if (user.rol === 'admin') {
+                        html += '<table style="font-size:0.85rem;"><tr><th>#</th><th>Actividad</th><th>Mover</th></tr>';
+                        acts.forEach((a, i) => {
+                            html += `<tr><td>${i+1}</td><td>${a.nombre}</td><td><select onchange="cambiarCatActividad(${a.id}, this.value)" style="font-size:0.8rem;padding:2px 4px;"><option value="">Mover a...</option>`;
+                            for (const oc of ordenCat) {
+                                if (oc !== cat) html += `<option value="${oc}">${nombresCat[oc]||oc}</option>`;
+                            }
+                            html += '</select></td></tr>';
+                        });
+                    } else {
+                        html += '<table style="font-size:0.9rem;"><tr><th>#</th><th>Actividad</th></tr>';
+                        acts.forEach((a, i) => {
+                            html += `<tr><td>${i+1}</td><td>${a.nombre}</td></tr>`;
+                        });
+                    }
+                    html += '</table></div>';
+                }
+                html += '</div>';
+            }
+            document.getElementById('sectionContent').innerHTML = html;
+        }
+
+        async function loadArticulos() {
+            const empresas = await api('/empresas');
+            if (!empresas) return;
+            
+            let html = '';
+            for (const emp of empresas) {
+                const arts = await api('/articulos/' + emp.id);
+                html += `<div class="table-container" style="margin-bottom:1rem;"><h3 style="padding:1rem;font-size:1rem;">${emp.nombre}</h3>`;
+                if (!arts || arts.length === 0) html += '<div class="empty">Sin artículos destacados</div>';
+                else html += '<table><tr><th>Título</th><th>Fecha</th></tr>' + arts.map(a => `<tr><td>${a.titulo}</td><td>${a.created_at}</td></tr>`).join('') + '</table>';
+                html += '</div>';
+            }
+            if (user.rol === 'admin') html += '<button class="btn btn-sm btn-primary" onclick="nuevoArticulo()" style="width:auto;">+ Nuevo Artículo</button>';
+            document.getElementById('sectionContent').innerHTML = html;
+        }
+
+        async function loadAdmin() {
+            if (user.rol !== 'admin') return;
+            const usuarios = await api('/usuarios');
+            const empresas = await api('/empresas');
+            const actividades = await api('/actividades/1');
+            
+            let html = `
+                <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+                    <button class="btn btn-sm btn-primary" onclick="nuevaTarea()">+ Nueva Tarea</button>
+                    <button class="btn btn-sm btn-accent" onclick="nuevoUsuario()">+ Nuevo Usuario</button>
+                </div>
+                <div class="table-container"><h3 style="padding:1rem;font-size:1rem;">Usuarios</h3><table><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Empresa</th><th>Estado</th></tr>`;
+            
+            for (const u of usuarios) {
+                const empresa = empresas.find(e => e.id === u.empresa_id);
+                html += `<tr><td>${u.nombre}</td><td>${u.correo}</td><td>${u.rol}</td><td>${empresa ? empresa.nombre : 'Todas'}</td><td>${u.activo ? '✅' : '❌'}</td></tr>`;
+            }
+            html += '</table></div>';
+            document.getElementById('sectionContent').innerHTML = html;
+        }
+
+        // Modal functions
+        function openModal(title, body, action) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = body;
+            document.getElementById('modal').classList.add('show');
+            window.modalAction = action;
+        }
+        function closeModal() { document.getElementById('modal').classList.remove('show'); }
+
+        async function nuevaTarea() {
+            const usuarios = await api('/usuarios');
+            const empresas = await api('/empresas');
+            const actividades = await api('/actividades/1');
+            
+            const body = `
+                <select id="modalEmpresa"><option value="">Seleccionar empresa</option>${empresas.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}</select>
+                <select id="modalActividad"><option value="">Seleccionar actividad</option>${actividades.map(a => `<option value="${a.id}">${a.nombre}</option>`).join('')}</select>
+                <select id="modalUsuario"><option value="">Seleccionar usuario</option>${usuarios.filter(u => u.rol === 'asistente').map(u => `<option value="${u.id}">${u.nombre}</option>`).join('')}</select>
+                <input type="date" id="modalFecha" placeholder="Fecha de entrega">
+                <textarea id="modalNotas" placeholder="Notas adicionales" rows="3"></textarea>
+            `;
+            openModal('Nueva Tarea', body, async () => {
+                const data = {
+                    actividad_id: document.getElementById('modalActividad').value,
+                    usuario_id: document.getElementById('modalUsuario').value,
+                    empresa_id: document.getElementById('modalEmpresa').value,
+                    fecha_entrega: document.getElementById('modalFecha').value,
+                    notas: document.getElementById('modalNotas').value
+                };
+                if (!data.actividad_id || !data.usuario_id || !data.empresa_id) { alert('Completa todos los campos'); return; }
+                await api('/tareas', { method: 'POST', body: JSON.stringify(data) });
+                closeModal();
+                loadAdmin();
+            });
+        }
+
+        async function nuevoUsuario() {
+            const empresas = await api('/empresas');
+            const body = `
+                <input type="text" id="modalNombre" placeholder="Nombre completo">
+                <input type="email" id="modalCorreo" placeholder="Correo electrónico">
+                <input type="password" id="modalPass" placeholder="Contraseña" value="123456">
+                <select id="modalRol"><option value="asistente">Asistente</option><option value="admin">Admin</option></select>
+                <select id="modalEmpresaUser"><option value="">Todas las empresas</option>${empresas.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}</select>
+            `;
+            openModal('Nuevo Usuario', body, async () => {
+                const data = {
+                    nombre: document.getElementById('modalNombre').value,
+                    correo: document.getElementById('modalCorreo').value,
+                    password: document.getElementById('modalPass').value,
+                    rol: document.getElementById('modalRol').value,
+                    empresa_id: document.getElementById('modalEmpresaUser').value || null
+                };
+                if (!data.nombre || !data.correo) { alert('Nombre y correo requeridos'); return; }
+                const result = await api('/usuarios', { method: 'POST', body: JSON.stringify(data) });
+                if (result.error) { alert(result.error); return; }
+                closeModal();
+                loadAdmin();
+            });
+        }
+
+        async function nuevoArticulo() {
+            const empresas = await api('/empresas');
+            const body = `
+                <select id="modalEmpresaArt"><option value="">Empresa</option>${empresas.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}</select>
+                <input type="text" id="modalTitulo" placeholder="Título del artículo">
+                <textarea id="modalContenido" placeholder="Contenido" rows="4"></textarea>
+                <input type="url" id="modalUrl" placeholder="URL (opcional)">
+            `;
+            openModal('Nuevo Artículo', body, async () => {
+                const data = {
+                    empresa_id: document.getElementById('modalEmpresaArt').value,
+                    titulo: document.getElementById('modalTitulo').value,
+                    contenido: document.getElementById('modalContenido').value,
+                    url: document.getElementById('modalUrl').value
+                };
+                if (!data.empresa_id || !data.titulo) { alert('Empresa y título requeridos'); return; }
+                await api('/articulos', { method: 'POST', body: JSON.stringify(data) });
+                closeModal();
+                loadArticulos();
+            });
+        }
+
+        // Login con Enter
+        document.getElementById('loginPass').addEventListener('keyup', (e) => { if (e.key === 'Enter') login(); });
+        document.getElementById('loginEmail').addEventListener('keyup', (e) => { if (e.key === 'Enter') login(); });
+
+        // Verificar si ya hay sesión
+        if (token) { showApp(); loadDashboard(); }
+    </script>
+</body>
+</html>
