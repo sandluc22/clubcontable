@@ -1,475 +1,519 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club Contable</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #f0f4f8; color: #1e293b; min-height: 100vh; }
-        :root { --primary: #0a2e4a; --primary-light: #005780; --primary-medium: #0077b6; --accent: #c8a84e; --bg: #f0f4f8; --card-bg: #ffffff; --text: #1e293b; --success: #2d9e3b; --danger: #d32f2f; --warning: #f59e0b; }
-        
-        /* Login */
-        .login-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #0a2e4a 0%, #005780 100%); }
-        .login-card { background: white; padding: 2.5rem; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 400px; }
-        .login-card h1 { font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; text-align: center; }
-        .login-card p { color: #64748b; text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; }
-        .input-group { margin-bottom: 1rem; }
-        .input-group label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--text); margin-bottom: 0.3rem; }
-        .input-group input { width: 100%; padding: 0.7rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.95rem; transition: border-color 0.2s; }
-        .input-group input:focus { outline: none; border-color: var(--primary-medium); box-shadow: 0 0 0 3px rgba(0,119,182,0.1); }
-        .btn { width: 100%; padding: 0.75rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
-        .btn-accent { background: var(--accent); color: white; }
-        .btn-accent:hover { background: #b8943e; }
-        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.85rem; width: auto; }
-        .error-msg { color: var(--danger); font-size: 0.85rem; text-align: center; margin-top: 0.5rem; display: none; }
-        
-        /* Layout */
-        .app-container { display: none; min-height: 100vh; }
-        .sidebar { width: 260px; background: var(--primary); color: white; padding: 1.5rem; position: fixed; height: 100vh; overflow-y: auto; }
-        .sidebar h2 { font-size: 1.1rem; margin-bottom: 0.2rem; }
-        .sidebar .subtitle { font-size: 0.75rem; color: #94a3b8; margin-bottom: 1.5rem; }
-        .sidebar nav a { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.8rem; color: #cbd5e1; text-decoration: none; border-radius: 8px; margin-bottom: 0.3rem; font-size: 0.9rem; transition: all 0.2s; }
-        .sidebar nav a:hover, .sidebar nav a.active { background: rgba(255,255,255,0.1); color: white; }
-        .sidebar .user-info { position: absolute; bottom: 1rem; left: 1.5rem; right: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); }
-        .sidebar .user-info p { font-size: 0.85rem; color: #94a3b8; }
-        
-        .main-content { margin-left: 260px; padding: 1.5rem 2rem; flex: 1; }
-        .header { margin-bottom: 1.5rem; }
-        .header h1 { font-size: 1.5rem; color: var(--primary); }
-        .header p { color: #64748b; font-size: 0.9rem; }
-        
-        /* Stats cards */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-        .stat-card { background: var(--card-bg); border-radius: 12px; padding: 1.2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
-        .stat-card .label { font-size: 0.8rem; color: #64748b; margin-top: 0.2rem; }
-        .stat-card.danger .number { color: var(--danger); }
-        .stat-card.success .number { color: var(--success); }
-        .stat-card.warning .number { color: var(--warning); }
-        
-        /* Tables */
-        .table-container { background: var(--card-bg); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 0.75rem 1rem; text-align: left; font-size: 0.9rem; }
-        th { background: #f8fafc; color: #475569; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        tr:not(:last-child) td { border-bottom: 1px solid #f1f5f9; }
-        tr:hover td { background: #f8fafc; }
-        .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 500; }
-        .badge-success { background: #dcfce7; color: #166534; }
-        .badge-danger { background: #fef2f2; color: #991b1b; }
-        .badge-warning { background: #fef3c7; color: #92400e; }
-        
-        /* Tareas */
-        .tarea-checkbox { width: 20px; height: 20px; cursor: pointer; accent-color: var(--success); }
-        .tarea-completada { text-decoration: line-through; color: #94a3b8; }
-        .fecha-vencida { color: var(--danger); font-weight: 500; }
-        .fecha-proxima { color: var(--warning); }
-        
-        /* Modal */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
-        .modal.show { display: flex; }
-        .modal-content { background: white; border-radius: 16px; padding: 2rem; width: 100%; max-width: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-        .modal-content h2 { margin-bottom: 1rem; color: var(--primary); }
-        .modal-content select, .modal-content input, .modal-content textarea { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid #d1d5db; border-radius: 8px; margin-bottom: 0.8rem; font-size: 0.9rem; }
-        .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; }
-        .btn-secondary { background: #e2e8f0; color: var(--text); }
-        .btn-secondary:hover { background: #cbd5e1; }
-        
-        .empty { text-align: center; padding: 2rem; color: #94a3b8; }
-        
-        @media (max-width: 768px) {
-            .sidebar { width: 100%; height: auto; position: relative; padding: 1rem; }
-            .main-content { margin-left: 0; padding: 1rem; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .table-container { overflow-x: auto; }
-            .sidebar .user-info { position: relative; bottom: auto; left: auto; right: auto; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Club Contable</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #f0f2f5; min-height: 100vh; }
+.hidden { display: none !important; }
+/* Auth */
+#authContainer { max-width: 400px; margin: 80px auto; background: white; border-radius: 16px; padding: 40px 30px; box-shadow: 0 2px 12px rgba(0,0,0,.1); }
+#authContainer h1 { text-align: center; color: #1a73e8; font-size: 28px; margin-bottom: 8px; }
+#authContainer p { text-align: center; color: #666; margin-bottom: 24px; font-size: 14px; }
+#authContainer input { width: 100%; padding: 14px 16px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; }
+#authContainer button { width: 100%; padding: 14px; background: #1a73e8; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; }
+#authContainer button:disabled { opacity: .6; }
+.error { color: #d93025; font-size: 13px; margin-bottom: 8px; text-align: center; }
+/* App Layout */
+#appContainer { max-width: 900px; margin: 0 auto; padding: 0; }
+.header { background: white; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 10; }
+.header h2 { color: #1a73e8; font-size: 20px; }
+.header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.header-user { font-size: 14px; color: #333; font-weight: 500; }
+.empresa-select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #f8f9fa; cursor: pointer; }
+.btn { padding: 8px 16px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.btn-primary { background: #1a73e8; color: white; }
+.btn-success { background: #1e8e3e; color: white; }
+.btn-warning { background: #f9ab00; color: white; }
+.btn-danger { background: #d93025; color: white; }
+.btn-outline { background: white; border: 1px solid #ddd; color: #333; }
+.btn-sm { padding: 6px 10px; font-size: 12px; }
+.header-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+/* Content */
+.content { padding: 16px; }
+.add-btn-wrap { margin-bottom: 16px; }
+.add-btn-wrap button { width: 100%; padding: 14px; background: #1a73e8; color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
+/* Task Card */
+.task-card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.06); border-left: 4px solid #1a73e8; }
+.task-card.completada { border-left-color: #1e8e3e; opacity: .75; }
+.task-card .task-title { font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
+.task-card .task-meta { font-size: 13px; color: #666; margin-bottom: 4px; }
+.task-card .task-meta span { display: inline-block; margin-right: 12px; }
+.task-card .task-empresa { display: inline-block; background: #e8f0fe; color: #1a73e8; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+.task-card .task-desc { font-size: 14px; color: #444; margin-top: 6px; white-space: pre-wrap; }
+.task-card .task-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+/* Modal */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.4); z-index: 100; align-items: center; justify-content: center; padding: 16px; }
+.modal-overlay.active { display: flex; }
+.modal { background: white; border-radius: 16px; padding: 24px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+.modal h3 { margin-bottom: 16px; color: #1a1a1a; font-size: 18px; }
+.modal input, .modal select, .modal textarea { width: 100%; padding: 12px 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; }
+.modal textarea { min-height: 80px; resize: vertical; }
+.modal .btn-wrap { display: flex; gap: 8px; margin-top: 8px; }
+.modal .btn-wrap button { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; }
+.modal .btn-wrap .btn-cancel { background: #f0f0f0; }
+.modal .btn-wrap .btn-save { background: #1a73e8; color: white; }
+/* Mobile */
+@media (max-width: 600px) {
+  #authContainer { margin: 40px 16px; padding: 30px 20px; }
+  .header { flex-direction: column; gap: 8px; padding: 12px 16px; }
+  .header-right { width: 100%; flex-direction: column; align-items: stretch; }
+  .empresa-select { width: 100%; }
+  .header-buttons { width: 100%; justify-content: center; }
+  .modal { padding: 20px; }
+}
+/* Admin Panel */
+.admin-section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.admin-section h3 { color: #1a1a1a; margin-bottom: 16px; font-size: 17px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #eee; }
+th { background: #f8f9fa; font-weight: 600; color: #444; }
+/* Sin tareas */
+.empty-state { text-align: center; padding: 60px 20px; color: #888; }
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state p { font-size: 16px; }
+</style>
 </head>
 <body>
-    <!-- Login -->
-    <div class="login-container" id="loginContainer">
-        <div class="login-card">
-            <h1>🏦 Club Contable</h1>
-            <p>Gestión de tareas y actividades</p>
-            <div class="input-group">
-                <label>Correo electrónico</label>
-                <input type="email" id="loginEmail" placeholder="correo@ejemplo.com">
-            </div>
-            <div class="input-group">
-                <label>Contraseña</label>
-                <input type="password" id="loginPass" placeholder="••••••••">
-            </div>
-            <button class="btn btn-primary" onclick="login()">Iniciar sesión</button>
-            <div class="error-msg" id="loginError">Credenciales inválidas</div>
+
+<!-- Auth -->
+<div id="authContainer">
+  <h1>🏢 Club Contable</h1>
+  <p>Ingresa con tu cuenta</p>
+  <div id="loginError" class="error hidden"></div>
+  <input type="email" id="loginEmail" placeholder="Correo electrónico" autocomplete="email">
+  <input type="password" id="loginPassword" placeholder="Contraseña" autocomplete="current-password">
+  <button id="loginBtn" onclick="login()">Ingresar</button>
+</div>
+
+<!-- App -->
+<div id="appContainer" class="hidden">
+  <div class="header">
+    <h2>🏢 Club Contable</h2>
+    <div class="header-right">
+      <span class="header-user" id="userName"></span>
+      <select id="empresaSelect" class="empresa-select" onchange="cambiarEmpresa()">
+        <option value="">Todas las empresas</option>
+      </select>
+      <div class="header-buttons" id="adminButtons" class="hidden">
+        <button class="btn btn-warning btn-sm" onclick="toggleAdmin()">⚙️ Admin</button>
+        <button class="btn btn-outline btn-sm" onclick="toggleReportes()">📊 Reportes</button>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="logout()">Salir</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="hidden">
+      <div class="admin-section">
+        <h3>📋 Usuarios</h3>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <input type="email" id="newUserEmail" placeholder="Email" style="flex:2;min-width:150px;padding:10px;border:1px solid #ddd;border-radius:8px">
+          <input type="password" id="newUserPass" placeholder="Contraseña" style="flex:1;min-width:120px;padding:10px;border:1px solid #ddd;border-radius:8px">
+          <input type="text" id="newUserName" placeholder="Nombre" style="flex:1;min-width:120px;padding:10px;border:1px solid #ddd;border-radius:8px">
+          <input type="number" id="newUserMaxEmp" placeholder="Max empresas" value="3" style="flex:0.5;min-width:80px;padding:10px;border:1px solid #ddd;border-radius:8px">
+          <button class="btn btn-primary" onclick="crearUsuario()">➕ Añadir</button>
         </div>
-    </div>
-
-    <!-- App -->
-    <div class="app-container" id="appContainer">
-        <aside class="sidebar">
-            <h2>🏦 Club Contable</h2>
-            <div class="subtitle">Control de Actividades</div>
-            <nav>
-                <a href="#" class="active" onclick="showSection('dashboard')">📊 Dashboard</a>
-                <a href="#" onclick="showSection('tareas')">📋 Mis Tareas</a>
-                <a href="#" onclick="showSection('actividades')">📌 Actividades</a>
-                <a href="#" onclick="showSection('articulos')">📰 Artículos</a>
-                <a href="#" id="adminLink" style="display:none" onclick="showSection('admin')">⚙️ Admin</a>
-            </nav>
-            <div class="user-info">
-                <p id="userName"></p>
-                <button class="btn btn-sm btn-secondary" onclick="logout()" style="margin-top:0.5rem;width:100%;background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);">Cerrar sesión</button>
-            </div>
-        </aside>
-
-        <main class="main-content">
-            <div class="header">
-                <h1 id="sectionTitle">Dashboard</h1>
-                <p id="sectionSubtitle">Resumen general</p>
-            </div>
-
-            <div id="sectionContent">
-                <!-- El contenido se carga dinámicamente -->
-            </div>
-        </main>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <h2 id="modalTitle">Nueva Tarea</h2>
-            <div id="modalBody"></div>
-            <div class="modal-actions">
-                <button class="btn btn-sm btn-secondary" onclick="closeModal()">Cancelar</button>
-                <button class="btn btn-sm btn-primary" id="modalConfirm" onclick="modalAction()">Guardar</button>
-            </div>
+        <div id="usuariosList"></div>
+      </div>
+      <div class="admin-section">
+        <h3>🏢 Empresas</h3>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <input type="text" id="newEmpresaName" placeholder="Nombre empresa" style="flex:2;min-width:150px;padding:10px;border:1px solid #ddd;border-radius:8px">
+          <select id="newEmpresaUser" style="flex:1;min-width:120px;padding:10px;border:1px solid #ddd;border-radius:8px"><option value="">Seleccionar usuario</option></select>
+          <button class="btn btn-primary" onclick="crearEmpresa()">➕ Crear</button>
         </div>
+        <div id="empresasList"></div>
+      </div>
+      <div class="admin-section">
+        <h3>📂 Categorías</h3>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <input type="text" id="newCatName" placeholder="Nombre" style="flex:2;min-width:150px;padding:10px;border:1px solid #ddd;border-radius:8px">
+          <button class="btn btn-primary" onclick="crearCategoria()">➕ Añadir</button>
+        </div>
+        <div id="categoriasList"></div>
+      </div>
+      <div class="admin-section">
+        <h3>📂 Subcategorías</h3>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <select id="newSubcatCat" style="flex:1;min-width:120px;padding:10px;border:1px solid #ddd;border-radius:8px"><option value="">Categoría</option></select>
+          <input type="text" id="newSubcatName" placeholder="Nombre" style="flex:1;min-width:120px;padding:10px;border:1px solid #ddd;border-radius:8px">
+          <button class="btn btn-primary" onclick="crearSubcategoria()">➕ Añadir</button>
+        </div>
+      </div>
     </div>
 
-    <script>
-        let token = localStorage.getItem('token');
-        let user = JSON.parse(localStorage.getItem('user') || '{}');
-        let currentSection = 'dashboard';
+    <!-- Reportes -->
+    <div id="reportesPanel" class="hidden">
+      <div class="admin-section">
+        <h3>📊 Reportes</h3>
+        <div id="reportesContent"></div>
+      </div>
+    </div>
 
-        // Inicialización
-        if (token) { showApp(); loadDashboard(); }
+    <!-- Tareas -->
+    <div id="tareasPanel">
+      <div class="add-btn-wrap">
+        <button onclick="mostrarModalTarea()">➕ Nueva Tarea</button>
+      </div>
+      <div id="tareasList"></div>
+    </div>
+  </div>
+</div>
 
-        async function api(path, options = {}) {
-            const headers = { 'Content-Type': 'application/json' };
-            if (token) headers['Authorization'] = 'Bearer ' + token;
-            const res = await fetch('/api' + path, { ...options, headers });
-            if (res.status === 401) { logout(); return null; }
-            return res.json();
-        }
+<!-- Modal Tarea -->
+<div class="modal-overlay" id="modalTarea">
+  <div class="modal">
+    <h3 id="modalTitulo">Nueva Tarea</h3>
+    <input type="text" id="tareaTitulo" placeholder="Título">
+    <textarea id="tareaDesc" placeholder="Descripción"></textarea>
+    <input type="date" id="tareaFecha">
+    <select id="tareaUsuario"><option value="">Asignar a...</option></select>
+    <select id="tareaCategoria"><option value="">Categoría</option></select>
+    <select id="tareaSubcategoria"><option value="">Subcategoría</option></select>
+    <select id="tareaEmpresa"><option value="">Empresa</option></select>
+    <div class="btn-wrap">
+      <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-save" id="btnGuardarTarea" onclick="guardarTarea()">Guardar</button>
+    </div>
+    <input type="hidden" id="tareaId" value="">
+  </div>
+</div>
 
-        function login() {
-            const correo = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPass').value;
-            if (!correo || !password) { showError('Todos los campos son requeridos'); return; }
-            
-            api('/login', { method: 'POST', body: JSON.stringify({ correo, password }) }).then(data => {
-                if (data.error) { showError(data.error); return; }
-                token = data.token;
-                user = data.user;
-                localStorage.setItem('token', token);
-                localStorage.setItem('user', JSON.stringify(user));
-                showApp();
-                loadDashboard();
-            });
-        }
+<script>
+// ===== CONFIG =====
+const API = 'https://clubcontable-api.crecimientofinancieroglobal.workers.dev';
 
-        function showError(msg) {
-            const el = document.getElementById('loginError');
-            el.textContent = msg;
-            el.style.display = 'block';
-        }
+// ===== STATE =====
+let token = localStorage.getItem('cc_token') || '';
+let user = JSON.parse(localStorage.getItem('cc_user') || 'null');
+let empresas = JSON.parse(localStorage.getItem('cc_empresas') || '[]');
+let empresaActual = localStorage.getItem('cc_empresa_actual') || '';
+// Cache categorias/subcategorias
+let categorias = [];
+let subcategorias = [];
+let usuarios = [];
 
-        function showApp() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('appContainer').style.display = 'flex';
-            document.getElementById('userName').textContent = user.nombre + ' (' + user.rol + ')';
-            if (user.rol === 'admin') document.getElementById('adminLink').style.display = 'flex';
-        }
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  if (token && user) { mostrarApp(); } else { mostrarAuth(); }
+});
 
-        function logout() {
-            token = null; user = {};
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            document.getElementById('appContainer').style.display = 'none';
-            document.getElementById('loginContainer').style.display = 'flex';
-        }
+// ===== AUTH =====
+function mostrarAuth() { document.getElementById('authContainer').classList.remove('hidden'); document.getElementById('appContainer').classList.add('hidden'); }
+function mostrarApp() { document.getElementById('authContainer').classList.add('hidden'); document.getElementById('appContainer').classList.remove('hidden'); document.getElementById('userName').textContent = user?.nombre || ''; if (user?.rol === 'admin') document.getElementById('adminButtons').classList.remove('hidden'); cargarEmpresas(); cargarDatos(); }
 
-        function showSection(section) {
-            currentSection = section;
-            document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            const titles = { dashboard: ['Dashboard', 'Resumen general'], tareas: ['Mis Tareas', 'Tareas asignadas'], actividades: ['Actividades', 'Todas las actividades por empresa'], articulos: ['Artículos Destacados', 'Recursos e información importante'], admin: ['Panel Admin', 'Gestión de usuarios y tareas'] };
-            document.getElementById('sectionTitle').textContent = titles[section][0];
-            document.getElementById('sectionSubtitle').textContent = titles[section][1];
-            
-            const loaders = { dashboard: loadDashboard, tareas: loadTareas, actividades: loadActividades, articulos: loadArticulos, admin: loadAdmin };
-            if (loaders[section]) loaders[section]();
-        }
+async function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const errorEl = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+  if (!email || !password) { errorEl.textContent = 'Ingresa email y contraseña'; errorEl.classList.remove('hidden'); return; }
+  errorEl.classList.add('hidden');
+  btn.disabled = true;
+  try {
+    const res = await fetch(API + '/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password}) });
+    const data = await res.json();
+    if (!data.ok) { errorEl.textContent = data.error || 'Error al ingresar'; errorEl.classList.remove('hidden'); btn.disabled = false; return; }
+    token = data.token; user = data.user; empresas = data.empresas || [];
+    localStorage.setItem('cc_token', token); localStorage.setItem('cc_user', JSON.stringify(user)); localStorage.setItem('cc_empresas', JSON.stringify(empresas));
+    document.getElementById('loginEmail').value = ''; document.getElementById('loginPassword').value = '';
+    mostrarApp();
+  } catch(e) { errorEl.textContent = 'Error de conexión'; errorEl.classList.remove('hidden'); }
+  btn.disabled = false;
+}
 
-        function renderStats(stats) {
-            return `
-                <div class="stats-grid">
-                    <div class="stat-card"><div class="number">${stats.total_tareas}</div><div class="label">Total Tareas</div></div>
-                    <div class="stat-card success"><div class="number">${stats.completadas}</div><div class="label">Completadas</div></div>
-                    <div class="stat-card warning"><div class="number">${stats.pendientes}</div><div class="label">Pendientes</div></div>
-                    <div class="stat-card danger"><div class="number">${stats.vencidas}</div><div class="label">Vencidas</div></div>
-                    <div class="stat-card"><div class="number">${stats.proximas}</div><div class="label">Próximas (7 días)</div></div>
-                    ${stats.usuarios !== undefined ? `<div class="stat-card"><div class="number">${stats.usuarios}</div><div class="label">Usuarios</div></div>` : ''}
-                    ${stats.empresas !== undefined ? `<div class="stat-card"><div class="number">${stats.empresas}</div><div class="label">Empresas</div></div>` : ''}
-                </div>`;
-        }
+function logout() {
+  fetch(API + '/api/logout', { method:'POST', headers:{'Authorization':'Bearer '+token} });
+  localStorage.removeItem('cc_token'); localStorage.removeItem('cc_user'); localStorage.removeItem('cc_empresas'); localStorage.removeItem('cc_empresa_actual');
+  token = ''; user = null; empresas = []; empresaActual = '';
+  mostrarAuth();
+}
 
-        async function loadDashboard() {
-            const stats = await api('/stats');
-            document.getElementById('sectionContent').innerHTML = renderStats(stats) + '<div class="table-container"><h3 style="padding:1rem;font-size:1rem;">Última actividad</h3><div id="dashboardLogs">Cargando...</div></div>';
-            
-            const logs = await api('/logs');
-            if (!logs || logs.length === 0) { document.getElementById('dashboardLogs').innerHTML = '<div class="empty">Sin actividad reciente</div>'; return; }
-            document.getElementById('dashboardLogs').innerHTML = '<table><tr><th>Usuario</th><th>Acción</th><th>Fecha</th></tr>' + logs.slice(0, 10).map(l => `<tr><td>${l.usuario_nombre}</td><td>${l.accion}</td><td>${l.created_at}</td></tr>`).join('') + '</table>';
-        }
+// ===== EMPRESAS =====
+function cargarEmpresas() {
+  const sel = document.getElementById('empresaSelect');
+  sel.innerHTML = '<option value="">Todas las empresas</option>';
+  empresas.forEach(e => {
+    const opt = document.createElement('option');
+    opt.value = e.id; opt.textContent = e.nombre;
+    if (e.id == empresaActual) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  // Actualizar select en modal
+  const selModal = document.getElementById('tareaEmpresa');
+  selModal.innerHTML = '<option value="">Sin empresa</option>';
+  empresas.forEach(e => {
+    const opt = document.createElement('option');
+    opt.value = e.id; opt.textContent = e.nombre;
+    if (e.id == empresaActual) opt.selected = true;
+    selModal.appendChild(opt);
+  });
+}
 
-        async function loadTareas() {
-            const tareas = await api('/tareas');
-            if (!tareas || tareas.length === 0) {
-                document.getElementById('sectionContent').innerHTML = '<div class="empty">No tienes tareas asignadas aún</div>';
-                return;
-            }
-            
-            const nombresCat = {legales:'Legales',tributarias:'Tributarias',contables:'Contables',nomina:'Nómina',gerencia:'Gerencia',otras:'Otras'};
-            const coloresCat = {legales:'#1a3a5c',tributarias:'#2d6a9f',contables:'#0d9488',nomina:'#7c3aed',gerencia:'#b8860b',otras:'#64748b'};
-            const iconosCat = {legales:'⚖️',tributarias:'💰',contables:'📊',nomina:'👥',gerencia:'📈',otras:'📋'};
-            
-            // Agrupar por categoria
-            const tareasCat = {};
-            for (const t of tareas) {
-                const cat = t.categoria || 'otras';
-                if (!tareasCat[cat]) tareasCat[cat] = [];
-                tareasCat[cat].push(t);
-            }
-            
-            let html = '';
-            const ordenCat = ['legales','tributarias','contables','nomina','gerencia','otras'];
-            const ordenCat = ['legales','tributarias','contables','nomina','gerencia','otras'];
-            for (const cat of ordenCat) {
-                const tareasList = tareasCat[cat];
-                if (!tareasList || tareasList.length === 0) continue;
-                const ncat = nombresCat[cat] || cat;
-                const color = coloresCat[cat] || '#64748b';
-                const icono = iconosCat[cat] || '📋';
-                html += `<div class="table-container" style="margin-bottom:1rem;border-left:4px solid ${color};"><h4 style="margin:0;padding:0.8rem 1rem;font-size:1rem;color:${color};">${icono} ${ncat} (${tareasList.length})</h4>`;
-                html += '<table><tr><th></th><th>Actividad</th><th>Empresa</th><th>Responsable</th><th>Fecha Entrega</th><th>Estado</th></tr>';
-                for (const t of tareasList) {
-                    const completada = t.completada ? 'checked' : '';
-                    const clase = t.completada ? 'tarea-completada' : '';
-                    const fechaClase = !t.completada && t.fecha_entrega && t.fecha_entrega < new Date().toISOString().slice(0,10) ? 'fecha-vencida' : (!t.completada && t.fecha_entrega ? 'fecha-proxima' : '');
-                    const badge = t.completada ? '<span class="badge badge-success">Completada</span>' : (fechaClase === 'fecha-vencida' ? '<span class="badge badge-danger">Vencida</span>' : '<span class="badge badge-warning">Pendiente</span>');
-                    html += `<tr><td><input type="checkbox" class="tarea-checkbox" ${completada} onclick="completarTarea(${t.id}, this)"></td><td class="${clase}">${t.actividad_nombre}</td><td>${t.empresa_nombre || ''}</td><td>${t.usuario_nombre || user.nombre}</td><td class="${fechaClase}">${t.fecha_entrega || 'Sin fecha'}</td><td>${badge}</td></tr>`;
-                }
-                html += '</table></div>';
-            }
-            document.getElementById('sectionContent').innerHTML = html;
-        }
+function cambiarEmpresa() {
+  empresaActual = document.getElementById('empresaSelect').value;
+  localStorage.setItem('cc_empresa_actual', empresaActual);
+  cargarTareas();
+}
 
-        async function cambiarCatActividad(id, nuevaCat) {
-            if (!nuevaCat) return;
-            const res = await api('/actividades/' + id + '/categoria', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ categoria: nuevaCat })
-            });
-            if (res && res.success) {
-                loadActividades();
-            }
-        }
+// ===== DATOS =====
+async function cargarDatos() {
+  await Promise.all([cargarTareas(), cargarCategorias(), cargarSubcategorias(), cargarUsuariosAdmin()]);
+}
 
-        async function completarTarea(id, checkbox) {
-            const data = await api('/tareas/' + id + '/completar', { method: 'POST' });
-            if (data.error) { checkbox.checked = false; alert(data.error); return; }
-            checkbox.checked = true;
-            checkbox.closest('tr').querySelector('td:nth-child(2)').classList.add('tarea-completada');
-        }
+async function cargarTareas() {
+  const cont = document.getElementById('tareasList');
+  cont.innerHTML = '<div style="text-align:center;padding:40px;color:#888">⏳ Cargando...</div>';
+  try {
+    let url = API + '/api/tareas';
+    if (empresaActual) url += '?empresa_id=' + empresaActual;
+    const res = await fetch(url, { headers:{'Authorization':'Bearer '+token} });
+    const tareas = await res.json();
+    if (!Array.isArray(tareas)) { cont.innerHTML = '<div class="empty-state"><p>Error al cargar</p></div>'; return; }
+    if (tareas.length === 0) { cont.innerHTML = '<div class="empty-state"><div class="icon">📋</div><p>No hay tareas aún</p></div>'; return; }
+    cont.innerHTML = tareas.map(t => `
+      <div class="task-card ${t.ok ? 'completada' : ''}">
+        <div class="task-title">${escapeHtml(t.titulo)} ${t.ok ? '✅' : ''}</div>
+        <div class="task-meta">
+          ${t.empresa_nombre ? '<span class="task-empresa">'+escapeHtml(t.empresa_nombre)+'</span>' : ''}
+          <span>👤 ${escapeHtml(t.usuario_nombre || '')}</span>
+          <span>📁 ${escapeHtml(t.categoria_nombre || '')}${t.subcategoria_nombre ? ' > '+escapeHtml(t.subcategoria_nombre) : ''}</span>
+          ${t.fecha_limite ? '<span>📅 '+t.fecha_limite+'</span>' : ''}
+        </div>
+        ${t.descripcion ? '<div class="task-desc">'+escapeHtml(t.descripcion)+'</div>' : ''}
+        <div class="task-actions">
+          ${!t.ok ? '<button class="btn btn-success btn-sm" onclick="completarTarea('+t.id+')">✅ Completar</button>' : ''}
+          <button class="btn btn-outline btn-sm" onclick="editarTarea('+t.id+')">✏️ Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="eliminarTarea('+t.id+')">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) { cont.innerHTML = '<div class="empty-state"><p>Error de conexión</p></div>'; }
+}
 
-        async function loadActividades() {
-            const empresas = await api('/empresas');
-            if (!empresas) return;
-            
-            const nombresCat = {legales:'Legales',tributarias:'Tributarias',contables:'Contables',nomina:'Nómina',gerencia:'Gerencia',cierre_mensual:'Cierre Mensual',cierre_anual:'Cierre de Año',otras:'Otras'};
-            const coloresCat = {legales:'#1a3a5c',tributarias:'#2d6a9f',contables:'#0d9488',nomina:'#7c3aed',gerencia:'#b8860b',cierre_mensual:'#dc2626',cierre_anual:'#ea580c',otras:'#64748b'};
-            const iconosCat = {legales:'⚖️',tributarias:'💰',contables:'📊',nomina:'👥',gerencia:'📈',cierre_mensual:'📅',cierre_anual:'🎯',otras:'📋'};
-            const ordenCat = ['legales','tributarias','contables','cierre_mensual','cierre_anual','nomina','gerencia','otras'];
-            
-            let html = '';
-            for (const emp of empresas) {
-                const res = await api('/actividades/' + emp.id);
-                const agrupadas = res.agrupadas || {};
-                html += `<div class="table-container" style="margin-bottom:1.5rem;"><h3 style="padding:1rem 1rem 0;font-size:1.1rem;">🏢 ${emp.nombre}</h3>`;
-                for (const cat of ordenCat) {
-                    const acts = agrupadas[cat];
-                    if (!acts || acts.length === 0) continue;
-                    const ncat = nombresCat[cat] || cat;
-                    const color = coloresCat[cat] || '#64748b';
-                    const icono = iconosCat[cat] || '📋';
-                    html += `<div style="margin:0.8rem 1rem;padding:0.8rem 1rem;border-radius:8px;border-left:4px solid ${color};background:#f8fafc;">`;
-                    html += `<h4 style="margin:0 0 0.5rem;font-size:1rem;color:${color};">${icono} ${ncat} (${acts.length})</h4>`;
-                    if (user.rol === 'admin') {
-                        html += '<table style="font-size:0.85rem;"><tr><th>#</th><th>Actividad</th><th>Mover</th></tr>';
-                        acts.forEach((a, i) => {
-                            html += `<tr><td>${i+1}</td><td>${a.nombre}</td><td><select onchange="cambiarCatActividad(${a.id}, this.value)" style="font-size:0.8rem;padding:2px 4px;"><option value="">Mover a...</option>`;
-                            for (const oc of ordenCat) {
-                                if (oc !== cat) html += `<option value="${oc}">${nombresCat[oc]||oc}</option>`;
-                            }
-                            html += '</select></td></tr>';
-                        });
-                    } else {
-                        html += '<table style="font-size:0.9rem;"><tr><th>#</th><th>Actividad</th></tr>';
-                        acts.forEach((a, i) => {
-                            html += `<tr><td>${i+1}</td><td>${a.nombre}</td></tr>`;
-                        });
-                    }
-                    html += '</table></div>';
-                }
-                html += '</div>';
-            }
-            document.getElementById('sectionContent').innerHTML = html;
-        }
+async function cargarCategorias() {
+  try {
+    const res = await fetch(API + '/api/categorias', { headers:{'Authorization':'Bearer '+token} });
+    categorias = await res.json();
+    // Cargar select admin
+    const sel = document.getElementById('newSubcatCat');
+    sel.innerHTML = '<option value="">Categoría</option>';
+    categorias.forEach(c => { const o = document.createElement('option'); o.value=c.id; o.textContent=c.nombre; sel.appendChild(o); });
+    // Select tarea
+    const selT = document.getElementById('tareaCategoria');
+    selT.innerHTML = '<option value="">Categoría</option>';
+    categorias.forEach(c => { const o = document.createElement('option'); o.value=c.id; o.textContent=c.nombre; selT.appendChild(o); });
+  } catch(e) {}
+}
 
-        async function loadArticulos() {
-            const empresas = await api('/empresas');
-            if (!empresas) return;
-            
-            let html = '';
-            for (const emp of empresas) {
-                const arts = await api('/articulos/' + emp.id);
-                html += `<div class="table-container" style="margin-bottom:1rem;"><h3 style="padding:1rem;font-size:1rem;">${emp.nombre}</h3>`;
-                if (!arts || arts.length === 0) html += '<div class="empty">Sin artículos destacados</div>';
-                else html += '<table><tr><th>Título</th><th>Fecha</th></tr>' + arts.map(a => `<tr><td>${a.titulo}</td><td>${a.created_at}</td></tr>`).join('') + '</table>';
-                html += '</div>';
-            }
-            if (user.rol === 'admin') html += '<button class="btn btn-sm btn-primary" onclick="nuevoArticulo()" style="width:auto;">+ Nuevo Artículo</button>';
-            document.getElementById('sectionContent').innerHTML = html;
-        }
+async function cargarSubcategorias() {
+  try {
+    const res = await fetch(API + '/api/subcategorias', { headers:{'Authorization':'Bearer '+token} });
+    subcategorias = await res.json();
+  } catch(e) {}
+}
 
-        async function loadAdmin() {
-            if (user.rol !== 'admin') return;
-            const usuarios = await api('/usuarios');
-            const empresas = await api('/empresas');
-            const actividades = await api('/actividades/1');
-            
-            let html = `
-                <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
-                    <button class="btn btn-sm btn-primary" onclick="nuevaTarea()">+ Nueva Tarea</button>
-                    <button class="btn btn-sm btn-accent" onclick="nuevoUsuario()">+ Nuevo Usuario</button>
-                </div>
-                <div class="table-container"><h3 style="padding:1rem;font-size:1rem;">Usuarios</h3><table><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Empresa</th><th>Estado</th></tr>`;
-            
-            for (const u of usuarios) {
-                const empresa = empresas.find(e => e.id === u.empresa_id);
-                html += `<tr><td>${u.nombre}</td><td>${u.correo}</td><td>${u.rol}</td><td>${empresa ? empresa.nombre : 'Todas'}</td><td>${u.activo ? '✅' : '❌'}</td></tr>`;
-            }
-            html += '</table></div>';
-            document.getElementById('sectionContent').innerHTML = html;
-        }
+async function cargarUsuariosAdmin() {
+  if (user?.rol !== 'admin') return;
+  try {
+    const res = await fetch(API + '/api/usuarios', { headers:{'Authorization':'Bearer '+token} });
+    usuarios = await res.json();
+    // Select usuario en modal tarea
+    const sel = document.getElementById('tareaUsuario');
+    sel.innerHTML = '<option value="">Asignar a...</option>';
+    usuarios.forEach(u => { const o = document.createElement('option'); o.value=u.id; o.textContent=u.nombre+' ('+u.email+')'; if (u.id == user.id) o.selected = true; sel.appendChild(o); });
+    // Select en admin empresas
+    const selA = document.getElementById('newEmpresaUser');
+    selA.innerHTML = '<option value="">Seleccionar usuario</option>';
+    usuarios.forEach(u => { const o = document.createElement('option'); o.value=u.id; o.textContent=u.nombre+' ('+u.email+')'; selA.appendChild(o); });
+  } catch(e) {}
+}
 
-        // Modal functions
-        function openModal(title, body, action) {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalBody').innerHTML = body;
-            document.getElementById('modal').classList.add('show');
-            window.modalAction = action;
-        }
-        function closeModal() { document.getElementById('modal').classList.remove('show'); }
+// ===== TAREAS =====
+function mostrarModalTarea(data) {
+  document.getElementById('modalTitulo').textContent = data ? 'Editar Tarea' : 'Nueva Tarea';
+  document.getElementById('tareaId').value = data?.id || '';
+  document.getElementById('tareaTitulo').value = data?.titulo || '';
+  document.getElementById('tareaDesc').value = data?.descripcion || '';
+  document.getElementById('tareaFecha').value = data?.fecha_limite || '';
+  if (data?.usuario_id) document.getElementById('tareaUsuario').value = data.usuario_id;
+  if (data?.categoria_id) document.getElementById('tareaCategoria').value = data.categoria_id;
+  if (data?.subcategoria_id) document.getElementById('tareaSubcategoria').value = data.subcategoria_id;
+  if (data?.empresa_id) document.getElementById('tareaEmpresa').value = data.empresa_id;
+  else if (empresaActual) document.getElementById('tareaEmpresa').value = empresaActual;
+  document.getElementById('modalTarea').classList.add('active');
+  // Actualizar subcategorías según categoría
+  actualizarSubcategorias(document.getElementById('tareaCategoria').value);
+}
 
-        async function nuevaTarea() {
-            const usuarios = await api('/usuarios');
-            const empresas = await api('/empresas');
-            const actividades = await api('/actividades/1');
-            
-            const body = `
-                <select id="modalEmpresa"><option value="">Seleccionar empresa</option>${empresas.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}</select>
-                <select id="modalActividad"><option value="">Seleccionar actividad</option>${actividades.map(a => `<option value="${a.id}">${a.nombre}</option>`).join('')}</select>
-                <select id="modalUsuario"><option value="">Seleccionar usuario</option>${usuarios.filter(u => u.rol === 'asistente').map(u => `<option value="${u.id}">${u.nombre}</option>`).join('')}</select>
-                <input type="date" id="modalFecha" placeholder="Fecha de entrega">
-                <textarea id="modalNotas" placeholder="Notas adicionales" rows="3"></textarea>
-            `;
-            openModal('Nueva Tarea', body, async () => {
-                const data = {
-                    actividad_id: document.getElementById('modalActividad').value,
-                    usuario_id: document.getElementById('modalUsuario').value,
-                    empresa_id: document.getElementById('modalEmpresa').value,
-                    fecha_entrega: document.getElementById('modalFecha').value,
-                    notas: document.getElementById('modalNotas').value
-                };
-                if (!data.actividad_id || !data.usuario_id || !data.empresa_id) { alert('Completa todos los campos'); return; }
-                await api('/tareas', { method: 'POST', body: JSON.stringify(data) });
-                closeModal();
-                loadAdmin();
-            });
-        }
+function cerrarModal() { document.getElementById('modalTarea').classList.remove('active'); }
 
-        async function nuevoUsuario() {
-            const empresas = await api('/empresas');
-            const body = `
-                <input type="text" id="modalNombre" placeholder="Nombre completo">
-                <input type="email" id="modalCorreo" placeholder="Correo electrónico">
-                <input type="password" id="modalPass" placeholder="Contraseña" value="123456">
-                <select id="modalRol"><option value="asistente">Asistente</option><option value="admin">Admin</option></select>
-                <select id="modalEmpresaUser"><option value="">Todas las empresas</option>${empresas.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}</select>
-            `;
-            openModal('Nuevo Usuario', body, async () => {
-                const data = {
-                    nombre: document.getElementById('modalNombre').value,
-                    correo: document.getElementById('modalCorreo').value,
-                    password: document.getElementById('modalPass').value,
-                    rol: document.getElementById('modalRol').value,
-                    empresa_id: document.getElementById('modalEmpresaUser').value || null
-                };
-                if (!data.nombre || !data.correo) { alert('Nombre y correo requeridos'); return; }
-                const result = await api('/usuarios', { method: 'POST', body: JSON.stringify(data) });
-                if (result.error) { alert(result.error); return; }
-                closeModal();
-                loadAdmin();
-            });
-        }
+async function guardarTarea() {
+  const id = document.getElementById('tareaId').value;
+  const titulo = document.getElementById('tareaTitulo').value.trim();
+  if (!titulo) return alert('El título es obligatorio');
+  const body = {
+    titulo,
+    descripcion: document.getElementById('tareaDesc').value.trim(),
+    fecha_limite: document.getElementById('tareaFecha').value || null,
+    usuario_id: parseInt(document.getElementById('tareaUsuario').value) || user.id,
+    categoria_id: parseInt(document.getElementById('tareaCategoria').value) || null,
+    subcategoria_id: parseInt(document.getElementById('tareaSubcategoria').value) || null,
+    empresa_id: parseInt(document.getElementById('tareaEmpresa').value) || null
+  };
+  try {
+    if (id) {
+      await fetch(API + '/api/tareas/' + id, { method:'PATCH', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify(body) });
+    } else {
+      await fetch(API + '/api/tareas', { method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify(body) });
+    }
+    cerrarModal(); cargarTareas();
+  } catch(e) { alert('Error al guardar'); }
+}
 
-        async function nuevoArticulo() {
-            const empresas = await api('/empresas');
-            const body = `
-                <select id="modalEmpresaArt"><option value="">Empresa</option>${empresas.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('')}</select>
-                <input type="text" id="modalTitulo" placeholder="Título del artículo">
-                <textarea id="modalContenido" placeholder="Contenido" rows="4"></textarea>
-                <input type="url" id="modalUrl" placeholder="URL (opcional)">
-            `;
-            openModal('Nuevo Artículo', body, async () => {
-                const data = {
-                    empresa_id: document.getElementById('modalEmpresaArt').value,
-                    titulo: document.getElementById('modalTitulo').value,
-                    contenido: document.getElementById('modalContenido').value,
-                    url: document.getElementById('modalUrl').value
-                };
-                if (!data.empresa_id || !data.titulo) { alert('Empresa y título requeridos'); return; }
-                await api('/articulos', { method: 'POST', body: JSON.stringify(data) });
-                closeModal();
-                loadArticulos();
-            });
-        }
+async function completarTarea(id) {
+  await fetch(API + '/api/tareas/' + id, { method:'PATCH', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify({ok:true}) });
+  cargarTareas();
+}
 
-        // Login con Enter
-        document.getElementById('loginPass').addEventListener('keyup', (e) => { if (e.key === 'Enter') login(); });
-        document.getElementById('loginEmail').addEventListener('keyup', (e) => { if (e.key === 'Enter') login(); });
+async function editarTarea(id) {
+  const res = await fetch(API + '/api/tareas?', { headers:{'Authorization':'Bearer '+token} });
+  const tareas = await res.json();
+  const t = tareas.find(t => t.id === id);
+  if (t) mostrarModalTarea(t);
+}
 
-        // Verificar si ya hay sesión
-        if (token) { showApp(); loadDashboard(); }
-    </script>
+async function eliminarTarea(id) {
+  if (!confirm('¿Eliminar esta tarea?')) return;
+  await fetch(API + '/api/tareas/' + id, { method:'DELETE', headers:{'Authorization':'Bearer '+token} });
+  cargarTareas();
+}
+
+// ===== CATEGORIA SUBCATEGORIA RELOAD =====
+document.getElementById('tareaCategoria')?.addEventListener('change', function() {
+  actualizarSubcategorias(this.value);
+});
+function actualizarSubcategorias(catId) {
+  const sel = document.getElementById('tareaSubcategoria');
+  sel.innerHTML = '<option value="">Subcategoría</option>';
+  subcategorias.filter(s => !catId || s.categoria_id == catId).forEach(s => {
+    const o = document.createElement('option'); o.value=s.id; o.textContent=s.nombre; sel.appendChild(o);
+  });
+}
+
+// ===== ADMIN =====
+function toggleAdmin() {
+  const p = document.getElementById('adminPanel');
+  const r = document.getElementById('reportesPanel');
+  p.classList.toggle('hidden');
+  r.classList.add('hidden');
+  if (!p.classList.contains('hidden')) { cargarUsuariosAdmin(); cargarAdminEmpresas(); cargarAdminCategorias(); }
+}
+
+function toggleReportes() {
+  const r = document.getElementById('reportesPanel');
+  const a = document.getElementById('adminPanel');
+  a.classList.add('hidden');
+  r.classList.toggle('hidden');
+  if (!r.classList.contains('hidden')) cargarReportes();
+}
+
+async function cargarAdminEmpresas() {
+  try {
+    const res = await fetch(API + '/api/empresas', { headers:{'Authorization':'Bearer '+token} });
+    const emps = await res.json();
+    document.getElementById('empresasList').innerHTML = emps.length ? emps.map(e => '<div style="padding:8px 0;border-bottom:1px solid #eee">🏢 '+escapeHtml(e.nombre)+ (e.descripcion ? ' — '+escapeHtml(e.descripcion) : '') +'</div>').join('') : '<p style="color:#888">Sin empresas</p>';
+  } catch(e) {}
+}
+
+async function cargarAdminCategorias() {
+  try {
+    const res = await fetch(API + '/api/categorias', { headers:{'Authorization':'Bearer '+token} });
+    const cats = await res.json();
+    document.getElementById('categoriasList').innerHTML = cats.length ? cats.map(c => '<div style="padding:6px 0;border-bottom:1px solid #eee">📂 '+escapeHtml(c.nombre)+'</div>').join('') : '<p style="color:#888">Sin categorías</p>';
+  } catch(e) {}
+}
+
+async function crearUsuario() {
+  const email = document.getElementById('newUserEmail').value.trim();
+  const password = document.getElementById('newUserPass').value.trim();
+  const nombre = document.getElementById('newUserName').value.trim();
+  const maxEmpresas = parseInt(document.getElementById('newUserMaxEmp').value) || 3;
+  if (!email || !password || !nombre) return alert('Completa todos los campos');
+  await fetch(API + '/api/usuarios', { method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify({email, password, nombre, max_empresas: maxEmpresas}) });
+  document.getElementById('newUserEmail').value=''; document.getElementById('newUserPass').value=''; document.getElementById('newUserName').value='';
+  cargarUsuariosAdmin();
+}
+
+async function crearEmpresa() {
+  const nombre = document.getElementById('newEmpresaName').value.trim();
+  const usuario_id = parseInt(document.getElementById('newEmpresaUser').value) || null;
+  if (!nombre) return alert('Nombre de empresa requerido');
+  await fetch(API + '/api/empresas', { method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify({nombre, usuario_id}) });
+  document.getElementById('newEmpresaName').value='';
+  cargarAdminEmpresas();
+  // Recargar empresas del usuario actual
+  const res = await fetch(API + '/api/empresas', { headers:{'Authorization':'Bearer '+token} });
+  empresas = await res.json();
+  localStorage.setItem('cc_empresas', JSON.stringify(empresas));
+  cargarEmpresas();
+}
+
+async function crearCategoria() {
+  const nombre = document.getElementById('newCatName').value.trim();
+  if (!nombre) return alert('Nombre de categoría requerido');
+  await fetch(API + '/api/categorias', { method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify({nombre}) });
+  document.getElementById('newCatName').value='';
+  cargarAdminCategorias();
+  cargarCategorias();
+}
+
+async function crearSubcategoria() {
+  const nombre = document.getElementById('newSubcatName').value.trim();
+  const categoria_id = document.getElementById('newSubcatCat').value;
+  if (!nombre || !categoria_id) return alert('Completa todos los campos');
+  await fetch(API + '/api/subcategorias', { method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify({nombre, categoria_id: parseInt(categoria_id)}) });
+  document.getElementById('newSubcatName').value='';
+  cargarSubcategorias();
+}
+
+// ===== REPORTES =====
+async function cargarReportes() {
+  const cont = document.getElementById('reportesContent');
+  try {
+    let url = API + '/api/reportes';
+    if (empresaActual) url += '?empresa_id=' + empresaActual;
+    const res = await fetch(url, { headers:{'Authorization':'Bearer '+token} });
+    const tareas = await res.json();
+    if (!Array.isArray(tareas) || !tareas.length) { cont.innerHTML = '<p>No hay tareas</p>'; return; }
+    cont.innerHTML = `
+      <p><strong>Total:</strong> ${tareas.length} tareas</p>
+      <p><strong>Pendientes:</strong> ${tareas.filter(t=>!t.ok).length}</p>
+      <p><strong>Completadas:</strong> ${tareas.filter(t=>t.ok).length}</p>
+      <hr style="margin:12px 0">
+      <table>
+        <tr><th>Tarea</th><th>Empresa</th><th>Usuario</th><th>Fecha</th><th>Estado</th></tr>
+        ${tareas.map(t => `<tr>
+          <td>${escapeHtml(t.titulo)}</td>
+          <td>${escapeHtml(t.empresa_nombre||'—')}</td>
+          <td>${escapeHtml(t.usuario_nombre||'—')}</td>
+          <td>${t.fecha_limite||'—'}</td>
+          <td>${t.ok ? '✅' : '⏳'}</td>
+        </tr>`).join('')}
+      </table>
+    `;
+  } catch(e) { cont.innerHTML = '<p>Error al cargar reportes</p>'; }
+}
+
+// ===== UTILS =====
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
 </body>
 </html>
