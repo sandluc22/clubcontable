@@ -567,11 +567,10 @@ async function cargarReportes() {
     const res = await fetch(url, { headers:{'Authorization':'Bearer '+token} });
     const tareas = await res.json();
     if (!Array.isArray(tareas) || !tareas.length) { cont.innerHTML = '<p>No hay tareas</p>'; return; }
+    const pendientes = tareas.filter(t=>!t.ok);
+    const completadas = tareas.filter(t=>t.ok);
+    const vencidas = pendientes.filter(t => t.fecha_limite && t.fecha_limite < new Date().toISOString().split('T')[0]);
     cont.innerHTML = `
-      const pendientes = tareas.filter(t=>!t.ok);
-      const completadas = tareas.filter(t=>t.ok);
-      const vencidas = pendientes.filter(t => t.fecha_limite && t.fecha_limite < new Date().toISOString().split('T')[0]);
-      cont.innerHTML = `
         <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
           <div style="flex:1;min-width:120px;padding:16px;background:#e8f0fe;border-radius:10px;text-align:center">
             <div style="font-size:24px;font-weight:700;color:#1a73e8">${tareas.length}</div>
@@ -610,4 +609,3 @@ function escapeHtml(s) {
 </script>
 </body>
 </html>
-<!-- Forzar deploy Sun Jul 19 13:57:44 UTC 2026 -->
