@@ -291,8 +291,7 @@ async function cargarTareas() {
         <div class="task-actions">
           ${!t.ok ? '<button class="btn btn-success btn-sm" onclick="completarTarea('+t.id+')">✅ Completar</button>' : ''}
           <button class="btn btn-outline btn-sm" onclick="agregarNota('+t.id+')">📝 Nota</button>
-          <button class="btn btn-outline btn-sm" onclick="editarTarea('+t.id+')">✏️ Editar</button>
-          <button class="btn btn-danger btn-sm" onclick="eliminarTarea('+t.id+')">🗑️</button>
+          ${usuario?.rol === 'admin' ? '<button class="btn btn-outline btn-sm" onclick="editarTarea('+t.id+')">✏️ Editar</button><button class="btn btn-danger btn-sm" onclick="eliminarTarea('+t.id+')">🗑️</button>' : ''}
         </div>
       </div>
     `).join('');
@@ -609,4 +608,3 @@ function escapeHtml(s) {
 </script>
 </body>
 </html>
-
