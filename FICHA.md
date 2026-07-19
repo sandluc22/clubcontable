@@ -88,14 +88,19 @@
 - [ ] Hacer que el frontend guarde tareas en D1 en lugar de localStorage
 - [ ] Sincronizar GitHub con Cloudflare (deploy automático)
 
-### Media prioridad
-- [ ] Configurar Google Search Console para clubcontable.com
-- [ ] Configurar Google Business Profile
-- [ ] Diseño responsive mejorado para móvil
+### 🟡 URGENTE
+- [ ] Arreglar error 1042 — cambiar Compatibility Date a 2024-09-23+
+- [ ] Verificar diseño de subcategorías dentro de categorías
+- [ ] Probar login admin2025
 
-### Baja prioridad
-- [ ] Añadir multi-cliente (cada usuario ve solo sus tareas)
-- [ ] Panel admin para gestionar usuarios
+### 🟢 SIGUIENTES
+- [ ] Diseño tipo Cloudflare (menú lateral)
+- [ ] Diseño responsive/móvil
+- [ ] Configurar Google Search Console para clubcontable.com
+
+### ⏳ FUTURO
+- [ ] Plan de marketing Colombia 🇨🇴
+- [ ] Pasarela de pago (precios desde $12.999 COP/mes)
 
 ---
 
@@ -114,6 +119,18 @@
 
 ## 🐛 PROBLEMAS CONOCIDOS
 
-- El Worker se desplegó con wrangler, no desde el panel de Cloudflare (el móvil no deja editar código)
-- La API ya está funcional y responde desde `crecimientofinancieroglobal.workers.dev`
-- Falta el frontend conectado a la API
+- 🟡 Error 1042 en worker — el binding D1 manual no termina de sincronizar con el worker. Solución: cambiar Compatibility Date a 2024-09-23+
+- La API NO responde por el error 1042, el login falla (admin2025 sí está en DB)
+- Binding D1 configurado manualmente (DB → clubcontable-db) pero choca con subida multipart
+- Sandra usa tablet/Android — no puede borrar bindings ni editar código en Cloudflare
+
+
+## 💰 PRECIOS (definidos 19 jul)
+
+| Empresas | Precio COP/mes |
+|---|---|
+| Prueba 7 días | Gratis 🆓 |
+| 1 empresa | $12.999 |
+| 2-3 empresas | $19.999 |
+| 4-10 empresas | $29.999 |
+| +10 empresas | $39.999 |
