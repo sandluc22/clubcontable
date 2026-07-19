@@ -522,24 +522,8 @@ async function crearSubcategoria() {
 }
 
 async function cargarAdminSubcategorias() {
-  try {
-    const res = await fetch(API + '/api/subcategorias', { headers:{'Authorization':'Bearer '+token} });
-    const subs = await res.json();
-    // Mostrar subcategorias en una lista debajo del formulario
-    let html = document.getElementById('subcategoriasList')?.innerHTML || '';
-    if (!document.getElementById('subcategoriasList')) return;
-    document.getElementById('subcategoriasList').innerHTML = subs.length ? subs.map(s => {
-      const cat = categorias.find(c => c.id == s.categoria_id);
-      return `<div style="padding:8px 0;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between">
-        <span>📂 ${escapeHtml(cat?.nombre||'?')} > ${escapeHtml(s.nombre)}</span>
-        <div>
-          <button class="btn btn-outline btn-sm" onclick="editarSubcategoria(${s.id},'${escapeHtml(s.nombre)}')">✏️</button>
-          <button class="btn btn-danger btn-sm" onclick="borrarSubcategoria(${s.id},'${escapeHtml(s.nombre)}')">🗑️</button>
-        </div>
-      </div>`;
-    }).join('') : '<p style="color:#888">Sin subcategorías</p>';
-  } catch(e) {}
-}
+  // Las subcategorias ya no se muestran en lista plana, se ven dentro de categorias en cargarAdminCategorias
+}}
 
 function editarSubcategoria(id, nombre) {
   const nuevo = prompt('Nuevo nombre:', nombre);
