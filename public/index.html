@@ -318,7 +318,7 @@ async function cargarSubcategorias() {
 }
 
 async function cargarUsuariosAdmin() {
-  if (user?.rol !== 'admin') return;
+  // Cargar usuarios para selector de tareas (todos pueden ver)
   try {
     const res = await fetch(API + '/api/usuarios', { headers:{'Authorization':'Bearer '+token} });
     usuarios = await res.json();
@@ -326,10 +326,12 @@ async function cargarUsuariosAdmin() {
     const sel = document.getElementById('tareaUsuario');
     sel.innerHTML = '<option value="">Asignar a...</option>';
     usuarios.forEach(u => { const o = document.createElement('option'); o.value=u.id; o.textContent=u.nombre+' ('+u.email+')'; if (u.id == user.id) o.selected = true; sel.appendChild(o); });
-    // Select en admin empresas
-    const selA = document.getElementById('newEmpresaUser');
-    selA.innerHTML = '<option value="">Seleccionar usuario</option>';
-    usuarios.forEach(u => { const o = document.createElement('option'); o.value=u.id; o.textContent=u.nombre+' ('+u.email+')'; selA.appendChild(o); });
+    // Select en admin empresas (solo admin)
+    if (user?.rol === 'admin') {
+      const selA = document.getElementById('newEmpresaUser');
+      selA.innerHTML = '<option value="">Seleccionar usuario</option>';
+      usuarios.forEach(u => { const o = document.createElement('option'); o.value=u.id; o.textContent=u.nombre+' ('+u.email+')'; selA.appendChild(o); });
+    }
   } catch(e) {}
 }
 
@@ -491,21 +493,37 @@ async function cargarReportes() {
     const tareas = await res.json();
     if (!Array.isArray(tareas) || !tareas.length) { cont.innerHTML = '<p>No hay tareas</p>'; return; }
     cont.innerHTML = `
-      <p><strong>Total:</strong> ${tareas.length} tareas</p>
-      <p><strong>Pendientes:</strong> ${tareas.filter(t=>!t.ok).length}</p>
-      <p><strong>Completadas:</strong> ${tareas.filter(t=>t.ok).length}</p>
-      <hr style="margin:12px 0">
-      <table>
-        <tr><th>Tarea</th><th>Empresa</th><th>Usuario</th><th>Fecha</th><th>Estado</th></tr>
-        ${tareas.map(t => `<tr>
-          <td>${escapeHtml(t.titulo)}</td>
-          <td>${escapeHtml(t.empresa_nombre||'—')}</td>
-          <td>${escapeHtml(t.usuario_nombre||'—')}</td>
-          <td>${t.fecha_limite||'—'}</td>
-          <td>${t.ok ? '✅' : '⏳'}</td>
-        </tr>`).join('')}
-      </table>
-    `;
+      const pendientes = tareas.filter(t=>!t.ok);
+      const completadas = tareas.filter(t=>t.ok);
+      const vencidas = pendientes.filter(t => t.fecha_limite && t.fecha_limite < new Date().toISOString().split('T')[0]);
+      cont.innerHTML = `
+        <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+          <div style="flex:1;min-width:120px;padding:16px;background:#e8f0fe;border-radius:10px;text-align:center">
+            <div style="font-size:24px;font-weight:700;color:#1a73e8">${tareas.length}</div>
+            <div style="font-size:13px;color:#666">Total tareas</div>
+          </div>
+          <div style="flex:1;min-width:120px;padding:16px;background:#fef7e0;border-radius:10px;text-align:center">
+            <div style="font-size:24px;font-weight:700;color:#f9ab00">${pendientes.length}</div>
+            <div style="font-size:13px;color:#666">Pendientes</div>
+          </div>
+          <div style="flex:1;min-width:120px;padding:16px;background:#e6f4ea;border-radius:10px;text-align:center">
+            <div style="font-size:24px;font-weight:700;color:#1e8e3e">${completadas.length}</div>
+            <div style="font-size:13px;color:#666">Completadas</div>
+          </div>
+        </div>
+        ${vencidas.length > 0 ? `<div style="padding:12px;background:#fce8e6;border-radius:8px;margin-bottom:12px;color:#d93025;font-weight:500">⚠️ ${vencidas.length} tarea(s) vencida(s)</div>` : ''}
+        <hr style="margin:12px 0">
+        <table>
+          <tr><th>Tarea</th><th>Empresa</th><th>Usuario</th><th>Fecha</th><th>Estado</th></tr>
+          ${tareas.map(t => `<tr${!t.ok && t.fecha_limite && t.fecha_limite < new Date().toISOString().split('T')[0] ? ' style="background:#fce8e6"' : ''}>
+            <td>${escapeHtml(t.titulo)}</td>
+            <td>${escapeHtml(t.empresa_nombre||'—')}</td>
+            <td>${escapeHtml(t.usuario_nombre||'—')}</td>
+            <td>${t.fecha_limite||'—'}</td>
+            <td>${t.ok ? '✅' : '⏳'}</td>
+          </tr>`).join('')}
+        </table>
+      `;;
   } catch(e) { cont.innerHTML = '<p>Error al cargar reportes</p>'; }
 }
 
