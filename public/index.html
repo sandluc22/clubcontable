@@ -286,8 +286,10 @@ async function cargarTareas() {
           ${t.fecha_limite ? '<span>📅 '+t.fecha_limite+'</span>' : ''}
         </div>
         ${t.descripcion ? '<div class="task-desc">'+escapeHtml(t.descripcion)+'</div>' : ''}
+        ${t.notas ? '<div class="task-desc" style="margin-top:6px;padding:8px;background:#fef7e0;border-radius:6px;font-size:13px;color:#666">📝 '+escapeHtml(t.notas)+'</div>' : ''}
         <div class="task-actions">
           ${!t.ok ? '<button class="btn btn-success btn-sm" onclick="completarTarea('+t.id+')">✅ Completar</button>' : ''}
+          <button class="btn btn-outline btn-sm" onclick="agregarNota('+t.id+')">📝 Nota</button>
           <button class="btn btn-outline btn-sm" onclick="editarTarea('+t.id+')">✏️ Editar</button>
           <button class="btn btn-danger btn-sm" onclick="eliminarTarea('+t.id+')">🗑️</button>
         </div>
@@ -383,6 +385,14 @@ async function guardarTarea() {
 async function completarTarea(id) {
   await fetch(API + '/api/tareas/' + id, { method:'PATCH', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify({ok:true}) });
   cargarTareas();
+}
+
+async function agregarNota(id) {
+  const nota = prompt('Añadir nota/observación:');
+  if (nota !== null) {
+    await fetch(API + '/api/tareas/' + id, { method:'PATCH', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify({notas: nota.trim()}) });
+    cargarTareas();
+  }
 }
 
 async function editarTarea(id) {
