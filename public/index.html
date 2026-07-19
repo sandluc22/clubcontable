@@ -143,6 +143,7 @@ th { background: #f8f9fa; font-weight: 600; color: #444; }
           <input type="text" id="newSubcatName" placeholder="Nombre" style="flex:1;min-width:120px;padding:10px;border:1px solid #ddd;border-radius:8px">
           <button class="btn btn-primary" onclick="crearSubcategoria()">➕ Añadir</button>
         </div>
+        <div id="subcategoriasList"></div>
       </div>
     </div>
 
@@ -297,7 +298,9 @@ async function cargarTareas() {
 
 async function cargarCategorias() {
   try {
-    const res = await fetch(API + '/api/categorias', { headers:{'Authorization':'Bearer '+token} });
+    let url = API + '/api/categorias';
+    if (empresaActual) url += '?empresa_id=' + empresaActual;
+    const res = await fetch(url, { headers:{'Authorization':'Bearer '+token} });
     categorias = await res.json();
     // Cargar select admin
     const sel = document.getElementById('newSubcatCat');
@@ -413,7 +416,7 @@ function toggleAdmin() {
   const r = document.getElementById('reportesPanel');
   p.classList.toggle('hidden');
   r.classList.add('hidden');
-  if (!p.classList.contains('hidden')) { cargarUsuariosAdmin(); cargarAdminEmpresas(); cargarAdminCategorias(); }
+  if (!p.classList.contains('hidden')) { cargarUsuariosAdmin(); cargarAdminEmpresas(); cargarAdminCategorias(); cargarAdminSubcategorias(); }
 }
 
 function toggleReportes() {
@@ -436,8 +439,31 @@ async function cargarAdminCategorias() {
   try {
     const res = await fetch(API + '/api/categorias', { headers:{'Authorization':'Bearer '+token} });
     const cats = await res.json();
-    document.getElementById('categoriasList').innerHTML = cats.length ? cats.map(c => '<div style="padding:6px 0;border-bottom:1px solid #eee">📂 '+escapeHtml(c.nombre)+'</div>').join('') : '<p style="color:#888">Sin categorías</p>';
+    document.getElementById('categoriasList').innerHTML = cats.length ? cats.map(c => `
+      <div style="padding:8px 0;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between">
+        <span>📂 ${escapeHtml(c.nombre)}</span>
+        <div>
+          <button class="btn btn-outline btn-sm" onclick="editarCategoria(${c.id},'${escapeHtml(c.nombre)}')">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="borrarCategoria(${c.id},'${escapeHtml(c.nombre)}')">🗑️</button>
+        </div>
+      </div>`).join('') : '<p style="color:#888">Sin categorías</p>';
   } catch(e) {}
+}
+
+function editarCategoria(id, nombre) {
+  const nuevo = prompt('Nuevo nombre para la categoría:', nombre);
+  if (nuevo && nuevo.trim() && nuevo !== nombre) {
+    fetch(API + '/api/categorias/' + id, { method:'PUT', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify({nombre: nuevo.trim()}) })
+      .then(() => { cargarAdminCategorias(); cargarCategorias(); })
+      .catch(() => alert('Error al editar'));
+  }
+}
+
+function borrarCategoria(id, nombre) {
+  if (!confirm('¿Eliminar categoría "' + nombre + '"?\nSe borrarán también sus subcategorías.')) return;
+  fetch(API + '/api/categorias/' + id, { method:'DELETE', headers:{'Authorization':'Bearer '+token} })
+    .then(() => { cargarAdminCategorias(); cargarSubcategorias(); cargarCategorias(); })
+    .catch(() => alert('Error al borrar'));
 }
 
 async function crearUsuario() {
@@ -479,8 +505,46 @@ async function crearSubcategoria() {
   const categoria_id = document.getElementById('newSubcatCat').value;
   if (!nombre || !categoria_id) return alert('Completa todos los campos');
   await fetch(API + '/api/subcategorias', { method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify({nombre, categoria_id: parseInt(categoria_id)}) });
+  document.getElementById('newSubcatCat').value='';
   document.getElementById('newSubcatName').value='';
   cargarSubcategorias();
+  cargarAdminSubcategorias();
+}
+
+async function cargarAdminSubcategorias() {
+  try {
+    const res = await fetch(API + '/api/subcategorias', { headers:{'Authorization':'Bearer '+token} });
+    const subs = await res.json();
+    // Mostrar subcategorias en una lista debajo del formulario
+    let html = document.getElementById('subcategoriasList')?.innerHTML || '';
+    if (!document.getElementById('subcategoriasList')) return;
+    document.getElementById('subcategoriasList').innerHTML = subs.length ? subs.map(s => {
+      const cat = categorias.find(c => c.id == s.categoria_id);
+      return `<div style="padding:8px 0;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between">
+        <span>📂 ${escapeHtml(cat?.nombre||'?')} > ${escapeHtml(s.nombre)}</span>
+        <div>
+          <button class="btn btn-outline btn-sm" onclick="editarSubcategoria(${s.id},'${escapeHtml(s.nombre)}')">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="borrarSubcategoria(${s.id},'${escapeHtml(s.nombre)}')">🗑️</button>
+        </div>
+      </div>`;
+    }).join('') : '<p style="color:#888">Sin subcategorías</p>';
+  } catch(e) {}
+}
+
+function editarSubcategoria(id, nombre) {
+  const nuevo = prompt('Nuevo nombre:', nombre);
+  if (nuevo && nuevo.trim() && nuevo !== nombre) {
+    fetch(API + '/api/subcategorias/' + id, { method:'PUT', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token}, body:JSON.stringify({nombre: nuevo.trim()}) })
+      .then(() => { cargarSubcategorias(); cargarAdminSubcategorias(); })
+      .catch(() => alert('Error al editar'));
+  }
+}
+
+function borrarSubcategoria(id, nombre) {
+  if (!confirm('¿Eliminar subcategoría "' + nombre + '"?')) return;
+  fetch(API + '/api/subcategorias/' + id, { method:'DELETE', headers:{'Authorization':'Bearer '+token} })
+    .then(() => { cargarSubcategorias(); cargarAdminSubcategorias(); })
+    .catch(() => alert('Error al borrar'));
 }
 
 // ===== REPORTES =====
