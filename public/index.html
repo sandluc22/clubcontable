@@ -8,25 +8,23 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f5f9; min-height: 100vh; color: #1e293b; display: flex; }
   
-  /* AUTH */
   #auth { width: 100%; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
   #auth .card { background: #fff; padding: 40px 30px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,.08); width: 380px; max-width: 90%; text-align: center; }
   #auth h1 { color: #2563eb; font-size: 26px; margin-bottom: 4px; }
   #auth .sub { color: #94a3b8; font-size: 13px; margin-bottom: 24px; }
-  #auth input { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; }
+  #auth input { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; transition: border .2s; }
   #auth input:focus { border-color: #2563eb; }
   #auth button { width: 100%; padding: 12px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
   #auth button:hover { background: #d97706; }
   #auth button:disabled { opacity: .6; cursor: default; }
   .auth-error { color: #dc2626; font-size: 13px; margin-bottom: 8px; display: none; }
 
-  /* SIDEBAR */
   #sidebar { width: 240px; min-width: 240px; background: #fff; border-right: 1px solid #e2e8f0; display: none; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; }
   .brand { padding: 20px 18px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #e2e8f0; }
   .brand .icon { background: #2563eb; color: #fff; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 18px; flex-shrink: 0; }
   .brand .txt { font-weight: 700; font-size: 15px; }
   .menu { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 2px; }
-  .menu a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; cursor: pointer; color: #64748b; text-decoration: none; font-size: 14px; }
+  .menu a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; cursor: pointer; color: #64748b; text-decoration: none; font-size: 14px; transition: all .15s; }
   .menu a:hover { background: #f1f5f9; color: #1e293b; }
   .menu a.active { background: #fef3c7; color: #2563eb; font-weight: 600; }
   .menu a .ico { font-size: 18px; width: 24px; text-align: center; flex-shrink: 0; }
@@ -35,24 +33,21 @@
   .sidebar-footer .avatar { width: 32px; height: 32px; background: #2563eb; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
   .sidebar-footer .uname { font-size: 13px; font-weight: 600; }
   .sidebar-footer .urol { font-size: 11px; color: #94a3b8; }
-  .sidebar-footer #btnLogout { width: 100%; padding: 8px; background: #fee2e2; color: #dc2626; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
-  .sidebar-footer #btnLogout:hover { background: #fecaca; }
+  #btnLogout { width: 100%; padding: 8px; background: #fee2e2; color: #dc2626; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+  #btnLogout:hover { background: #fecaca; }
 
-  /* MAIN */
   #main { margin-left: 240px; flex: 1; padding: 30px; display: none; }
   .page-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
 
-  /* STATS */
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
   .stat-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
   .stat-card .label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
   .stat-card .value { font-size: 28px; font-weight: 700; }
   .stat-card .value.blue { color: #2563eb; }
   .stat-card .value.green { color: #059669; }
-  .stat-card .value.red { color: #dc2626; }
   .stat-card .value.orange { color: #ea580c; }
+  .stat-card .value.red { color: #dc2626; }
 
-  /* TABLE */
   .card-table { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.06); overflow: hidden; }
   .card-table .header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; }
   .card-table .header h2 { font-size: 16px; font-weight: 600; }
@@ -62,24 +57,6 @@
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: #f8fafc; }
 
-  /* COMPONENTS */
-  .btn { padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-  .btn-sm { padding: 5px 10px; font-size: 11px; }
-  .btn-primary { background: #2563eb; color: #fff; }
-  .btn-primary:hover { background: #d97706; }
-  .btn-danger { background: #fee2e2; color: #dc2626; }
-  .btn-danger:hover { background: #fecaca; }
-  .btn-ghost { background: transparent; color: #64748b; }
-  .btn-ghost:hover { background: #f1f5f9; }
-  .frm-group { margin-bottom: 12px; }
-  .frm-group label { display: block; font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 4px; text-transform: uppercase; }
-  .frm-group input, .frm-group select, .frm-group textarea { width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; }
-  .frm-group input:focus, .frm-group select:focus, .frm-group textarea:focus { border-color: #2563eb; }
-  .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.4); display: none; align-items: center; justify-content: center; z-index: 999; }
-  .modal.show { display: flex; }
-  .modal-content { background: #fff; border-radius: 16px; padding: 28px; width: 90%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
-  .modal-content h3 { margin-bottom: 16px; font-size: 18px; }
-  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
   .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
   .badge-ok { background: #dcfce7; color: #166534; }
   .badge-pend { background: #fef3c7; color: #92400e; }
@@ -87,13 +64,10 @@
   .empty { text-align: center; padding: 40px 20px; color: #94a3b8; }
   .empty .icon { font-size: 40px; margin-bottom: 10px; }
 
-  /* TOAST */
   .toast { position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 13px; z-index: 9999; opacity: 0; transform: translateY(10px); transition: all .3s; }
   .toast.show { opacity: 1; transform: translateY(0); }
-  .toast.success { background: #059669; }
-  .toast.error { background: #dc2626; }
 
-  .pagenav { display: none; }
+  .page { display: none; }
   .page.active { display: block; }
 
   @media (max-width: 768px) {
@@ -108,7 +82,6 @@
 </head>
 <body>
 
-<!-- AUTH -->
 <div id="auth">
   <div class="card">
     <h1>🏢 Club Contable</h1>
@@ -116,11 +89,10 @@
     <div class="auth-error" id="authError"></div>
     <input type="email" id="loginEmail" placeholder="Correo electrónico" autocomplete="email">
     <input type="password" id="loginPass" placeholder="Contraseña" autocomplete="current-password">
-    <button id="loginBtn" onclick="login()">Ingresar</button>
+    <button id="loginBtn">Ingresar</button>
   </div>
 </div>
 
-<!-- SIDEBAR -->
 <div id="sidebar">
   <div class="brand"><div class="icon">📊</div><span class="txt">Club Contable</span></div>
   <div class="menu">
@@ -141,81 +113,34 @@
   </div>
 </div>
 
-<!-- MAIN -->
 <div id="main">
-
-  <!-- DASHBOARD -->
-  <div id="page-dashboard" class="pagenav active">
+  <div id="page-dashboard" class="page active">
     <div class="page-title">Dashboard</div>
     <div class="stats" id="statsDash"></div>
     <div class="card-table"><div class="header"><h2>Últimas tareas</h2></div><div id="dashTasks">Cargando...</div></div>
   </div>
 
-  <!-- TAREAS -->
-  <div id="page-tareas" class="pagenav">
+  <div id="page-tareas" class="page">
     <div class="page-title">Tareas</div>
     <div class="card-table">
-      <div class="header"><h2>Listado de tareas</h2><button class="btn btn-primary" onclick="showModal('tarea')">+ Nueva tarea</button></div>
+      <div class="header"><h2>Listado de tareas</h2></div>
       <div id="tareasList">Cargando...</div>
     </div>
   </div>
 
-  <!-- CATEGORIAS -->
-  <div id="page-categorias" class="pagenav">
+  <div id="page-categorias" class="page">
     <div class="page-title">Categorías</div>
     <div class="card-table">
-      <div class="header"><h2>Listado de categorías</h2><button class="btn btn-primary" onclick="showModal('categoria')">+ Nueva categoría</button></div>
+      <div class="header"><h2>Listado de categorías</h2></div>
       <div id="categoriasList">Cargando...</div>
     </div>
   </div>
 
-  <!-- SUBCATEGORIAS -->
-  <div id="page-subcategorias" class="pagenav">
+  <div id="page-subcategorias" class="page">
     <div class="page-title">Subcategorías</div>
     <div class="card-table">
-      <div class="header"><h2>Listado de subcategorías</h2><button class="btn btn-primary" onclick="showModal('subcategoria')">+ Nueva subcategoría</button></div>
+      <div class="header"><h2>Listado de subcategorías</h2></div>
       <div id="subcategoriasList">Cargando...</div>
-    </div>
-  </div>
-</div>
-
-<!-- MODALS -->
-<div class="modal" id="modTarea">
-  <div class="modal-content">
-    <h3 id="modTitle">Nueva tarea</h3>
-    <div class="frm-group"><label>Título</label><input id="tTitulo" placeholder="Ej: Conciliación bancaria"></div>
-    <div class="frm-group"><label>Descripción</label><textarea id="tDesc" rows="2" placeholder="Detalles..."></textarea></div>
-    <div class="frm-group"><label>Fecha límite</label><input type="date" id="tFecha"></div>
-    <div class="frm-group"><label>Categoría</label><select id="tCat"><option value="">Sin categoría</option></select></div>
-    <div class="frm-group"><label>Subcategoría</label><select id="tSubcat"><option value="">Sin subcategoría</option></select></div>
-    <div class="frm-group"><label>Empresa</label><select id="tEmpresa"><option value="">Sin empresa</option></select></div>
-    <input type="hidden" id="tId">
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="hideModal('tarea')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveTarea()">Guardar</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal" id="modCategoria">
-  <div class="modal-content">
-    <h3>Nueva categoría</h3>
-    <div class="frm-group"><label>Nombre</label><input id="cNombre" placeholder="Ej: Contabilidad"></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="hideModal('categoria')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveCategoria()">Guardar</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal" id="modSubcategoria">
-  <div class="modal-content">
-    <h3>Nueva subcategoría</h3>
-    <div class="frm-group"><label>Nombre</label><input id="sNombre" placeholder="Ej: Conciliaciones"></div>
-    <div class="frm-group"><label>Categoría</label><select id="sCat"><option value="">Seleccionar...</option></select></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="hideModal('subcategoria')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveSubcategoria()">Guardar</button>
     </div>
   </div>
 </div>
@@ -224,244 +149,161 @@
 
 <script>
 const API = 'https://clubcontable-api.crecimientofinancieroglobal.workers.dev';
-var token, user, empresas = [], cats = [];
+var token, user, empresas = [];
 
 function $(id) { return document.getElementById(id); }
-function show(id) { var e = $(id); if(e) e.style.display = 'flex' }
-function hide(id) { var e = $(id); if(e) e.style.display = '' }
-function T(m,t){var e=document.getElementById('toast');e.textContent=m;e.className='toast show '+(t||'');setTimeout(function(){e.classList.remove('show')},3000);}
+
+function T(m,t){
+  var e=$('toast'); e.textContent=m;
+  e.className='toast show'+(t?' '+t:'');
+  setTimeout(function(){e.classList.remove('show')},3000);
+}
 
 async function api(path, opts) {
   if (!opts) opts = {};
   var headers = {'Content-Type':'application/json'};
   if (token) headers['Authorization'] = 'Bearer ' + token;
   try {
-    var r = await fetch(API + path, { method: opts.method || 'GET', headers: headers, body: opts.body ? JSON.stringify(opts.body) : null });
-    var d = await r.json();
-    if (!d.ok && d.error) throw new Error(d.error);
-    return d;
-  } catch(e) { T(e.message,'error'); throw e; }
+    var r = await fetch(API + path, { method: opts.method||'GET', headers: headers, body: opts.body ? JSON.stringify(opts.body) : null });
+    if (path === '/api/login') return r.json();
+    return r.json();
+  } catch(e) { T('Error de conexión','error'); throw e; }
 }
 
 async function login() {
   var email = $('loginEmail').value.trim();
   var pass = $('loginPass').value.trim();
-  if (!email || !pass) return T('Completa los campos','error');
-  var btn = $('loginBtn'); btn.disabled = true; btn.textContent = 'Ingresando...';
+  if (!email||!pass) return T('Completa los campos');
+  var btn=$('loginBtn');btn.disabled=true;btn.textContent='Ingresando...';
   try {
-    var d = await api('/api/login', { method:'POST', body:{email:email,password:pass} });
+    var d = await api('/api/login',{method:'POST',body:{email,password:pass}});
+    if (!d.token && d.error) throw new Error(d.error);
     token = d.token; user = d.user;
-    window.localStorage.setItem('cc_token', token);
-    window.localStorage.setItem('cc_user', JSON.stringify(user));
-    if (d.empresas && d.empresas.length) {
-      empresas = d.empresas;
-      window.localStorage.setItem('cc_empresas', JSON.stringify(empresas));
-    }
+    localStorage.setItem('cc_token', token);
+    localStorage.setItem('cc_user', JSON.stringify(user));
+    if (d.empresas&&d.empresas.length) { empresas=d.empresas; localStorage.setItem('cc_empresas',JSON.stringify(empresas)); }
     $('sidebarName').textContent = user.nombre || user.email;
-    $('sidebarRole').textContent = user.rol || 'admin';
-    $('avatar').textContent = (user.nombre || user.email || 'A')[0].toUpperCase();
-    $('auth').style.display = 'none';
-    $('sidebar').style.display = 'flex';
-    $('main').style.display = 'block';
-    $('authError').style.display = 'none';
+    $('sidebarRole').textContent = user.rol||'admin';
+    $('avatar').textContent = (user.nombre||user.email||'A')[0].toUpperCase();
+    $('auth').style.display='none';
+    $('sidebar').style.display='flex';
+    $('main').style.display='block';
+    $('authError').style.display='none';
     loadDashboard();
-  } catch(e) {
-    $('authError').textContent = e.message || 'Error de conexión';
-    $('authError').style.display = 'block';
-  }
-  btn.disabled = false; btn.textContent = 'Ingresar';
+  } catch(e) { $('authError').textContent=e.message;$('authError').style.display='block'; }
+  btn.disabled=false;btn.textContent='Ingresar';
 }
 
 function logout() {
-  window.localStorage.removeItem('cc_token'); window.localStorage.removeItem('cc_user'); window.localStorage.removeItem('cc_empresas');
-  token = null; user = null; empresas = [];
-  $('sidebar').style.display = 'none'; $('main').style.display = 'none'; $('auth').style.display = 'flex';
+  localStorage.removeItem('cc_token');localStorage.removeItem('cc_user');localStorage.removeItem('cc_empresas');
+  token=null;user=null;
+  $('sidebar').style.display='none';$('main').style.display='none';$('auth').style.display='flex';
   document.querySelectorAll('.menu a').forEach(function(a,i){a.classList.toggle('active',i===0)});
-  document.querySelectorAll('.pagenav').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
   $('page-dashboard').classList.add('active');
 }
 
 function nav(page) {
-  document.querySelectorAll('.pagenav').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
   $('page-'+page).classList.add('active');
   document.querySelectorAll('.menu a').forEach(function(a,i){
     a.classList.remove('active');
-    var pages = ['dashboard','tareas','categorias','subcategorias'];
-    if (pages.indexOf(page) === i) a.classList.add('active');
+    var pgs=['dashboard','tareas','categorias','subcategorias'];
+    if(pgs.indexOf(page)===i) a.classList.add('active');
   });
-  if (page === 'dashboard') loadDashboard();
-  else if (page === 'tareas') loadTareas();
-  else if (page === 'categorias') loadCategorias();
-  else if (page === 'subcategorias') loadSubcategorias();
+  if(page==='dashboard') loadDashboard();
+  else if(page==='tareas') loadTareas();
+  else if(page==='categorias') loadCategorias();
+  else if(page==='subcategorias') loadSubcategorias();
 }
 
-function showModal(type) {
-  var m = 'mod' + type.charAt(0).toUpperCase() + type.slice(1);
-  $(m).classList.add('show');
-  if (type === 'tarea') { $('tId').value = ''; $('modTitle').textContent = 'Nueva tarea'; $('tTitulo').value=''; $('tDesc').value=''; $('tFecha').value=''; cargarSelects(); }
-}
-function hideModal(type) {
-  var m = 'mod' + type.charAt(0).toUpperCase() + type.slice(1);
-  $(m).classList.remove('show');
+async function getData(path) {
+  try {
+    var d = await api(path);
+    if (Array.isArray(d)) return d;
+    if (d.result && Array.isArray(d.result)) return d.result;
+    if (d.results && Array.isArray(d.results)) return d.results;
+    if (d.data && Array.isArray(d.data)) return d.data;
+    return [];
+  } catch(e) { return []; }
 }
 
-// ========= DASHBOARD =========
 async function loadDashboard() {
   try {
-    var d = await api('/api/tareas');
-    var items = d.result || d.results || [];
+    var items = await getData('/api/tareas');
     var tot = items.length;
-    var ok = items.filter(function(t){return t.ok == 1}).length;
-    var pend = tot - ok;
-    $('statsDash').innerHTML = '<div class=\"stat-card\"><div class=\"label\">Total tareas</div><div class=\"value blue\">'+tot+'</div></div><div class=\"stat-card\"><div class=\"label\">Completadas</div><div class=\"value green\">'+ok+'</div></div><div class=\"stat-card\"><div class=\"label\">Pendientes</div><div class=\"value orange\">'+pend+'</div></div>';
-    var recientes = items.slice(0,5);
-    if (!recientes.length) { $('dashTasks').innerHTML = '<div class=\"empty\"><div class=\"icon\">📋</div><p>No hay tareas. Crea la primera desde Tareas.</p></div>'; return; }
-    var html = '<table><thead><tr><th>Título</th><th>Categoría</th><th>Estado</th><th>Fecha límite</th></tr></thead><tbody>';
-    recientes.forEach(function(t){
-      var estado = t.ok == 1 ? '<span class=\"badge badge-ok\">✅ Completada</span>' : '<span class=\"badge badge-pend\">⏳ Pendiente</span>';
-      var cat = t.categoria_nombre ? '<span class=\"badge badge-cat\">'+t.categoria_nombre+'</span>' : '-';
-      html += '<tr><td>'+ (t.titulo||'-') +'</td><td>'+cat+'</td><td>'+estado+'</td><td>'+(t.fecha_limite||'-')+'</td></tr>';
+    var ok = items.filter(function(t){return t.ok==1}).length;
+    var pend = tot-ok;
+    $('statsDash').innerHTML =
+      '<div class="stat-card"><div class="label">Total tareas</div><div class="value blue">'+tot+'</div></div>'+
+      '<div class="stat-card"><div class="label">Completadas</div><div class="value green">'+ok+'</div></div>'+
+      '<div class="stat-card"><div class="label">Pendientes</div><div class="value orange">'+pend+'</div></div>';
+    var r = items.slice(0,5);
+    if (!r.length) { $('dashTasks').innerHTML='<div class="empty"><div class="icon">📋</div><p>No hay tareas aún</p></div>'; return; }
+    var h='<table><thead><tr><th>Título</th><th>Categoría</th><th>Estado</th><th>Fecha límite</th></tr></thead><tbody>';
+    r.forEach(function(t){
+      var est=t.ok==1?'<span class="badge badge-ok">✅ Completada</span>':'<span class="badge badge-pend">⏳ Pendiente</span>';
+      var cat=t.categoria_nombre?'<span class="badge badge-cat">'+t.categoria_nombre+'</span>':'-';
+      h+='<tr><td>'+(t.titulo||'-')+'</td><td>'+cat+'</td><td>'+est+'</td><td>'+(t.fecha_limite||'-')+'</td></tr>';
     });
-    html += '</tbody></table>';
-    $('dashTasks').innerHTML = html;
-  } catch(e) { $('statsDash').innerHTML = '<p style=\"color:#94a3b8\">Error al cargar</p>'; }
+    h+='</tbody></table>';
+    $('dashTasks').innerHTML=h;
+  } catch(e) { $('statsDash').innerHTML='<p style="color:#94a3b8">Error al cargar</p>'; }
 }
 
-// ========= TAREAS =========
 async function loadTareas() {
   try {
-    var d = await api('/api/tareas');
-    var items = d.result || d.results || [];
-    if (!items.length) { $('tareasList').innerHTML = '<div class=\"empty\"><div class=\"icon\">📋</div><p>No hay tareas aún</p></div>'; return; }
-    var html = '<table><thead><tr><th>Título</th><th>Categoría</th><th>Subcategoría</th><th>Empresa</th><th>Estado</th><th>Fecha límite</th><th></th></tr></thead><tbody>';
+    var items = await getData('/api/tareas');
+    if(!items.length){$('tareasList').innerHTML='<div class="empty"><div class="icon">📋</div><p>No hay tareas aún. Puedes crear desde la API.</p></div>';return;}
+    var h='<table><thead><tr><th>Título</th><th>Descripción</th><th>Categoría</th><th>Empresa</th><th>Estado</th><th>Fecha límite</th></tr></thead><tbody>';
     items.forEach(function(t){
-      var estado = t.ok == 1 ? '<span class=\"badge badge-ok\">✅ Completa</span>' : '<span class=\"badge badge-pend\">⏳ Pendiente</span>';
-      html += '<tr><td>'+t.titulo+'</td><td><span class=\"badge badge-cat\">'+(t.categoria_nombre||'Sin cat.')+'</span></td><td>'+(t.subcategoria_nombre||'-')+'</td><td>'+(t.empresa_nombre||'-')+'</td><td>'+estado+'</td><td>'+(t.fecha_limite||'-')+'</td><td><button class=\"btn btn-sm btn-danger\" onclick=\"delTarea('+t.id+')\">🗑</button></td></tr>';
+      var est=t.ok==1?'<span class="badge badge-ok">✅</span>':'<span class="badge badge-pend">⏳</span>';
+      h+='<tr><td>'+t.titulo+'</td><td>'+(t.descripcion||'-')+'</td><td><span class="badge badge-cat">'+(t.categoria_nombre||'')+'</span></td><td>'+(t.empresa_nombre||'-')+'</td><td>'+est+'</td><td>'+(t.fecha_limite||'-')+'</td></tr>';
     });
-    html += '</tbody></table>';
-    $('tareasList').innerHTML = html;
-  } catch(e) { $('tareasList').innerHTML = '<div class=\"empty\"><p>Error</p></div>'; }
+    h+='</tbody></table>';
+    $('tareasList').innerHTML=h;
+  } catch(e){$('tareasList').innerHTML='<div class="empty"><p>Error</p></div>';}
 }
 
-async function saveTarea() {
-  var id = $('tId').value;
-  var body = { titulo: $('tTitulo').value.trim(), descripcion: $('tDesc').value.trim(), fecha_limite: $('tFecha').value, categoria_id: $('tCat').value ? parseInt($('tCat').value) : null, subcategoria_id: $('tSubcat').value ? parseInt($('tSubcat').value) : null, empresa_id: $('tEmpresa').value ? parseInt($('tEmpresa').value) : null };
-  if (!body.titulo) return T('Escribe un título','error');
-  try {
-    await api('/api/tareas', { method:'POST', body: body });
-    hideModal('tarea'); T('Tarea guardada ✓','success');
-    if (document.querySelector('#page-tareas.pagenav.active')) loadTareas(); else loadDashboard();
-  } catch(e) {}
-}
-
-async function delTarea(id) {
-  try {
-    await api('/api/tareas/eliminar', { method:'POST', body: {id:id} });
-    T('Tarea eliminada ✓','success');
-    loadTareas();
-  } catch(e) {}
-}
-
-// ========= CATEGORIAS =========
 async function loadCategorias() {
   try {
-    var d = await api('/api/categorias');
-    var items = d.result || d.results || [];
-    if (!items.length) { $('categoriasList').innerHTML = '<div class=\"empty\"><div class=\"icon\">📂</div><p>Sin categorías</p></div>'; return; }
-    var html = '<table><thead><tr><th>Nombre</th><th></th></tr></thead><tbody>';
-    items.forEach(function(c){ html += '<tr><td>'+c.nombre+'</td><td><button class=\"btn btn-sm btn-danger\" onclick=\"delCategoria('+c.id+')\">🗑</button></td></tr>'; });
-    html += '</tbody></table>';
-    $('categoriasList').innerHTML = html;
-  } catch(e) { $('categoriasList').innerHTML = '<div class=\"empty\"><p>Error</p></div>'; }
+    var items = await getData('/api/categorias');
+    if(!items.length){$('categoriasList').innerHTML='<div class="empty"><div class="icon">📂</div><p>Sin categorías</p></div>';return;}
+    var h='<table><thead><tr><th>Nombre</th><th></th></tr></thead><tbody>';
+    items.forEach(function(c){h+='<tr><td>'+c.nombre+'</td><td><span class="badge badge-cat">ID: '+c.id+'</span></td></tr>';});
+    h+='</tbody></table>';
+    $('categoriasList').innerHTML=h;
+  } catch(e){$('categoriasList').innerHTML='<div class="empty"><p>Error</p></div>';}
 }
 
-async function saveCategoria() {
-  var nom = $('cNombre').value.trim();
-  if (!nom) return T('Escribe un nombre','error');
-  try {
-    await api('/api/categorias', { method:'POST', body:{nombre:nom} });
-    hideModal('categoria'); T('Categoría creada ✓','success');
-    loadCategorias(); cats.push({nombre:nom}); cargarSelects();
-  } catch(e) {}
-}
-
-async function delCategoria(id) {
-  try {
-    await api('/api/categorias/eliminar', { method:'POST', body:{id:id} });
-    T('Categoría eliminada ✓','success');
-    loadCategorias(); cargarSelects();
-  } catch(e) {}
-}
-
-// ========= SUBCATEGORIAS =========
 async function loadSubcategorias() {
   try {
-    var dc = await api('/api/categorias');
-    var ds = await api('/api/subcategorias');
-    var c = dc.result || dc.results || [];
-    var s = ds.result || ds.results || [];
-    var cmap = {}; c.forEach(function(x){cmap[x.id]=x.nombre});
-    if (!s.length) { $('subcategoriasList').innerHTML = '<div class=\"empty\"><div class=\"icon\">📁</div><p>Sin subcategorías</p></div>'; return; }
-    var html = '<table><thead><tr><th>Nombre</th><th>Categoría</th><th></th></tr></thead><tbody>';
-    s.forEach(function(x){ html += '<tr><td>'+x.nombre+'</td><td><span class=\"badge badge-cat\">'+(cmap[x.categoria_id]||'N/A')+'</span></td><td><button class=\"btn btn-sm btn-danger\" onclick=\"delSubcategoria('+x.id+')\">🗑</button></td></tr>'; });
-    html += '</tbody></table>';
-    $('subcategoriasList').innerHTML = html;
-  } catch(e) { $('subcategoriasList').innerHTML = '<div class=\"empty\"><p>Error</p></div>'; }
+    var items = await getData('/api/subcategorias');
+    var cats = await getData('/api/categorias');
+    var cmap={};cats.forEach(function(c){cmap[c.id]=c.nombre});
+    if(!items.length){$('subcategoriasList').innerHTML='<div class="empty"><div class="icon">📁</div><p>Sin subcategorías</p></div>';return;}
+    var h='<table><thead><tr><th>Nombre</th><th>Categoría</th></tr></thead><tbody>';
+    items.forEach(function(s){h+='<tr><td>'+s.nombre+'</td><td><span class="badge badge-cat">'+(cmap[s.categoria_id]||'N/A')+'</span></td></tr>';});
+    h+='</tbody></table>';
+    $('subcategoriasList').innerHTML=h;
+  } catch(e){$('subcategoriasList').innerHTML='<div class="empty"><p>Error</p></div>';}
 }
 
-async function saveSubcategoria() {
-  var nom = $('sNombre').value.trim();
-  var cat = $('sCat').value ? parseInt($('sCat').value) : null;
-  if (!nom || !cat) return T('Completa nombre y categoría','error');
-  try {
-    await api('/api/subcategorias', { method:'POST', body:{nombre:nom, categoria_id:cat} });
-    hideModal('subcategoria'); T('Subcategoría creada ✓','success');
-    loadSubcategorias();
-  } catch(e) {}
-}
-
-async function delSubcategoria(id) {
-  try {
-    await api('/api/subcategorias/eliminar', { method:'POST', body:{id:id} });
-    T('Subcategoría eliminada ✓','success');
-    loadSubcategorias();
-  } catch(e) {}
-}
-
-// ========= SELECTS =========
-async function cargarSelects() {
-  try {
-    var dc = await api('/api/categorias');
-    var c = dc.result || dc.results || [];
-    cats = c;
-    var opts = c.map(function(x){return '<option value=\"'+x.id+'\">'+x.nombre+'</option>'}).join('');
-    $('tCat').innerHTML = '<option value=\"\">Sin categoría</option>' + opts;
-    $('sCat').innerHTML = '<option value=\"\">Seleccionar...</option>' + opts;
-    var de = empresas;
-    try { var de2 = await api('/api/empresas'); if (de2.result && de2.result.length) de = de2.result; else if (de2.results && de2.results.length) de = de2.results; } catch(e){}
-    var eopts = de.map(function(x){return '<option value=\"'+x.id+'\">'+x.nombre+'</option>'}).join('');
-    $('tEmpresa').innerHTML = '<option value=\"\">Sin empresa</option>' + eopts;
-  } catch(e) {}
-}
-
-// ========= INIT =========
-$('btnLogout').onclick = logout;
-$('loginPass').addEventListener('keydown', function(e){ if(e.key==='Enter') login(); });
+$('btnLogout').onclick=logout;
+$('loginBtn').onclick=login;
+$('loginPass').addEventListener('keydown',function(e){if(e.key==='Enter')login();});
 
 (function(){
-  var saved = window.localStorage.getItem('cc_token');
-  if (saved) {
-    token = saved;
-    try { user = JSON.parse(window.localStorage.getItem('cc_user')||'{}'); } catch(e){}
-    try { empresas = JSON.parse(window.localStorage.getItem('cc_empresas')||'[]'); } catch(e){}
-    $('auth').style.display = 'none';
-    $('sidebar').style.display = 'flex';
-    $('main').style.display = 'block';
-    $('sidebarName').textContent = user.nombre || user.email || 'Admin';
-    $('sidebarRole').textContent = user.rol || 'admin';
-    $('avatar').textContent = (user.nombre || user.email || 'A')[0].toUpperCase();
+  var s=localStorage.getItem('cc_token');
+  if(s){
+    token=s;
+    try{user=JSON.parse(localStorage.getItem('cc_user')||'{}');}catch(e){}
+    try{empresas=JSON.parse(localStorage.getItem('cc_empresas')||'[]');}catch(e){}
+    $('auth').style.display='none';$('sidebar').style.display='flex';$('main').style.display='block';
+    $('sidebarName').textContent=user.nombre||user.email||'Admin';
+    $('sidebarRole').textContent=user.rol||'admin';
+    $('avatar').textContent=(user.nombre||user.email||'A')[0].toUpperCase();
     loadDashboard();
-    cargarSelects();
   }
 })();
 </script>
