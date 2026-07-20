@@ -441,16 +441,22 @@ async function loadReportes(){
 
 // SELECTS
 async function cargarSelects(){
+  const dc=await api('/api/categorias');
+  const cats=dc.result||[];
+  const o=cats.map(c=>'<option value="'+c.id+'">'+c.nombre+'</option>').join('');
+  $('fCat').innerHTML='<option value="">Sin categoría</option>'+o;
+  const dsub=await api('/api/subcategorias');
+  const subs=dsub.result||[];
+  const so=subs.map(s=>'<option value="'+s.id+'" data-cat="'+s.categoria_id+'">'+s.nombre+'</option>').join('');
+  $('fSubCat').innerHTML='<option value="">Sin subcategoría</option>'+so;
   try{
-    const dc=await api('/api/categorias');
-    const cats=dc.result||[];
-    const o=cats.map(c=>'<option value="'+c.id+'">'+c.nombre+'</option>').join('');
-    $('fCat').innerHTML='<option value="">Sin categoría</option>'+o;
-    $('fSubCat').innerHTML='<option value="">Seleccionar...</option>'+o;
-    const ed=empresas;
-    try{const r=await api('/api/empresas');if(r.result&&r.result.length)ed.length=0;r.result.forEach(e=>ed.push(e));}catch(ex){}
-    $('fEmpresa').innerHTML='<option value="">Sin empresa</option>'+ed.map(e=>'<option value="'+e.id+'">'+e.nombre+'</option>').join('');
-  }catch(e){}
+    const r=await api('/api/empresas');
+    if(r.result&&r.result.length){
+      empresas=r.result;
+      localStorage.setItem('cc_empresas',JSON.stringify(empresas));
+    }
+  }catch(ex){}
+  $('fEmpresa').innerHTML='<option value="">Sin empresa</option>'+empresas.map(e=>'<option value="'+e.id+'">'+e.nombre+'</option>').join('');
 }
 
 // INIT
@@ -458,18 +464,19 @@ $('btnLogout').onclick=logout;
 $('loginBtn').onclick=login;
 $('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
 
-(()=>{
+// Auto-login
+(async function init(){
   const s=localStorage.getItem('cc_token');
-  if(s){
-    token=s;
-    try{user=JSON.parse(localStorage.getItem('cc_user')||'{}')}catch(e){}
-    try{empresas=JSON.parse(localStorage.getItem('cc_empresas')||'[]')}catch(e){}
-    $('auth').style.display='none';$('sidebar').style.display='flex';$('main').style.display='block';
-    $('sidebarName').textContent=user.nombre||user.email||'Admin';
-    $('sidebarRole').textContent=user.rol||'admin';
-    $('avatar').textContent=(user.nombre||user.email||'A')[0].toUpperCase();
-    cargarSelects();loadDashboard();
-  }
+  if(!s)return;
+  token=s;
+  try{user=JSON.parse(localStorage.getItem('cc_user')||'{}')}catch(e){}
+  try{empresas=JSON.parse(localStorage.getItem('cc_empresas')||'[]')}catch(e){}
+  $('auth').style.display='none';$('sidebar').style.display='flex';$('main').style.display='block';
+  $('sidebarName').textContent=user.nombre||user.email||'Admin';
+  $('sidebarRole').textContent=user.rol||'admin';
+  $('avatar').textContent=(user.nombre||user.email||'A')[0].toUpperCase();
+  try{await cargarSelects();}catch(e){}
+  try{await loadDashboard();}catch(e){}
 })();
 </script>
 </body>
