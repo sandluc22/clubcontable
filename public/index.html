@@ -5,79 +5,97 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Club Contable</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f5f9; min-height: 100vh; color: #1e293b; display: flex; }
-  
-  #auth { width: 100%; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-  #auth .card { background: #fff; padding: 40px 30px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,.08); width: 380px; max-width: 90%; text-align: center; }
-  #auth h1 { color: #2563eb; font-size: 26px; margin-bottom: 4px; }
-  #auth .sub { color: #94a3b8; font-size: 13px; margin-bottom: 24px; }
-  #auth input { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; transition: border .2s; }
-  #auth input:focus { border-color: #2563eb; }
-  #auth button { width: 100%; padding: 12px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
-  #auth button:hover { background: #d97706; }
-  #auth button:disabled { opacity: .6; cursor: default; }
-  .auth-error { color: #dc2626; font-size: 13px; margin-bottom: 8px; display: none; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f1f5f9;min-height:100vh;color:#1e293b;display:flex}
 
-  #sidebar { width: 240px; min-width: 240px; background: #fff; border-right: 1px solid #e2e8f0; display: none; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; }
-  .brand { padding: 20px 18px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #e2e8f0; }
-  .brand .icon { background: #2563eb; color: #fff; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 18px; flex-shrink: 0; }
-  .brand .txt { font-weight: 700; font-size: 15px; }
-  .menu { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 2px; }
-  .menu a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; cursor: pointer; color: #64748b; text-decoration: none; font-size: 14px; transition: all .15s; }
-  .menu a:hover { background: #f1f5f9; color: #1e293b; }
-  .menu a.active { background: #fef3c7; color: #2563eb; font-weight: 600; }
-  .menu a .ico { font-size: 18px; width: 24px; text-align: center; flex-shrink: 0; }
-  .sidebar-footer { padding: 12px 18px; border-top: 1px solid #e2e8f0; }
-  .sidebar-footer .user-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .sidebar-footer .avatar { width: 32px; height: 32px; background: #2563eb; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
-  .sidebar-footer .uname { font-size: 13px; font-weight: 600; }
-  .sidebar-footer .urol { font-size: 11px; color: #94a3b8; }
-  #btnLogout { width: 100%; padding: 8px; background: #fee2e2; color: #dc2626; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
-  #btnLogout:hover { background: #fecaca; }
+#auth{width:100%;display:flex;align-items:center;justify-content:center;min-height:100vh}
+#auth .card{background:#fff;padding:40px 30px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.08);width:380px;max-width:90%;text-align:center}
+#auth h1{color:#2563eb;font-size:26px;margin-bottom:4px}
+#auth .sub{color:#94a3b8;font-size:13px;margin-bottom:24px}
+#auth input{width:100%;padding:12px;margin-bottom:10px;border:2px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none}
+#auth input:focus{border-color:#2563eb}
+#auth button{width:100%;padding:12px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+#auth button:hover{background:#d97706}
+.auth-error{color:#dc2626;font-size:13px;display:none;margin-bottom:8px}
 
-  #main { margin-left: 240px; flex: 1; padding: 30px; display: none; }
-  .page-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
+#sidebar{width:240px;min-width:240px;background:#fff;border-right:1px solid #e2e8f0;display:none;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.brand{padding:20px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #e2e8f0}
+.brand .ico{background:#2563eb;color:#fff;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:18px;flex-shrink:0}
+.brand .txt{font-weight:700;font-size:15px}
+.menu{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:2px}
+.menu a{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;cursor:pointer;color:#64748b;text-decoration:none;font-size:14px}
+.menu a:hover{background:#f1f5f9;color:#1e293b}
+.menu a.active{background:#fef3c7;color:#2563eb;font-weight:600}
+.menu a .ico{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.sidebar-footer{padding:12px 18px;border-top:1px solid #e2e8f0}
+.sidebar-footer .row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sidebar-footer .avatar{width:32px;height:32px;background:#2563eb;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.sidebar-footer .name{font-size:13px;font-weight:600}
+.sidebar-footer .role{font-size:11px;color:#94a3b8}
+#btnLogout{width:100%;padding:8px;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600}
+#btnLogout:hover{background:#fecaca}
 
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
-  .stat-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
-  .stat-card .label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
-  .stat-card .value { font-size: 28px; font-weight: 700; }
-  .stat-card .value.blue { color: #2563eb; }
-  .stat-card .value.green { color: #059669; }
-  .stat-card .value.orange { color: #ea580c; }
-  .stat-card .value.red { color: #dc2626; }
+#main{margin-left:240px;flex:1;padding:30px;display:none}
+.page-title{font-size:22px;font-weight:700;margin-bottom:20px}
 
-  .card-table { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.06); overflow: hidden; }
-  .card-table .header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; }
-  .card-table .header h2 { font-size: 16px; font-weight: 600; }
-  table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; padding: 10px 20px; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
-  td { padding: 12px 20px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #f8fafc; }
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+.stat-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.stat-card .label{font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.stat-card .value{font-size:28px;font-weight:700}
+.stat-card .value.blue{color:#2563eb}
+.stat-card .value.green{color:#059669}
+.stat-card .value.orange{color:#ea580c}
 
-  .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-  .badge-ok { background: #dcfce7; color: #166534; }
-  .badge-pend { background: #fef3c7; color: #92400e; }
-  .badge-cat { background: #fef3c7; color: #92400e; }
-  .empty { text-align: center; padding: 40px 20px; color: #94a3b8; }
-  .empty .icon { font-size: 40px; margin-bottom: 10px; }
+.card-table{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden}
+.card-table .hd{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2e8f0}
+.card-table .hd h2{font-size:16px;font-weight:600}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:10px 20px;font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;background:#f8fafc;border-bottom:1px solid #e2e8f0}
+td{padding:12px 20px;font-size:13px;border-bottom:1px solid #f1f5f9}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8fafc}
 
-  .toast { position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 13px; z-index: 9999; opacity: 0; transform: translateY(10px); transition: all .3s; }
-  .toast.show { opacity: 1; transform: translateY(0); }
+.btn{padding:8px 16px;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-sm{padding:5px 10px;font-size:11px}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-primary:hover{background:#d97706}
+.btn-danger{background:#fee2e2;color:#dc2626}
+.btn-danger:hover{background:#fecaca}
+.btn-ghost{background:transparent;color:#64748b}
+.btn-ghost:hover{background:#f1f5f9}
+.grp{margin-bottom:12px}
+.grp label{display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:4px;text-transform:uppercase}
+.grp input,.grp select,.grp textarea{width:100%;padding:10px;border:2px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;font-family:inherit}
+.grp input:focus,.grp select:focus,.grp textarea:focus{border-color:#2563eb}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:999}
+.modal.show{display:flex}
+.modal-content{background:#fff;border-radius:16px;padding:28px;width:90%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-content h3{margin-bottom:16px;font-size:18px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.badge-ok{background:#dcfce7;color:#166534}
+.badge-pend{background:#fef3c7;color:#92400e}
+.badge-cat{background:#fef3c7;color:#92400e}
 
-  .page { display: none; }
-  .page.active { display: block; }
+.empty{text-align:center;padding:40px 20px;color:#94a3b8}
+.empty .ico{font-size:40px;margin-bottom:10px}
 
-  @media (max-width: 768px) {
-    #sidebar { width: 200px; min-width: 200px; }
-    #sidebar .brand .txt, #sidebar .menu a .txt { display: none; }
-    #sidebar .menu a { justify-content: center; padding: 12px; }
-    #sidebar .menu a .ico { font-size: 22px; }
-    #main { margin-left: 200px; padding: 16px; }
-    .stats { grid-template-columns: 1fr 1fr; }
-  }
+.toast{position:fixed;bottom:20px;right:20px;background:#1e293b;color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;z-index:9999;opacity:0;transform:translateY(10px);transition:all .3s}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.success{background:#059669}
+.toast.error{background:#dc2626}
+
+.page{display:none}
+.page.active{display:block}
+
+@media(max-width:768px){
+  #sidebar{width:200px;min-width:200px}
+  #sidebar .brand .txt,#sidebar .menu a .txt{display:none}
+  #sidebar .menu a{justify-content:center;padding:12px}
+  #sidebar .menu a .ico{font-size:22px}
+  #main{margin-left:200px;padding:16px}
+  .stats{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
@@ -87,26 +105,27 @@
     <h1>🏢 Club Contable</h1>
     <p class="sub">Gestión profesional para contadores</p>
     <div class="auth-error" id="authError"></div>
-    <input type="email" id="loginEmail" placeholder="Correo electrónico" autocomplete="email">
-    <input type="password" id="loginPass" placeholder="Contraseña" autocomplete="current-password">
+    <input type="email" id="loginEmail" placeholder="Correo electrónico">
+    <input type="password" id="loginPass" placeholder="Contraseña">
     <button id="loginBtn">Ingresar</button>
   </div>
 </div>
 
 <div id="sidebar">
-  <div class="brand"><div class="icon">📊</div><span class="txt">Club Contable</span></div>
+  <div class="brand"><div class="ico">📊</div><span class="txt">Club Contable</span></div>
   <div class="menu">
     <a class="active" onclick="nav('dashboard')"><span class="ico">📈</span><span class="txt">Dashboard</span></a>
     <a onclick="nav('tareas')"><span class="ico">📋</span><span class="txt">Tareas</span></a>
     <a onclick="nav('categorias')"><span class="ico">📂</span><span class="txt">Categorías</span></a>
     <a onclick="nav('subcategorias')"><span class="ico">📁</span><span class="txt">Subcategorías</span></a>
+    <a onclick="nav('reportes')"><span class="ico">📊</span><span class="txt">Reportes</span></a>
   </div>
   <div class="sidebar-footer">
-    <div class="user-row">
+    <div class="row">
       <div class="avatar" id="avatar">A</div>
       <div>
-        <div class="uname" id="sidebarName">Admin</div>
-        <div class="urol" id="sidebarRole">admin</div>
+        <div class="name" id="sidebarName">Admin</div>
+        <div class="role" id="sidebarRole">admin</div>
       </div>
     </div>
     <button id="btnLogout">Cerrar sesión</button>
@@ -117,13 +136,13 @@
   <div id="page-dashboard" class="page active">
     <div class="page-title">Dashboard</div>
     <div class="stats" id="statsDash"></div>
-    <div class="card-table"><div class="header"><h2>Últimas tareas</h2></div><div id="dashTasks">Cargando...</div></div>
+    <div class="card-table"><div class="hd"><h2>Últimas tareas</h2></div><div id="dashTasks">Cargando...</div></div>
   </div>
 
   <div id="page-tareas" class="page">
     <div class="page-title">Tareas</div>
     <div class="card-table">
-      <div class="header"><h2>Listado de tareas</h2></div>
+      <div class="hd"><h2>Listado de tareas</h2><button class="btn btn-primary" onclick="modalTarea()">+ Nueva</button></div>
       <div id="tareasList">Cargando...</div>
     </div>
   </div>
@@ -131,7 +150,7 @@
   <div id="page-categorias" class="page">
     <div class="page-title">Categorías</div>
     <div class="card-table">
-      <div class="header"><h2>Listado de categorías</h2></div>
+      <div class="hd"><h2>Listado de categorías</h2><button class="btn btn-primary" onclick="modalCategoria()">+ Nueva</button></div>
       <div id="categoriasList">Cargando...</div>
     </div>
   </div>
@@ -139,8 +158,54 @@
   <div id="page-subcategorias" class="page">
     <div class="page-title">Subcategorías</div>
     <div class="card-table">
-      <div class="header"><h2>Listado de subcategorías</h2></div>
+      <div class="hd"><h2>Listado de subcategorías</h2><button class="btn btn-primary" onclick="modalSubcategoria()">+ Nueva</button></div>
       <div id="subcategoriasList">Cargando...</div>
+    </div>
+  </div>
+
+  <div id="page-reportes" class="page">
+    <div class="page-title">Reportes</div>
+    <div class="stats" id="statsReportes"></div>
+    <div class="card-table"><div class="hd"><h2>Por categoría</h2></div><div id="reportesList">Cargando...</div></div>
+  </div>
+</div>
+
+<div class="modal" id="modTarea">
+  <div class="modal-content">
+    <h3 id="modTitle">Nueva tarea</h3>
+    <div class="grp"><label>Título</label><input id="fTitulo" placeholder="Ej: Conciliación bancaria"></div>
+    <div class="grp"><label>Descripción</label><textarea id="fDesc" rows="2"></textarea></div>
+    <div class="grp"><label>Fecha límite</label><input type="date" id="fFecha"></div>
+    <div class="grp"><label>Categoría</label><select id="fCat"><option value="">Sin categoría</option></select></div>
+    <div class="grp"><label>Subcategoría</label><select id="fSubcat"><option value="">Sin subcategoría</option></select></div>
+    <div class="grp"><label>Empresa</label><select id="fEmpresa"><option value="">Sin empresa</option></select></div>
+    <input type="hidden" id="fId">
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="cerrarModal('modTarea')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarTarea()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modCategoria">
+  <div class="modal-content">
+    <h3>Nueva categoría</h3>
+    <div class="grp"><label>Nombre</label><input id="fCatNombre" placeholder="Ej: Contabilidad"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="cerrarModal('modCategoria')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarCategoria()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modSubcat">
+  <div class="modal-content">
+    <h3>Nueva subcategoría</h3>
+    <div class="grp"><label>Nombre</label><input id="fSubNombre" placeholder="Ej: Conciliaciones"></div>
+    <div class="grp"><label>Categoría</label><select id="fSubCat"><option value="">Seleccionar...</option></select></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="cerrarModal('modSubcat')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarSubcat()">Guardar</button>
     </div>
   </div>
 </div>
@@ -151,159 +216,259 @@
 const API = 'https://clubcontable-api.crecimientofinancieroglobal.workers.dev';
 var token, user, empresas = [];
 
-function $(id) { return document.getElementById(id); }
+const $=id=>document.getElementById(id);
+const T=(m,t)=>{const e=$('toast');e.textContent=m;e.className='toast show'+(t?' '+t:'');setTimeout(()=>e.classList.remove('show'),3000)};
 
-function T(m,t){
-  var e=$('toast'); e.textContent=m;
-  e.className='toast show'+(t?' '+t:'');
-  setTimeout(function(){e.classList.remove('show')},3000);
+async function api(path,opts){
+  opts=opts||{};
+  const h={'Content-Type':'application/json'};
+  if(token)h['Authorization']='Bearer '+token;
+  const r=await fetch(API+path,{method:opts.method||'GET',headers:h,body:opts.body?JSON.stringify(opts.body):null});
+  const d=await r.json();
+  if(!d.ok)throw new Error(d.error||'Error');
+  return d;
 }
 
-async function api(path, opts) {
-  if (!opts) opts = {};
-  var headers = {'Content-Type':'application/json'};
-  if (token) headers['Authorization'] = 'Bearer ' + token;
-  try {
-    var r = await fetch(API + path, { method: opts.method||'GET', headers: headers, body: opts.body ? JSON.stringify(opts.body) : null });
-    if (path === '/api/login') return r.json();
-    return r.json();
-  } catch(e) { T('Error de conexión','error'); throw e; }
-}
-
-async function login() {
-  var email = $('loginEmail').value.trim();
-  var pass = $('loginPass').value.trim();
-  if (!email||!pass) return T('Completa los campos');
-  var btn=$('loginBtn');btn.disabled=true;btn.textContent='Ingresando...';
-  try {
-    var d = await api('/api/login',{method:'POST',body:{email,password:pass}});
-    if (!d.token && d.error) throw new Error(d.error);
-    token = d.token; user = d.user;
-    localStorage.setItem('cc_token', token);
-    localStorage.setItem('cc_user', JSON.stringify(user));
-    if (d.empresas&&d.empresas.length) { empresas=d.empresas; localStorage.setItem('cc_empresas',JSON.stringify(empresas)); }
-    $('sidebarName').textContent = user.nombre || user.email;
-    $('sidebarRole').textContent = user.rol||'admin';
-    $('avatar').textContent = (user.nombre||user.email||'A')[0].toUpperCase();
+async function login(){
+  const email=$('loginEmail').value.trim(),pass=$('loginPass').value.trim();
+  if(!email||!pass)return T('Completa los campos');
+  const btn=$('loginBtn');btn.disabled=true;btn.textContent='Ingresando...';
+  try{
+    const d=await api('/api/login',{method:'POST',body:{email,password:pass}});
+    token=d.token;user=d.user;
+    localStorage.setItem('cc_token',token);
+    localStorage.setItem('cc_user',JSON.stringify(user));
+    if(d.empresas&&d.empresas.length){
+      empresas=d.empresas;
+      localStorage.setItem('cc_empresas',JSON.stringify(empresas));
+    }
+    $('sidebarName').textContent=user.nombre||user.email;
+    $('sidebarRole').textContent=user.rol||'admin';
+    $('avatar').textContent=(user.nombre||user.email||'A')[0].toUpperCase();
     $('auth').style.display='none';
     $('sidebar').style.display='flex';
     $('main').style.display='block';
     $('authError').style.display='none';
+    cargarSelects();
     loadDashboard();
-  } catch(e) { $('authError').textContent=e.message;$('authError').style.display='block'; }
+  }catch(e){$('authError').textContent=e.message;$('authError').style.display='block'}
   btn.disabled=false;btn.textContent='Ingresar';
 }
 
-function logout() {
+function logout(){
   localStorage.removeItem('cc_token');localStorage.removeItem('cc_user');localStorage.removeItem('cc_empresas');
-  token=null;user=null;
+  token=null;user=null;empresas=[];
   $('sidebar').style.display='none';$('main').style.display='none';$('auth').style.display='flex';
-  document.querySelectorAll('.menu a').forEach(function(a,i){a.classList.toggle('active',i===0)});
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.menu a').forEach((a,i)=>a.classList.toggle('active',i===0));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   $('page-dashboard').classList.add('active');
 }
 
-function nav(page) {
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+function nav(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   $('page-'+page).classList.add('active');
-  document.querySelectorAll('.menu a').forEach(function(a,i){
-    a.classList.remove('active');
-    var pgs=['dashboard','tareas','categorias','subcategorias'];
-    if(pgs.indexOf(page)===i) a.classList.add('active');
-  });
-  if(page==='dashboard') loadDashboard();
-  else if(page==='tareas') loadTareas();
-  else if(page==='categorias') loadCategorias();
-  else if(page==='subcategorias') loadSubcategorias();
+  const pages=['dashboard','tareas','categorias','subcategorias','reportes'];
+  document.querySelectorAll('.menu a').forEach((a,i)=>{a.classList.toggle('active',pages.indexOf(page)===i)});
+  if(page==='dashboard')loadDashboard();
+  else if(page==='tareas')loadTareas();
+  else if(page==='categorias')loadCategorias();
+  else if(page==='subcategorias')loadSubcategorias();
+  else if(page==='reportes')loadReportes();
 }
 
-async function getData(path) {
-  try {
-    var d = await api(path);
-    if (Array.isArray(d)) return d;
-    if (d.result && Array.isArray(d.result)) return d.result;
-    if (d.results && Array.isArray(d.results)) return d.results;
-    if (d.data && Array.isArray(d.data)) return d.data;
-    return [];
-  } catch(e) { return []; }
-}
+function modalTarea(){$('fId').value='';$('modTitle').textContent='Nueva tarea';$('fTitulo').value='';$('fDesc').value='';$('fFecha').value='';$('modTarea').classList.add('show')}
+function modalCategoria(){$('fCatNombre').value='';$('modCategoria').classList.add('show')}
+function modalSubcategoria(){$('fSubNombre').value='';$('modSubcat').classList.add('show')}
+function cerrarModal(id){$(id).classList.remove('show')}
 
-async function loadDashboard() {
-  try {
-    var items = await getData('/api/tareas');
-    var tot = items.length;
-    var ok = items.filter(function(t){return t.ok==1}).length;
-    var pend = tot-ok;
-    $('statsDash').innerHTML =
+// DASHBOARD
+async function loadDashboard(){
+  try{
+    const d=await api('/api/tareas');
+    const items=d.result||[];
+    const tot=items.length;
+    const ok=items.filter(t=>t.ok==1).length;
+    $('statsDash').innerHTML=
       '<div class="stat-card"><div class="label">Total tareas</div><div class="value blue">'+tot+'</div></div>'+
       '<div class="stat-card"><div class="label">Completadas</div><div class="value green">'+ok+'</div></div>'+
-      '<div class="stat-card"><div class="label">Pendientes</div><div class="value orange">'+pend+'</div></div>';
-    var r = items.slice(0,5);
-    if (!r.length) { $('dashTasks').innerHTML='<div class="empty"><div class="icon">📋</div><p>No hay tareas aún</p></div>'; return; }
-    var h='<table><thead><tr><th>Título</th><th>Categoría</th><th>Estado</th><th>Fecha límite</th></tr></thead><tbody>';
-    r.forEach(function(t){
-      var est=t.ok==1?'<span class="badge badge-ok">✅ Completada</span>':'<span class="badge badge-pend">⏳ Pendiente</span>';
-      var cat=t.categoria_nombre?'<span class="badge badge-cat">'+t.categoria_nombre+'</span>':'-';
-      h+='<tr><td>'+(t.titulo||'-')+'</td><td>'+cat+'</td><td>'+est+'</td><td>'+(t.fecha_limite||'-')+'</td></tr>';
+      '<div class="stat-card"><div class="label">Pendientes</div><div class="value orange">'+(tot-ok)+'</div></div>';
+    const ult=items.slice(0,5);
+    if(!ult.length){$('dashTasks').innerHTML='<div class="empty"><div class="ico">📋</div><p>No hay tareas aún</p></div>';return}
+    let h='<table><tr><th>Título</th><th>Categoría</th><th>Estado</th><th>Fecha límite</th></tr>';
+    ult.forEach(t=>{
+      h+='<tr><td>'+(t.titulo||'-')+'</td><td>'+(t.categoria_nombre?'<span class="badge badge-cat">'+t.categoria_nombre+'</span>':'-')+'</td><td>'+(t.ok==1?'<span class="badge badge-ok">✅</span>':'<span class="badge badge-pend">⏳</span>')+'</td><td>'+(t.fecha_limite||'-')+'</td></tr>';
     });
-    h+='</tbody></table>';
+    h+='</table>';
     $('dashTasks').innerHTML=h;
-  } catch(e) { $('statsDash').innerHTML='<p style="color:#94a3b8">Error al cargar</p>'; }
+  }catch(e){$('statsDash').innerHTML='<p style="color:#94a3b8">Error</p>'}
 }
 
-async function loadTareas() {
-  try {
-    var items = await getData('/api/tareas');
-    if(!items.length){$('tareasList').innerHTML='<div class="empty"><div class="icon">📋</div><p>No hay tareas aún. Puedes crear desde la API.</p></div>';return;}
-    var h='<table><thead><tr><th>Título</th><th>Descripción</th><th>Categoría</th><th>Empresa</th><th>Estado</th><th>Fecha límite</th></tr></thead><tbody>';
-    items.forEach(function(t){
-      var est=t.ok==1?'<span class="badge badge-ok">✅</span>':'<span class="badge badge-pend">⏳</span>';
-      h+='<tr><td>'+t.titulo+'</td><td>'+(t.descripcion||'-')+'</td><td><span class="badge badge-cat">'+(t.categoria_nombre||'')+'</span></td><td>'+(t.empresa_nombre||'-')+'</td><td>'+est+'</td><td>'+(t.fecha_limite||'-')+'</td></tr>';
+// TAREAS
+async function loadTareas(){
+  try{
+    const d=await api('/api/tareas');
+    const items=d.result||[];
+    if(!items.length){$('tareasList').innerHTML='<div class="empty"><div class="ico">📋</div><p>No hay tareas</p></div>';return}
+    let h='<table><tr><th>Título</th><th>Categoría</th><th>Subcat</th><th>Empresa</th><th>Estado</th><th>Fecha</th><th></th></tr>';
+    items.forEach(t=>{
+      h+='<tr><td>'+t.titulo+'</td><td><span class="badge badge-cat">'+(t.categoria_nombre||'-')+'</span></td><td>'+(t.subcategoria_nombre||'-')+'</td><td>'+(t.empresa_nombre||'-')+'</td><td>'+(t.ok==1?'<span class="badge badge-ok">✅</span>':'<span class="badge badge-pend">⏳</span>')+'</td><td>'+(t.fecha_limite||'-')+'</td><td><button class="btn btn-sm btn-danger" onclick="eliminarTarea('+t.id+')">🗑</button></td></tr>';
     });
-    h+='</tbody></table>';
+    h+='</table>';
     $('tareasList').innerHTML=h;
-  } catch(e){$('tareasList').innerHTML='<div class="empty"><p>Error</p></div>';}
+  }catch(e){$('tareasList').innerHTML='<div class="empty"><p>Error</p></div>'}
 }
 
-async function loadCategorias() {
-  try {
-    var items = await getData('/api/categorias');
-    if(!items.length){$('categoriasList').innerHTML='<div class="empty"><div class="icon">📂</div><p>Sin categorías</p></div>';return;}
-    var h='<table><thead><tr><th>Nombre</th><th></th></tr></thead><tbody>';
-    items.forEach(function(c){h+='<tr><td>'+c.nombre+'</td><td><span class="badge badge-cat">ID: '+c.id+'</span></td></tr>';});
-    h+='</tbody></table>';
+async function guardarTarea(){
+  const body={
+    titulo:$('fTitulo').value.trim(),
+    descripcion:$('fDesc').value.trim(),
+    fecha_limite:$('fFecha').value||null,
+    categoria_id:$('fCat').value?parseInt($('fCat').value):null,
+    subcategoria_id:$('fSubcat').value?parseInt($('fSubcat').value):null,
+    empresa_id:$('fEmpresa').value?parseInt($('fEmpresa').value):null
+  };
+  if(!body.titulo)return T('Escribe un título');
+  try{
+    await api('/api/tareas',{method:'POST',body});
+    cerrarModal('modTarea');T('Tarea creada ✓','success');
+    if($('page-tareas').classList.contains('active'))loadTareas();else loadDashboard();
+  }catch(e){}
+}
+
+async function eliminarTarea(id){
+  try{
+    await api('/api/tareas/delete',{method:'POST',body:{id}});
+    T('Tarea eliminada ✓','success');loadTareas();
+  }catch(e){}
+}
+
+// CATEGORIAS
+async function loadCategorias(){
+  try{
+    const d=await api('/api/categorias');
+    const items=d.result||[];
+    if(!items.length){$('categoriasList').innerHTML='<div class="empty"><div class="ico">📂</div><p>Sin categorías</p></div>';return}
+    let h='<table><tr><th>Nombre</th><th></th></tr>';
+    items.forEach(c=>{
+      h+='<tr><td>'+c.nombre+'</td><td><button class="btn btn-sm btn-danger" onclick="eliminarCategoria('+c.id+')">🗑</button></td></tr>';
+    });
+    h+='</table>';
     $('categoriasList').innerHTML=h;
-  } catch(e){$('categoriasList').innerHTML='<div class="empty"><p>Error</p></div>';}
+  }catch(e){$('categoriasList').innerHTML='<div class="empty"><p>Error</p></div>'}
 }
 
-async function loadSubcategorias() {
-  try {
-    var items = await getData('/api/subcategorias');
-    var cats = await getData('/api/categorias');
-    var cmap={};cats.forEach(function(c){cmap[c.id]=c.nombre});
-    if(!items.length){$('subcategoriasList').innerHTML='<div class="empty"><div class="icon">📁</div><p>Sin subcategorías</p></div>';return;}
-    var h='<table><thead><tr><th>Nombre</th><th>Categoría</th></tr></thead><tbody>';
-    items.forEach(function(s){h+='<tr><td>'+s.nombre+'</td><td><span class="badge badge-cat">'+(cmap[s.categoria_id]||'N/A')+'</span></td></tr>';});
-    h+='</tbody></table>';
+async function guardarCategoria(){
+  const nombre=$('fCatNombre').value.trim();
+  if(!nombre)return T('Escribe un nombre');
+  try{
+    await api('/api/categorias',{method:'POST',body:{nombre}});
+    cerrarModal('modCategoria');T('Categoría creada ✓','success');
+    loadCategorias();cargarSelects();
+  }catch(e){}
+}
+
+async function eliminarCategoria(id){
+  try{
+    await api('/api/categorias/delete',{method:'POST',body:{id}});
+    T('Categoría eliminada ✓','success');
+    loadCategorias();cargarSelects();
+  }catch(e){}
+}
+
+async function loadSubcategorias(){
+  try{
+    const dc=await api('/api/categorias');
+    const ds=await api('/api/subcategorias');
+    const cats=dc.result||[];
+    const subs=ds.result||[];
+    const cmap={};cats.forEach(c=>cmap[c.id]=c.nombre);
+    if(!subs.length){$('subcategoriasList').innerHTML='<div class="empty"><div class="ico">📁</div><p>Sin subcategorías</p></div>';return}
+    let h='<table><tr><th>Nombre</th><th>Categoría</th><th></th></tr>';
+    subs.forEach(s=>{
+      h+='<tr><td>'+s.nombre+'</td><td><span class="badge badge-cat">'+(cmap[s.categoria_id]||'?')+'</span></td><td><button class="btn btn-sm btn-danger" onclick="eliminarSubcat('+s.id+')">🗑</button></td></tr>';
+    });
+    h+='</table>';
     $('subcategoriasList').innerHTML=h;
-  } catch(e){$('subcategoriasList').innerHTML='<div class="empty"><p>Error</p></div>';}
+  }catch(e){$('subcategoriasList').innerHTML='<div class="empty"><p>Error</p></div>'}
 }
 
+async function guardarSubcat(){
+  const nombre=$('fSubNombre').value.trim();
+  const cat=$('fSubCat').value?parseInt($('fSubCat').value):null;
+  if(!nombre||!cat)return T('Completa nombre y categoría');
+  try{
+    await api('/api/subcategorias',{method:'POST',body:{nombre,categoria_id:cat}});
+    cerrarModal('modSubcat');T('Subcategoría creada ✓','success');loadSubcategorias();
+  }catch(e){}
+}
+
+async function eliminarSubcat(id){
+  try{
+    await api('/api/subcategorias/delete',{method:'POST',body:{id}});
+    T('Subcategoría eliminada ✓','success');loadSubcategorias();
+  }catch(e){}
+}
+
+// REPORTES
+async function loadReportes(){
+  try{
+    const d=await api('/api/tareas');
+    const items=d.result||[];
+    const ing=items.filter(t=>t.ok==0).length;
+    const com=items.filter(t=>t.ok==1).length;
+    $('statsReportes').innerHTML=
+      '<div class="stat-card"><div class="label">Total tareas</div><div class="value blue">'+items.length+'</div></div>'+
+      '<div class="stat-card"><div class="label">Completadas</div><div class="value green">'+com+'</div></div>'+
+      '<div class="stat-card"><div class="label">Pendientes</div><div class="value orange">'+ing+'</div></div>';
+    // Por categoria
+    const porCat={};
+    items.forEach(t=>{
+      const key=t.categoria_nombre||'Sin categoría';
+      if(!porCat[key])porCat[key]={total:0,completadas:0};
+      porCat[key].total++;
+      if(t.ok==1)porCat[key].completadas++;
+    });
+    const keys=Object.keys(porCat);
+    if(!keys.length){$('reportesList').innerHTML='<div class="empty"><p>Sin datos</p></div>';return}
+    let h='<table><tr><th>Categoría</th><th>Total</th><th>Completadas</th></tr>';
+    keys.forEach(k=>{
+      h+='<tr><td>'+k+'</td><td>'+porCat[k].total+'</td><td>'+porCat[k].completadas+'</td></tr>';
+    });
+    h+='</table>';
+    $('reportesList').innerHTML=h;
+  }catch(e){$('statsReportes').innerHTML='<p>Error</p>'}
+}
+
+// SELECTS
+async function cargarSelects(){
+  try{
+    const dc=await api('/api/categorias');
+    const cats=dc.result||[];
+    const o=cats.map(c=>'<option value="'+c.id+'">'+c.nombre+'</option>').join('');
+    $('fCat').innerHTML='<option value="">Sin categoría</option>'+o;
+    $('fSubCat').innerHTML='<option value="">Seleccionar...</option>'+o;
+    const ed=empresas;
+    try{const r=await api('/api/empresas');if(r.result&&r.result.length)ed.length=0;r.result.forEach(e=>ed.push(e));}catch(ex){}
+    $('fEmpresa').innerHTML='<option value="">Sin empresa</option>'+ed.map(e=>'<option value="'+e.id+'">'+e.nombre+'</option>').join('');
+  }catch(e){}
+}
+
+// INIT
 $('btnLogout').onclick=logout;
 $('loginBtn').onclick=login;
-$('loginPass').addEventListener('keydown',function(e){if(e.key==='Enter')login();});
+$('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
 
-(function(){
-  var s=localStorage.getItem('cc_token');
+(()=>{
+  const s=localStorage.getItem('cc_token');
   if(s){
     token=s;
-    try{user=JSON.parse(localStorage.getItem('cc_user')||'{}');}catch(e){}
-    try{empresas=JSON.parse(localStorage.getItem('cc_empresas')||'[]');}catch(e){}
+    try{user=JSON.parse(localStorage.getItem('cc_user')||'{}')}catch(e){}
+    try{empresas=JSON.parse(localStorage.getItem('cc_empresas')||'[]')}catch(e){}
     $('auth').style.display='none';$('sidebar').style.display='flex';$('main').style.display='block';
     $('sidebarName').textContent=user.nombre||user.email||'Admin';
     $('sidebarRole').textContent=user.rol||'admin';
     $('avatar').textContent=(user.nombre||user.email||'A')[0].toUpperCase();
-    loadDashboard();
+    cargarSelects();loadDashboard();
   }
 })();
 </script>
