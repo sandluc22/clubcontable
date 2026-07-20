@@ -1,127 +1,102 @@
 export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    const path = url.pathname;
-    const method = request.method;
-    const cors = { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*',
+  async fetch(r, e) {
+    const u = new URL(r.url), p = u.pathname, m = r.method;
+    const c = { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json',
       'Access-Control-Allow-Methods': 'GET,POST,DELETE,OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type,Authorization' };
-    if (method === 'OPTIONS') return new Response(null, { headers: cors });
-
+    if (m === 'OPTIONS') return new Response(null, { headers: c });
     try {
       // LOGIN
-      if (path === '/api/login' && method === 'POST') {
-        const { email, password } = await request.json();
-        const user = await env.DB.prepare('SELECT * FROM usuarios WHERE email = ? AND password = ?').bind(email, password).first();
-        if (!user) return new Response(JSON.stringify({ ok: false, error: 'Credenciales inválidas' }), { status: 401, headers: cors });
-        const token = crypto.randomUUID();
-        await env.DB.prepare('UPDATE usuarios SET token = ? WHERE id = ?').bind(token, user.id).run();
-        const emp = await env.DB.prepare('SELECT e.* FROM empresas e INNER JOIN usuario_empresas ue ON e.id = ue.empresa_id WHERE ue.usuario_id = ?').bind(user.id).all();
-        return new Response(JSON.stringify({ ok: true, token, user: { id: user.id, nombre: user.nombre, email: user.email, rol: user.rol || 'usuario' }, empresas: emp.results || [] }), { headers: cors });
+      if (p === '/api/login' && m === 'POST') {
+        const b = await r.json();
+        const usr = await e.DB.prepare('SELECT * FROM usuarios WHERE email = ? AND password = ?').bind(b.email, b.password).first();
+        if (!usr) return new Response(JSON.stringify({ ok: false, error: 'Credenciales inválidas' }), { status: 401, headers: c });
+        const tok = crypto.randomUUID();
+        await e.DB.prepare('UPDATE usuarios SET token = ? WHERE id = ?').bind(tok, usr.id).run();
+        const emps = await e.DB.prepare('SELECT e.* FROM empresas e INNER JOIN usuario_empresas ue ON e.id = ue.empresa_id WHERE ue.usuario_id = ?').bind(usr.id).all();
+        return new Response(JSON.stringify({ ok: true, token: tok, user: { id: usr.id, nombre: usr.nombre, email: usr.email, rol: usr.rol || 'usuario' }, empresas: emps.results || [] }), { headers: c });
       }
-
       // AUTH
-      const auth = request.headers.get('Authorization');
-      if (!auth || !auth.startsWith('Bearer ')) return new Response(JSON.stringify({ ok: false, error: 'No autorizado' }), { status: 401, headers: cors });
-      const token = auth.slice(7);
-      const user = await env.DB.prepare('SELECT * FROM usuarios WHERE token = ?').bind(token).first();
-      if (!user) return new Response(JSON.stringify({ ok: false, error: 'Token inválido' }), { status: 401, headers: cors });
-
-      const uid = user.id;
-      const empresaId = url.searchParams.get('empresa_id') ? parseInt(url.searchParams.get('empresa_id')) : null;
-
-      const ok = (data, st = 200) => new Response(JSON.stringify(data), { status: st, headers: cors });
+      const ah = r.headers.get('Authorization');
+      if (!ah || !ah.startsWith('Bearer ')) return new Response(JSON.stringify({ ok: false, error: 'No autorizado' }), { status: 401, headers: c });
+      const usr = await e.DB.prepare('SELECT * FROM usuarios WHERE token = ?').bind(ah.slice(7)).first();
+      if (!usr) return new Response(JSON.stringify({ ok: false, error: 'Token inválido' }), { status: 401, headers: c });
+      const uid = usr.id, rol = usr.rol || 'usuario';
+      const eid = u.searchParams.get('empresa_id') ? parseInt(u.searchParams.get('empresa_id')) : null;
+      const R = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: c });
 
       // CATEGORIAS
-      if (path === '/api/categorias') {
-        if (method === 'GET') {
-          const r = await env.DB.prepare('SELECT * FROM categorias ORDER BY orden').all();
-          return ok({ ok: true, result: r.results });
-        }
-        if (method === 'POST') {
-          const b = await request.json();
-          const r = await env.DB.prepare('INSERT INTO categorias (nombre) VALUES (?)').bind(b.nombre).run();
-          return ok({ ok: true, id: r.meta.last_row_id });
-        }
+      if (p === '/api/categorias') {
+        if (m === 'GET') { const x = await e.DB.prepare('SELECT * FROM categorias ORDER BY orden').all(); return R({ ok: true, result: x.results }); }
+        if (m === 'POST') { const b = await r.json(); const x = await e.DB.prepare('INSERT INTO categorias (nombre) VALUES (?)').bind(b.nombre).run(); return R({ ok: true, id: x.meta.last_row_id }); }
       }
-
       // SUBCATEGORIAS
-      if (path === '/api/subcategorias') {
-        if (method === 'GET') {
-          const catId = url.searchParams.get('categoria_id');
-          let q = 'SELECT * FROM subcategorias';
-          let p = [];
-          if (catId) { q += ' WHERE categoria_id = ?'; p.push(parseInt(catId)); }
-          q += ' ORDER BY id';
-          const r = await env.DB.prepare(q).bind(...p).all();
-          return ok({ ok: true, result: r.results });
-        }
-        if (method === 'POST') {
-          const b = await request.json();
-          const r = await env.DB.prepare('INSERT INTO subcategorias (nombre, categoria_id) VALUES (?, ?)').bind(b.nombre, parseInt(b.categoria_id)).run();
-          return ok({ ok: true, id: r.meta.last_row_id });
-        }
+      if (p === '/api/subcategorias') {
+        if (m === 'GET') { const cat = u.searchParams.get('categoria_id'); let q = 'SELECT * FROM subcategorias'; let pr = []; if (cat) { q += ' WHERE categoria_id = ?'; pr.push(parseInt(cat)); } const x = await e.DB.prepare(q).bind(...pr).all(); return R({ ok: true, result: x.results }); }
+        if (m === 'POST') { const b = await r.json(); const x = await e.DB.prepare('INSERT INTO subcategorias (nombre, categoria_id) VALUES (?, ?)').bind(b.nombre, parseInt(b.categoria_id)).run(); return R({ ok: true, id: x.meta.last_row_id }); }
       }
-
       // TAREAS
-      if (path === '/api/tareas') {
-        if (method === 'GET') {
-          let q = 'SELECT t.*, c.nombre as categoria_nombre, e.nombre as empresa_nombre FROM tareas t LEFT JOIN categorias c ON t.categoria_id = c.id LEFT JOIN empresas e ON t.empresa_id = e.id WHERE t.usuario_id = ?';
-          let p = [uid];
-          if (empresaId) { q += ' AND t.empresa_id = ?'; p.push(empresaId); }
-          q += ' ORDER BY t.created_at DESC LIMIT 500';
-          const r = await env.DB.prepare(q).bind(...p).all();
-          return ok({ ok: true, result: r.results });
+      if (p === '/api/tareas') {
+        if (m === 'GET') {
+          let q = "SELECT t.*, c.nombre as categoria_nombre, s.nombre as subcategoria_nombre, e.nombre as empresa_nombre, u.nombre as usuario_nombre FROM tareas t LEFT JOIN categorias c ON t.categoria_id = c.id LEFT JOIN subcategorias s ON t.subcategoria_id = s.id LEFT JOIN empresas e ON t.empresa_id = e.id LEFT JOIN usuarios u ON t.usuario_id = u.id WHERE t.usuario_id = ?";
+          let pr = [uid];
+          if (eid) { q += ' AND t.empresa_id = ?'; pr.push(eid); }
+          if (u.searchParams.get('usuario_id')) { q += ' AND t.usuario_id = ?'; pr.push(parseInt(u.searchParams.get('usuario_id'))); }
+          if (u.searchParams.get('desde')) { q += ' AND t.created_at >= ?'; pr.push(u.searchParams.get('desde')); }
+          if (u.searchParams.get('hasta')) { q += ' AND t.created_at <= ?'; pr.push(u.searchParams.get('hasta')); }
+          const x = await e.DB.prepare(q + ' ORDER BY t.created_at DESC LIMIT 500').bind(...pr).all();
+          return R({ ok: true, result: x.results });
         }
-        if (method === 'POST') {
-          const b = await request.json();
-          const r = await env.DB.prepare(
-            'INSERT INTO tareas (titulo, descripcion, categoria_id, subcategoria_id, empresa_id, usuario_id, fecha_limite, ok) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
-          ).bind(b.titulo, b.descripcion || '', b.categoria_id || null, b.subcategoria_id || null, b.empresa_id || null, uid, b.fecha_limite || null, b.ok || 0).run();
-          return ok({ ok: true, id: r.meta.last_row_id });
+        if (m === 'POST') {
+          const b = await r.json();
+          const x = await e.DB.prepare("INSERT INTO tareas (titulo, descripcion, categoria_id, subcategoria_id, empresa_id, usuario_id, fecha_limite, ok) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+            .bind(b.titulo, b.descripcion || '', b.categoria_id || null, b.subcategoria_id || null, b.empresa_id || null, uid, b.fecha_limite || null, b.ok || 0).run();
+          return R({ ok: true, id: x.meta.last_row_id });
         }
       }
-
-      // DELETE CATEGORIA
-      if (path === '/api/categorias/delete' && method === 'POST') {
-        const b = await request.json();
-        await env.DB.prepare('DELETE FROM subcategorias WHERE categoria_id = ?').bind(b.id).run();
-        await env.DB.prepare('DELETE FROM categorias WHERE id = ?').bind(b.id).run();
-        return ok({ ok: true });
-      }
-
-      // DELETE SUBCATEGORIA
-      if (path === '/api/subcategorias/delete' && method === 'POST') {
-        const b = await request.json();
-        await env.DB.prepare('DELETE FROM subcategorias WHERE id = ?').bind(b.id).run();
-        return ok({ ok: true });
-      }
-
-      // DELETE TAREA
-      if (path === '/api/tareas/delete' && method === 'POST') {
-        const b = await request.json();
-        await env.DB.prepare('DELETE FROM tareas WHERE id = ?').bind(b.id).run();
-        return ok({ ok: true });
-      }
+      // ELIMINAR
+      if (p === '/api/categorias/delete' && m === 'POST') { const b = await r.json(); await e.DB.prepare('DELETE FROM subcategorias WHERE categoria_id = ?').bind(b.id).run(); await e.DB.prepare('DELETE FROM categorias WHERE id = ?').bind(b.id).run(); return R({ ok: true }); }
+      if (p === '/api/subcategorias/delete' && m === 'POST') { const b = await r.json(); await e.DB.prepare('DELETE FROM subcategorias WHERE id = ?').bind(b.id).run(); return R({ ok: true }); }
+      if (p === '/api/tareas/delete' && m === 'POST') { const b = await r.json(); await e.DB.prepare('DELETE FROM tareas WHERE id = ?').bind(b.id).run(); return R({ ok: true }); }
 
       // DASHBOARD
-      if (path === '/api/dashboard') {
-        const ew = empresaId ? ' AND t.empresa_id = ' + empresaId : '';
-        const total = await env.DB.prepare('SELECT COUNT(*) as count FROM tareas t WHERE t.usuario_id = ?' + (ew || '')).bind(uid).first();
-        const completadas = await env.DB.prepare('SELECT COUNT(*) as count FROM tareas t WHERE t.usuario_id = ? AND t.ok = 1' + (ew || '')).bind(uid).first();
-        const recientes = await env.DB.prepare('SELECT t.*, c.nombre as categoria_nombre FROM tareas t LEFT JOIN categorias c ON t.categoria_id = c.id WHERE t.usuario_id = ?' + (ew || '') + ' ORDER BY t.created_at DESC LIMIT 5').bind(uid).all();
-        return ok({ ok: true, result: { total: total.count, completadas: completadas.count, pendientes: total.count - completadas.count, tareas: recientes.results || [] } });
+      if (p === '/api/dashboard' && m === 'GET') {
+        const ew = eid ? ' AND t.empresa_id = ' + eid : '';
+        const t = await e.DB.prepare('SELECT COUNT(*) as c FROM tareas t WHERE t.usuario_id = ?' + ew).bind(uid).first();
+        const ok = await e.DB.prepare("SELECT COUNT(*) as c FROM tareas t WHERE t.usuario_id = ? AND t.ok = 1" + ew).bind(uid).first();
+        const aTiempo = await e.DB.prepare("SELECT COUNT(*) as c FROM tareas t WHERE t.usuario_id = ? AND t.ok = 1 AND t.fecha_limite IS NOT NULL AND DATE(t.created_at) <= DATE(t.fecha_limite)" + ew).bind(uid).first();
+        const fuera = await e.DB.prepare("SELECT COUNT(*) as c FROM tareas t WHERE t.usuario_id = ? AND (t.ok = 1 AND t.fecha_limite IS NOT NULL AND DATE(t.created_at) > DATE(t.fecha_limite))" + ew).bind(uid).first();
+        const r5 = await e.DB.prepare("SELECT t.*, c.nombre as categoria_nombre FROM tareas t LEFT JOIN categorias c ON t.categoria_id = c.id WHERE t.usuario_id = ?" + ew + " ORDER BY t.created_at DESC LIMIT 5").bind(uid).all();
+        return R({ ok: true, result: { total: t.c, completadas: ok.c, pendientes: t.c - ok.c, a_tiempo: aTiempo.c, fuera_fecha: fuera.c, tareas: r5.results || [] } });
       }
 
       // EMPRESAS
-      if (path === '/api/empresas' && method === 'GET') {
-        const r = await env.DB.prepare('SELECT * FROM empresas ORDER BY nombre').all();
-        return ok({ ok: true, result: r.results });
+      if (p === '/api/empresas') {
+        if (m === 'GET') { const x = await e.DB.prepare('SELECT * FROM empresas ORDER BY nombre').all(); return R({ ok: true, result: x.results }); }
+        if (m === 'POST' && (rol === 'admin' || rol === 'superadmin')) {
+          const b = await r.json();
+          const x = await e.DB.prepare('INSERT INTO empresas (nombre, nit, direccion, telefono) VALUES (?, ?, ?, ?)').bind(b.nombre, b.nit || '', b.direccion || '', b.telefono || '').run();
+          return R({ ok: true, id: x.meta.last_row_id });
+        }
+      }
+      // USUARIOS (solo admin)
+      if (p === '/api/usuarios') {
+        if (m === 'GET' && (rol === 'admin' || rol === 'superadmin')) { const x = await e.DB.prepare('SELECT id, nombre, email, rol, created_at FROM usuarios ORDER BY nombre').all(); return R({ ok: true, result: x.results }); }
+        if (m === 'POST' && (rol === 'admin' || rol === 'superadmin')) {
+          const b = await r.json();
+          const x = await e.DB.prepare('INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, ?)').bind(b.nombre, b.email, b.password, b.rol || 'usuario').run();
+          if (b.empresa_id) { await e.DB.prepare('INSERT INTO usuario_empresas (usuario_id, empresa_id) VALUES (?, ?)').bind(x.meta.last_row_id, b.empresa_id).run(); }
+          return R({ ok: true, id: x.meta.last_row_id });
+        }
+      }
+      // ASIGNAR EMPRESA A USUARIO
+      if (p === '/api/usuario_empresas' && m === 'POST' && (rol === 'admin' || rol === 'superadmin')) {
+        const b = await r.json();
+        await e.DB.prepare('INSERT OR IGNORE INTO usuario_empresas (usuario_id, empresa_id) VALUES (?, ?)').bind(b.usuario_id, b.empresa_id).run();
+        return R({ ok: true });
       }
 
-      return new Response(JSON.stringify({ ok: false, error: 'No encontrada' }), { status: 404, headers: cors });
-    } catch (e) {
-      return new Response(JSON.stringify({ ok: false, error: e.message }), { status: 500, headers: cors });
-    }
+      return new Response(JSON.stringify({ ok: false, error: 'No encontrada' }), { status: 404, headers: c });
+    } catch (e) { return new Response(JSON.stringify({ ok: false, error: e.message }), { status: 500, headers: c }); }
   }
 };
