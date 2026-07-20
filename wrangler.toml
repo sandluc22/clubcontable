@@ -1,0 +1,8 @@
+name = "clubcontable-api"
+main = "worker/src/index.js"
+compatibility_date = "2024-09-23"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "clubcontable-db"
+database_id = "9025f5c2-19a7-4561-8a52-b23132374b42"
