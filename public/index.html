@@ -6,122 +6,125 @@
 <title>Club Contable</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; min-height: 100vh; display: flex; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f5f9; display: flex; min-height: 100vh; color: #1e293b; }
 
 /* === AUTH === */
-#authContainer {
-  max-width: 400px; margin: auto; background: #fff; border-radius: 16px; padding: 40px 30px;
-  box-shadow: 0 2px 12px rgba(0,0,0,.08);
-}
-#authContainer h1 { text-align: center; color: #2563eb; font-size: 28px; margin-bottom: 4px; }
-#authContainer .sub { text-align: center; color: #6b7280; font-size: 14px; margin-bottom: 24px; }
-#authContainer input { width: 100%; padding: 12px 14px; margin-bottom: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; }
-#authContainer input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+#authContainer { max-width: 400px; margin: 80px auto; padding: 40px 30px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,.08); text-align: center; height: fit-content; }
+#authContainer h1 { color: #2563eb; font-size: 26px; margin-bottom: 4px; }
+#authContainer .sub { color: #94a3b8; font-size: 13px; margin-bottom: 24px; }
+#authContainer input { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; transition: border .2s; }
+#authContainer input:focus { border-color: #2563eb; }
 #authContainer button { width: 100%; padding: 12px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
 #authContainer button:hover { background: #d97706; }
-#authContainer button:disabled { opacity: .5; cursor: not-allowed; }
-.auth-error { color: #dc2626; font-size: 13px; text-align: center; margin-bottom: 8px; }
+#authContainer button:disabled { opacity: .6; cursor: default; }
+.auth-error { color: #dc2626; font-size: 13px; margin-bottom: 8px; }
 
 /* === SIDEBAR === */
-#sidebar {
-  width: 240px; min-height: 100vh; background: #fff; border-right: 1px solid #e5e7eb;
-  display: flex; flex-direction: column; position: fixed; left: 0; top: 0; z-index: 50;
-}
-#sidebar .brand {
-  display: flex; align-items: center; gap: 10px; padding: 20px 18px 16px;
-  border-bottom: 1px solid #e5e7eb; font-size: 18px; font-weight: 700; color: #111827;
-}
-#sidebar .brand span { background: #2563eb; color: #fff; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 16px; }
-#sidebar .menu { flex: 1; padding: 12px 8px; }
-#sidebar .menu a {
-  display: flex; align-items: center; gap: 10px; padding: 10px 14px; margin-bottom: 2px;
-  color: #374151; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer;
-}
-#sidebar .menu a:hover { background: #f3f4f6; }
-#sidebar .menu a.active { background: #fef3c7; color: #2563eb; font-weight: 600; }
-#sidebar .menu a .ico { width: 20px; text-align: center; font-size: 16px; }
-#sidebar .user-card {
-  padding: 14px 16px; border-top: 1px solid #e5e7eb; font-size: 13px;
-}
-#sidebar .user-card .name { font-weight: 600; color: #111827; }
-#sidebar .user-card .role { color: #6b7280; font-size: 12px; }
-#sidebar .user-card .logout { color: #ef4444; cursor: pointer; font-size: 12px; margin-top: 4px; display: inline-block; }
-#sidebar .user-card .logout:hover { text-decoration: underline; }
+#sidebar { width: 240px; min-width: 240px; background: #fff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; }
+.brand { padding: 20px 18px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #e2e8f0; }
+.brand span:first-child { background: #2563eb; color: #fff; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 18px; flex-shrink: 0; }
+.brand .txt { font-weight: 700; font-size: 15px; color: #1e293b; }
+.menu { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 2px; }
+.menu a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; cursor: pointer; color: #64748b; text-decoration: none; font-size: 14px; transition: all .15s; }
+.menu a:hover { background: #f1f5f9; color: #1e293b; }
+.menu a.active { background: #fef3c7; color: #2563eb; font-weight: 600; }
+.menu a .ico { font-size: 18px; width: 24px; text-align: center; flex-shrink: 0; }
+.sidebar-footer { padding: 12px 18px; border-top: 1px solid #e2e8f0; }
+.sidebar-footer .user-info { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.sidebar-footer .avatar { width: 32px; height: 32px; background: #2563eb; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+.sidebar-footer .name { font-size: 13px; font-weight: 600; }
+.sidebar-footer .role { font-size: 11px; color: #94a3b8; }
+#btnLogout { width: 100%; padding: 8px; background: #fee2e2; color: #dc2626; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+#btnLogout:hover { background: #fecaca; }
 
-/* === MAIN CONTENT === */
-#main {
-  margin-left: 240px; flex: 1; padding: 24px 32px; max-width: calc(100% - 240px);
+/* === MAIN === */
+#main { margin-left: 240px; flex: 1; padding: 30px; min-height: 100vh; }
+.page-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: #1e293b; }
+
+/* === STATS CARDS === */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
+.stat-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.stat-card .label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.stat-card .value { font-size: 28px; font-weight: 700; }
+.stat-card .value.green { color: #059669; }
+.stat-card .value.blue { color: #2563eb; }
+.stat-card .value.red { color: #dc2626; }
+.stat-card .value.orange { color: #ea580c; }
+
+/* === TABLES === */
+.table-container { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.06); overflow: hidden; }
+.table-header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; }
+.table-header h2 { font-size: 16px; font-weight: 600; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 10px 20px; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+td { padding: 12px 20px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #f8fafc; }
+
+/* === BUTTONS === */
+.btn { padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.btn-sm { padding: 5px 10px; font-size: 11px; }
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-primary:hover { background: #d97706; }
+.btn-danger { background: #fee2e2; color: #dc2626; }
+.btn-danger:hover { background: #fecaca; }
+.btn-success { background: #f59e0b; color: #fff; }
+.btn-success:hover { background: #d97706; }
+.btn-ghost { background: transparent; color: #64748b; }
+.btn-ghost:hover { background: #f1f5f9; }
+
+/* === FORMS === */
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 4px; text-transform: uppercase; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #2563eb; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; z-index: 999; }
+.modal-content { background: #fff; border-radius: 16px; padding: 28px; width: 90%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
+.modal-content h3 { margin-bottom: 16px; font-size: 18px; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+
+/* === BADGES === */
+.badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-ingreso { background: #dcfce7; color: #166534; }
+.badge-gasto { background: #fee2e2; color: #991b1b; }
+.badge-blue { background: #fef3c7; color: #92400e; }
+
+/* === EMPTY STATE === */
+.empty { text-align: center; padding: 40px 20px; color: #94a3b8; }
+.empty .icon { font-size: 40px; margin-bottom: 10px; }
+.empty p { font-size: 14px; }
+
+/* === MOBILE === */
+@media (max-width: 768px) {
+  #sidebar { width: 200px; min-width: 200px; }
+  #sidebar .brand .txt, #sidebar .menu a .txt { display: none; }
+  #sidebar .menu a { justify-content: center; padding: 12px; }
+  #sidebar .menu a .ico { font-size: 22px; }
+  #main { margin-left: 200px; padding: 16px; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr; }
 }
-#main .page-title { font-size: 22px; font-weight: 700; color: #111827; margin-bottom: 4px; }
-#main .page-desc { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+
+.hidden { display: none !important; }
 .page { display: none; }
 .page.active { display: block; }
 
-/* === CARDS === */
-.card {
-  background: #fff; border-radius: 10px; border: 1px solid #e5e7eb; padding: 20px; margin-bottom: 16px;
-}
-.card h3 { font-size: 15px; font-weight: 600; margin-bottom: 12px; color: #111827; }
-
-/* === STATS === */
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
-.stat-card {
-  background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px;
-}
-.stat-card .label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: .5px; }
-.stat-card .value { font-size: 24px; font-weight: 700; color: #111827; margin-top: 4px; }
-.stat-card .value.green { color: #059669; }
-.stat-card .value.blue { color: #2563eb; }
-.stat-card .value.orange { color: #ea580c; }
-.stat-card .value.purple { color: #7c3aed; }
-
-/* === TABLES === */
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th { text-align: left; padding: 10px 12px; border-bottom: 2px solid #e5e7eb; font-weight: 600; color: #374151; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
-td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; color: #111827; }
-tr:hover td { background: #f9fafb; }
-
-/* === FORMS === */
-.flex-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; }
-.flex-row input, .flex-row select { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; flex: 1; min-width: 140px; }
-.flex-row input:focus, .flex-row select:focus { outline: none; border-color: #2563eb; }
-.btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; white-space: nowrap; }
-.btn-primary { background: #2563eb; color: #fff; }
-.btn-primary:hover { background: #d97706; }
-.btn-danger { background: #ef4444; color: #fff; }
-.btn-danger:hover { background: #dc2626; }
-.btn-success { background: #f59e0b; color: #fff; }
-.btn-success:hover { background: #d97706; }
-.btn-sm { padding: 5px 10px; font-size: 12px; }
-.cat-badge { display: inline-block; background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-
-/* === EMPRESA SELECTOR === */
-.empresa-selector { margin-bottom: 16px; }
-.empresa-selector label { font-size: 13px; font-weight: 600; color: #374151; margin-right: 8px; }
-.empresa-selector select { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; min-width: 200px; }
-
-/* === RESPONSIVE === */
-@media (max-width: 768px) {
-  #sidebar { width: 56px; }
-  #sidebar .brand span { margin: 0 auto; }
-  #sidebar .brand .txt, #sidebar .menu a .txt, #sidebar .user-card .name, #sidebar .user-card .role, #sidebar .user-card .logout { display: none; }
-  #sidebar .menu a { justify-content: center; padding: 10px; }
-  #sidebar .user-card { padding: 10px; text-align: center; }
-  #sidebar .user-card .name { display: block; font-size: 10px; }
-  #main { margin-left: 56px; padding: 16px; max-width: calc(100% - 56px); }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-}
+/* Toast */
+.toast { position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 13px; z-index: 9999; opacity: 0; transform: translateY(10px); transition: all .3s; }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { background: #dc2626; }
+.toast.success { background: #059669; }
 </style>
 </head>
 <body>
 
-<!-- ========== AUTH ========== -->
+<!-- ========== LOGIN ========== -->
 <div id="authContainer">
   <h1>🏢 Club Contable</h1>
-  <p class="sub">Ingresa con tu cuenta</p>
+  <p class="sub">Gestión contable profesional</p>
   <div id="authError" class="auth-error hidden"></div>
-  <input type="email" id="loginEmail" placeholder="Correo electrónico" autocomplete="email" value="admin@clubcontable.com">
+  <input type="email" id="loginEmail" placeholder="Correo electrónico" autocomplete="email">
   <input type="password" id="loginPass" placeholder="Contraseña" autocomplete="current-password">
   <button id="loginBtn" onclick="login()">Ingresar</button>
 </div>
@@ -132,14 +135,19 @@ tr:hover td { background: #f9fafb; }
   <div class="menu">
     <a class="active" onclick="showPage('dashboard')"><span class="ico">📈</span><span class="txt">Dashboard</span></a>
     <a onclick="showPage('tareas')"><span class="ico">📋</span><span class="txt">Tareas</span></a>
-    <a onclick="showPage('categorias')"><span class="ico">📁</span><span class="txt">Categorías</span></a>
-    <a onclick="showPage('subcategorias')"><span class="ico">🔖</span><span class="txt">Subcategorías</span></a>
+    <a onclick="showPage('categorias')"><span class="ico">📂</span><span class="txt">Categorías</span></a>
+    <a onclick="showPage('subcategorias')"><span class="ico">📁</span><span class="txt">Subcategorías</span></a>
     <a onclick="showPage('reportes')"><span class="ico">📊</span><span class="txt">Reportes</span></a>
   </div>
-  <div class="user-card">
-    <div class="name" id="sidebarName">Admin</div>
-    <div class="role" id="sidebarRole">admin</div>
-    <span class="logout" onclick="logout()">Cerrar sesión</span>
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="avatar" id="sidebarAvatar">A</div>
+      <div>
+        <div class="name" id="sidebarName">Admin</div>
+        <div class="role" id="sidebarRole">admin</div>
+      </div>
+    </div>
+    <button id="btnLogout" onclick="logout()">Cerrar sesión</button>
   </div>
 </div>
 
@@ -149,393 +157,461 @@ tr:hover td { background: #f9fafb; }
   <!-- DASHBOARD -->
   <div id="page-dashboard" class="page active">
     <div class="page-title">Dashboard</div>
-    <div class="page-desc">Resumen general de tu empresa</div>
-    <div class="empresa-selector" id="dashEmpresaSelector"></div>
-    <div class="stats-grid" id="dashStats"></div>
-    <div class="card"><h3>📋 Últimas tareas</h3><div id="dashTareas"></div></div>
+    <div class="stats" id="statsContainer"></div>
+    <div class="table-container" style="margin-top:24px">
+      <div class="table-header"><h2>Últimas tareas</h2></div>
+      <div id="dashboardTasks">Cargando...</div>
+    </div>
   </div>
 
   <!-- TAREAS -->
   <div id="page-tareas" class="page">
     <div class="page-title">Tareas</div>
-    <div class="page-desc">Gestiona las tareas contables</div>
-    <div class="empresa-selector" id="tareasEmpresaSelector"></div>
-    <div class="card">
-      <h3>➕ Nueva tarea</h3>
-      <div class="flex-row" style="margin-bottom:8px">
-        <input id="tareaDesc" placeholder="Descripción">
-        <select id="tareaCat"><option value="">Categoría</option></select>
-        <select id="tareaSub"><option value="">Subcategoría</option></select>
+    <div class="table-container">
+      <div class="table-header">
+        <h2>Listado de tareas</h2>
+        <button class="btn btn-primary" onclick="openModal('tarea')">+ Nueva tarea</button>
       </div>
-      <div class="flex-row">
-        <input id="tareaMonto" type="number" placeholder="Monto $" style="min-width:100px">
-        <select id="tareaTipo"><option value="gasto">Gasto</option><option value="ingreso">Ingreso</option></select>
-        <select id="tareaEmpTarea"><option value="">Empresa</option></select>
-        <button class="btn btn-primary" onclick="crearTarea()">Crear</button>
-      </div>
+      <div id="tareasList">Cargando...</div>
     </div>
-    <div id="tareasList"></div>
   </div>
 
-  <!-- CATEGORIAS -->
+  <!-- CATEGORÍAS -->
   <div id="page-categorias" class="page">
     <div class="page-title">Categorías</div>
-    <div class="page-desc">Administra las categorías contables</div>
-    <div class="card">
-      <h3>➕ Nueva categoría</h3>
-      <div class="flex-row">
-        <input id="newCatName" placeholder="Nombre de la categoría">
-        <button class="btn btn-primary" onclick="crearCategoria()">Crear</button>
+    <div class="table-container">
+      <div class="table-header">
+        <h2>Listado de categorías</h2>
+        <button class="btn btn-primary" onclick="openModal('categoria')">+ Nueva categoría</button>
       </div>
+      <div id="categoriasList">Cargando...</div>
     </div>
-    <div id="categoriasList"></div>
   </div>
 
-  <!-- SUBCATEGORIAS -->
+  <!-- SUBCATEGORÍAS -->
   <div id="page-subcategorias" class="page">
     <div class="page-title">Subcategorías</div>
-    <div class="page-desc">Administra las subcategorías</div>
-    <div class="card">
-      <h3>➕ Nueva subcategoría</h3>
-      <div class="flex-row">
-        <input id="newSubName" placeholder="Nombre de la subcategoría">
-        <select id="newSubCat"><option value="">Categoría padre</option></select>
-        <button class="btn btn-primary" onclick="crearSubcategoria()">Crear</button>
+    <div class="table-container">
+      <div class="table-header">
+        <h2>Listado de subcategorías</h2>
+        <button class="btn btn-primary" onclick="openModal('subcategoria')">+ Nueva subcategoría</button>
       </div>
+      <div id="subcategoriasList">Cargando...</div>
     </div>
-    <div id="subcategoriasList"></div>
   </div>
 
   <!-- REPORTES -->
   <div id="page-reportes" class="page">
     <div class="page-title">Reportes</div>
-    <div class="page-desc">Resúmenes filtrados</div>
-    <div class="empresa-selector" id="repEmpresaSelector"></div>
-    <div class="card">
-      <h3>📊 Resumen por empresa</h3>
-      <div id="reportesContenido"></div>
+    <div class="stats" id="reportesStats"></div>
+    <div class="table-container" style="margin-top:24px">
+      <div class="table-header"><h2>Por categoría</h2></div>
+      <div id="reportesList">Cargando...</div>
     </div>
   </div>
 </div>
 
+<!-- ========== MODALS ========== -->
+<div id="modalTarea" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalTitle">Nueva tarea</h3>
+    <div class="form-group"><label>Descripción</label><textarea id="tareaDesc" rows="2" placeholder="Descripción de la tarea..."></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Tipo</label><select id="tareaTipo"><option value="gasto">Gasto</option><option value="ingreso">Ingreso</option></select></div>
+      <div class="form-group"><label>Monto</label><input type="number" id="tareaMonto" placeholder="0.00" step="0.01"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Categoría</label><select id="tareaCat"><option value="">Sin categoría</option></select></div>
+      <div class="form-group"><label>Subcategoría</label><select id="tareaSubcat"><option value="">Sin subcategoría</option></select></div>
+    </div>
+    <div class="form-group"><label>Empresa</label><select id="tareaEmpresa"><option value="">Sin empresa</option></select></div>
+    <input type="hidden" id="tareaId">
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('tarea')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveTarea()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modalCategoria" class="modal hidden">
+  <div class="modal-content">
+    <h3>Nueva categoría</h3>
+    <div class="form-group"><label>Nombre</label><input id="catNombre" placeholder="Ej: Ingresos operativos"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('categoria')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveCategoria()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modalSubcategoria" class="modal hidden">
+  <div class="modal-content">
+    <h3>Nueva subcategoría</h3>
+    <div class="form-group"><label>Nombre</label><input id="subcatNombre" placeholder="Ej: Papelería"></div>
+    <div class="form-group"><label>Categoría</label><select id="subcatCat"><option value="">Seleccionar...</option></select></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('subcategoria')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveSubcategoria()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
 <script>
-// ========== CONFIG ==========
-const API = 'https://clubcontable-api.crecimientofinancieroglobal.workers.dev/api';
+const API = 'https://clubcontable-api.crecimientofinancieroglobal.workers.dev';
+let token, currentUser, currentEmpresaId = null;
 
-// ========== UTILIDADES ==========
-function $(id) { return document.getElementById(id); }
-function show(id) { $(id).classList.remove('hidden'); }
-function hide(id) { $(id).classList.add('hidden'); }
-function apiError(msg) { console.error('API Error:', msg); }
-function parseResponse(resp) {
-  // Handle both {success:true, result:[...]} and direct arrays
-  if (Array.isArray(resp)) return {ok:true, result:resp};
-  if (resp && resp.ok !== undefined) return resp;
-  if (resp && resp.success !== undefined) return {ok:resp.success, result:resp.result||resp.data, error:resp.error};
-  return {ok:false, error:'Respuesta inesperada'};
+// ---- HELPERS ----
+const $ = id => document.getElementById(id);
+const show = id => $(id).classList.remove('hidden');
+const hide = id => $(id).classList.add('hidden');
+const openModal = (type) => { show('modal'+type.charAt(0).toUpperCase()+type.slice(1)); if(type==='tarea'){ $('#tareaId').value=''; $('#modalTitle').textContent='Nueva tarea'; cargarCategoriasSelect(); cargarEmpresasSelect(); }}
+const closeModal = (type) => $(`modal${type.charAt(0).toUpperCase()+type.slice(1)}`).classList.add('hidden');
+
+function toast(msg, type='') {
+  const t = $('toast');
+  t.textContent = msg; t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-async function apiGet(endpoint) {
-  const tok = localStorage.getItem('cc_token');
-  if (!tok) return {ok:false, error:'No token'};
+async function api(path, method='GET', body=null) {
+  const opts = { method, headers: { 'Content-Type':'application/json' } };
+  if (token) opts.headers['Authorization'] = 'Bearer ' + token;
+  if (body) opts.body = JSON.stringify(body);
   try {
-    const r = await fetch(`${API}/${endpoint}`, {headers:{'Authorization':'Bearer '+tok}});
-    if (!r.ok) return {ok:false, error:'HTTP '+r.status};
-    return parseResponse(await r.json());
-  } catch(e) { return {ok:false, error:e.message}; }
-}
-
-async function apiPost(endpoint, body) {
-  const tok = localStorage.getItem('cc_token');
-  if (!tok) return {ok:false, error:'No token'};
-  try {
-    const r = await fetch(`${API}/${endpoint}`, {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok}, body:JSON.stringify(body)});
-    if (!r.ok) { const txt = await r.text(); return {ok:false, error:txt}; }
-    return parseResponse(await r.json());
-  } catch(e) { return {ok:false, error:e.message}; }
-}
-
-// ========== AUTH ==========
-async function login() {
-  const email = $('loginEmail').value.trim();
-  const pass = $('loginPass').value;
-  const btn = $('loginBtn');
-  const errDiv = $('authError');
-  errDiv.classList.add('hidden');
-  btn.disabled = true; btn.textContent = 'Entrando...';
-  
-  try {
-    const r = await fetch(`${API}/login`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email, password:pass})});
-    const data = await r.json();
-    if (data.ok && data.token) {
-      localStorage.setItem('cc_token', data.token);
-      localStorage.setItem('cc_user', JSON.stringify(data.user||{}));
-      localStorage.setItem('cc_empresas', JSON.stringify(data.empresas||[]));
-      showApp(data);
-    } else {
-      errDiv.textContent = data.error || 'Error al iniciar sesión';
-      errDiv.classList.remove('hidden');
-    }
+    const r = await fetch(API + path, opts);
+    const d = await r.json();
+    if (!d.ok && d.error) throw new Error(d.error);
+    return d;
   } catch(e) {
-    errDiv.textContent = 'Error de conexión al servidor';
-    errDiv.classList.remove('hidden');
-  } finally {
-    btn.disabled = false; btn.textContent = 'Ingresar';
+    toast(e.message, 'error');
+    throw e;
   }
 }
 
-function showApp(data) {
-  hide('authContainer');
-  show('sidebar');
-  show('main');
-  const user = data.user || JSON.parse(localStorage.getItem('cc_user')||'{}');
-  $('sidebarName').textContent = user.nombre || user.email || 'Admin';
-  $('sidebarRole').textContent = user.rol || 'admin';
-  loadDashboard();
-  cargarSelectoresEmpresa();
-  cargarCategoriasSelect();
+// ---- AUTH ----
+async function login() {
+  const email = $('loginEmail').value.trim();
+  const pass = $('loginPass').value.trim();
+  if (!email || !pass) return toast('Completa todos los campos', 'error');
+  const btn = $('loginBtn'); btn.disabled = true; btn.textContent = 'Ingresando...';
+  try {
+    const d = await api('/api/login', 'POST', { email, password: pass });
+    token = d.token; currentUser = d.user;
+    localStorage.setItem('cc_token', token);
+    localStorage.setItem('cc_user', JSON.stringify(currentUser));
+    if (d.empresas?.length) {
+      localStorage.setItem('cc_empresas', JSON.stringify(d.empresas));
+      if (!currentEmpresaId && d.empresas[0]) currentEmpresaId = d.empresas[0].id;
+    }
+    $('sidebarName').textContent = currentUser.nombre || currentUser.email;
+    $('sidebarRole').textContent = currentUser.rol || 'admin';
+    $('sidebarAvatar').textContent = (currentUser.nombre || currentUser.email || 'A')[0].toUpperCase();
+    hide('authContainer'); show('sidebar'); show('main');
+    $('authError').classList.add('hidden');
+    loadDashboard();
+  } catch(e) {
+    $('authError').textContent = e.message || 'Error de conexión';
+    $('authError').classList.remove('hidden');
+  }
+  btn.disabled = false; btn.textContent = 'Ingresar';
 }
 
 function logout() {
-  localStorage.removeItem('cc_token');
-  localStorage.removeItem('cc_user');
-  localStorage.removeItem('cc_empresas');
-  hide('sidebar'); hide('main');
-  show('authContainer');
-  $('loginEmail').value = 'admin@clubcontable.com';
-  $('loginPass').value = '';
+  localStorage.removeItem('cc_token'); localStorage.removeItem('cc_user'); localStorage.removeItem('cc_empresas');
+  token = null; currentUser = null; currentEmpresaId = null;
+  hide('sidebar'); hide('main'); show('authContainer');
+  ['dashboard','tareas','categorias','subcategorias','reportes'].forEach(p => {
+    $(`page-${p}`).classList.remove('active');
+  });
+  $('page-dashboard').classList.add('active');
+  document.querySelectorAll('.menu a').forEach((a,i) => a.classList.toggle('active', i===0));
 }
 
-// ========== NAVEGACION ==========
-function showPage(name) {
+// ---- NAVIGATION ----
+function showPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('#sidebar .menu a').forEach(a => a.classList.remove('active'));
-  $(`page-${name}`).classList.add('active');
-  const idx = ['dashboard','tareas','categorias','subcategorias','reportes'].indexOf(name);
-  if (idx >= 0) document.querySelectorAll('#sidebar .menu a')[idx].classList.add('active');
-  if (name === 'dashboard') loadDashboard();
-  else if (name === 'tareas') loadTareas();
-  else if (name === 'categorias') loadCategoriasAdmin();
-  else if (name === 'subcategorias') loadSubsAdmin();
-  else if (name === 'reportes') loadReportes();
+  $('page-'+page).classList.add('active');
+  document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
+  const idx = ['dashboard','tareas','categorias','subcategorias','reportes'].indexOf(page);
+  if (idx >= 0) document.querySelectorAll('.menu a')[idx].classList.add('active');
+  if (page === 'dashboard') loadDashboard();
+  else if (page === 'tareas') loadTareas();
+  else if (page === 'categorias') loadCategorias();
+  else if (page === 'subcategorias') loadSubcategorias();
+  else if (page === 'reportes') loadReportes();
 }
 
-// ========== SELECTOR EMPRESA ==========
-function cargarSelectoresEmpresa() {
-  const empresas = JSON.parse(localStorage.getItem('cc_empresas')||'[]');
-  ['dashEmpresaSelector','tareasEmpresaSelector','repEmpresaSelector'].forEach(id => {
-    const sel = $(id);
-    if (!sel) return;
-    let html = '<label>Empresa:</label> <select onchange="cambioEmpresa()">';
-    html += '<option value="">Todas</option>';
-    empresas.forEach(e => { html += `<option value="${e.id}">${e.nombre}</option>`; });
-    html += '</select>';
-    sel.innerHTML = html;
-  });
-}
-
-function empresaSeleccionada() {
-  const sel = document.querySelector('#dashEmpresaSelector select, #tareasEmpresaSelector select, #repEmpresaSelector select');
-  return sel ? sel.value : '';
-}
-function cambioEmpresa() { loadDashboard(); }
-
-// ========== DASHBOARD ==========
+// ---- DASHBOARD ----
 async function loadDashboard() {
-  const empId = (document.querySelector('#dashEmpresaSelector select')||{}).value || '';
-  const params = empId ? `?empresa_id=${empId}` : '';
-  const r = await apiGet(`dashboard${params}`);
-  if (!r.ok) { $('dashStats').innerHTML = '<p style="color:#dc2626">Error al cargar dashboard</p>'; return; }
-  const d = r.result;
-  $('dashStats').innerHTML = `
-    <div class="stat-card"><div class="label">Ingresos</div><div class="value green">$${d.ingresos||0}</div></div>
-    <div class="stat-card"><div class="label">Gastos</div><div class="value orange">$${d.gastos||0}</div></div>
-    <div class="stat-card"><div class="label">Balance</div><div class="value blue">$${d.balance||0}</div></div>
-    <div class="stat-card"><div class="label">Tareas</div><div class="value purple">${d.total_tareas||0}</div></div>
-  `;
-  if (d.tareas && d.tareas.length) {
-    let html = '<div class="table-wrap"><table><tr><th>Descripción</th><th>Tipo</th><th>Monto</th></tr>';
-    d.tareas.forEach(t => { html += `<tr><td>${t.descripcion||''}</td><td><span class="cat-badge">${t.tipo||''}</span></td><td>$${t.monto||0}</td></tr>`; });
-    html += '</table></div>';
-    $('dashTareas').innerHTML = html;
-  } else {
-    $('dashTareas').innerHTML = '<p style="color:#6b7280">No hay tareas recientes</p>';
-  }
+  try {
+    const d = await api('/api/tareas');
+    const tareas = d.result || d.results || [];
+    const ingresos = tareas.filter(t => t.tipo === 'ingreso').reduce((s,t) => s + (+t.monto||0), 0);
+    const gastos = tareas.filter(t => t.tipo === 'gasto').reduce((s,t) => s + (+t.monto||0), 0);
+    $('statsContainer').innerHTML = `
+      <div class="stat-card"><div class="label">Ingresos</div><div class="value green">${formatearMonto(ingresos)}</div></div>
+      <div class="stat-card"><div class="label">Gastos</div><div class="value red">${formatearMonto(gastos)}</div></div>
+      <div class="stat-card"><div class="label">Balance</div><div class="value ${ingresos-gastos >= 0 ? 'blue':'red'}">${formatearMonto(ingresos-gastos)}</div></div>
+      <div class="stat-card"><div class="label">Total Tareas</div><div class="value orange">${tareas.length}</div></div>
+    `;
+    const ultimas = tareas.slice(0, 5);
+    if (ultimas.length === 0) {
+      $('dashboardTasks').innerHTML = '<div class="empty"><div class="icon">📋</div><p>No hay tareas aún</p></div>';
+    } else {
+      $('dashboardTasks').innerHTML = `
+        <table><thead><tr><th>Descripción</th><th>Tipo</th><th>Monto</th><th>Categoría</th><th>Fecha</th></tr></thead>
+        <tbody>${ultimas.map(t => `<tr>
+          <td>${t.titulo || t.descripcion || '-'}</td>
+          <td><span class="badge badge-${t.tipo === 'ingreso' ? 'ingreso' : 'gasto'}">${t.tipo || 'gasto'}</span></td>
+          <td>${formatearMonto(t.monto||0)}</td>
+          <td><span class="badge badge-blue">${t.categoria_nombre || 'Sin categoría'}</span></td>
+          <td>${formatearFecha(t.fecha || t.fecha_creacion)}</td>
+        </tr>`).join('')}</tbody></table>
+      `;
+    }
+  } catch(e) { $('statsContainer').innerHTML = '<p style="color:#94a3b8">Error al cargar</p>'; }
 }
 
-// ========== TAREAS ==========
-async function cargarCategoriasSelect() {
-  const r = await apiGet('categorias');
-  if (!r.ok) return;
-  const cats = r.result || [];
-  const sel = $('tareaCat');
-  sel.innerHTML = '<option value="">Categoría</option>';
-  cats.forEach(c => { sel.innerHTML += `<option value="${c.id}">${c.nombre}</option>`; });
-  const sel2 = $('newSubCat');
-  sel2.innerHTML = '<option value="">Categoría padre</option>';
-  cats.forEach(c => { sel2.innerHTML += `<option value="${c.id}">${c.nombre}</option>`; });
-}
-
-$('tareaCat').addEventListener('change', async function() {
-  const catId = this.value;
-  const selSub = $('tareaSub');
-  selSub.innerHTML = '<option value="">Subcategoría</option>';
-  if (!catId) return;
-  const r = await apiGet(`subcategorias?categoria_id=${catId}`);
-  if (!r.ok) return;
-  (r.result||[]).forEach(s => { selSub.innerHTML += `<option value="${s.id}">${s.nombre}</option>`; });
-});
-
+// ---- TAREAS ----
 async function loadTareas() {
-  const empId = (document.querySelector('#tareasEmpresaSelector select')||{}).value || '';
-  const params = empId ? `?empresa_id=${empId}` : '';
-  const r = await apiGet(`tareas${params}`);
-  if (!r.ok) { $('tareasList').innerHTML = '<p style="color:#dc2626">Error al cargar tareas</p>'; return; }
-  const tareas = r.result || [];
-  let html = '<div class="card"><h3>📋 Lista de tareas</h3><div class="table-wrap"><table><tr><th>Descripción</th><th>Categoría</th><th>Tipo</th><th>Monto</th><th>Empresa</th><th>Acción</th></tr>';
-  tareas.forEach(t => {
-    html += `<tr><td>${t.descripcion||''}</td><td><span class="cat-badge">${t.categoria_nombre||'—'}</span></td><td>${t.tipo||''}</td><td>$${t.monto||0}</td><td>${t.empresa_nombre||'—'}</td>`;
-    html += `<td><button class="btn btn-danger btn-sm" onclick="eliminarTarea(${t.id})">🗑</button></td></tr>`;
-  });
-  html += '</table></div></div>';
-  $('tareasList').innerHTML = html;
-  
-  // Cargar empresas en el selector de nueva tarea
-  const empresas = JSON.parse(localStorage.getItem('cc_empresas')||'[]');
-  const empSel = $('tareaEmpTarea');
-  empSel.innerHTML = '<option value="">Empresa</option>';
-  empresas.forEach(e => { empSel.innerHTML += `<option value="${e.id}">${e.nombre}</option>`; });
-  
-  cargarCategoriasSelect();
+  try {
+    const d = await api('/api/tareas');
+    const tareas = d.result || d.results || [];
+    if (tareas.length === 0) {
+      $('tareasList').innerHTML = '<div class="empty"><div class="icon">📋</div><p>No hay tareas. Crea la primera.</p></div>';
+    } else {
+      $('tareasList').innerHTML = `
+        <table><thead><tr><th>Descripción</th><th>Tipo</th><th>Monto</th><th>Categoría</th><th>Empresa</th><th>Fecha</th><th></th></tr></thead>
+        <tbody>${tareas.map(t => `<tr>
+          <td>${t.titulo || t.descripcion || '-'}</td>
+          <td><span class="badge badge-${(t.tipo||'gasto') === 'ingreso' ? 'ingreso' : 'gasto'}">${t.tipo || 'gasto'}</span></td>
+          <td>${formatearMonto(t.monto||0)}</td>
+          <td><span class="badge badge-blue">${t.categoria_nombre || 'Sin categoría'}</span></td>
+          <td>${t.empresa_nombre || '-'}</td>
+          <td>${formatearFecha(t.fecha || t.fecha_creacion)}</td>
+          <td><button class="btn btn-sm btn-danger" onclick="eliminarTarea(${t.id})">🗑</button></td>
+        </tr>`).join('')}</tbody></table>
+      `;
+    }
+  } catch(e) { $('tareasList').innerHTML = '<div class="empty"><p>Error al cargar tareas</p></div>'; }
 }
 
-async function crearTarea() {
-  const desc = $('tareaDesc').value.trim();
-  const catId = $('tareaCat').value;
-  const subId = $('tareaSub').value;
-  const monto = parseFloat($('tareaMonto').value) || 0;
-  const tipo = $('tareaTipo').value;
-  const empId = $('tareaEmpTarea').value;
-  if (!desc) { alert('La descripción es obligatoria'); return; }
-  const r = await apiPost('tareas', {descripcion:desc, categoria_id:catId||null, subcategoria_id:subId||null, monto, tipo, empresa_id:empId||null});
-  if (r.ok) {
-    $('tareaDesc').value = ''; $('tareaMonto').value = '';
-    loadTareas();
-  } else {
-    alert('Error: ' + (r.error||'No se pudo crear'));
-  }
+async function saveTarea() {
+  const id = $('tareaId').value;
+  const body = {
+    titulo: $('tareaDesc').value.trim(),
+    descripcion: $('tareaDesc').value.trim(),
+    tipo: $('tareaTipo').value,
+    monto: parseFloat($('tareaMonto').value) || 0,
+    categoria_id: $('tareaCat').value ? parseInt($('tareaCat').value) : null,
+    subcategoria_id: $('tareaSubcat').value ? parseInt($('tareaSubcat').value) : null,
+    empresa_id: $('tareaEmpresa').value ? parseInt($('tareaEmpresa').value) : null
+  };
+  if (!body.titulo) return toast('Escribe una descripción', 'error');
+  try {
+    if (id) {
+      await api('/api/tareas/'+id, 'PUT', body);
+    } else {
+      await api('/api/tareas', 'POST', body);
+    }
+    closeModal('tarea'); toast('Tarea guardada ✓', 'success');
+    if (document.querySelector('.page.active') === $('page-tareas')) loadTareas();
+    else loadDashboard();
+  } catch(e) {}
 }
 
 async function eliminarTarea(id) {
   if (!confirm('¿Eliminar esta tarea?')) return;
-  const r = await apiPost('tareas/eliminar', {id});
-  if (r.ok) loadTareas();
-  else alert('Error al eliminar');
+  try {
+    await api('/api/tareas/eliminar', 'POST', { id });
+    toast('Tarea eliminada', 'success');
+    loadTareas();
+  } catch(e) {}
 }
 
-// ========== CATEGORIAS ==========
-async function loadCategoriasAdmin() {
-  const r = await apiGet('categorias');
-  if (!r.ok) { $('categoriasList').innerHTML = '<p style="color:#dc2626">Error al cargar</p>'; return; }
-  const cats = r.result || [];
-  let html = '<div class="card"><h3>📁 Categorías existentes</h3><div class="table-wrap"><table><tr><th>Nombre</th><th>Subcategorías</th><th>Acción</th></tr>';
-  // Cargar subcategorias para contar
-  const rsub = await apiGet('subcategorias');
-  const subs = (rsub.ok ? rsub.result : []) || [];
-  cats.forEach(c => {
-    const count = subs.filter(s => s.categoria_id == c.id).length;
-    html += `<tr><td>${c.nombre}</td><td>${count} subcategorías</td>`;
-    html += `<td><button class="btn btn-danger btn-sm" onclick="eliminarCategoria(${c.id})">🗑</button></td></tr>`;
-  });
-  html += '</table></div></div>';
-  $('categoriasList').innerHTML = html;
+// ---- CATEGORIAS ----
+async function loadCategorias() {
+  try {
+    const d = await api('/api/categorias');
+    const cats = d.result || d.results || [];
+    if (cats.length === 0) {
+      $('categoriasList').innerHTML = '<div class="empty"><div class="icon">📂</div><p>No hay categorías. Crea la primera.</p></div>';
+    } else {
+      $('categoriasList').innerHTML = `
+        <table><thead><tr><th>Nombre</th><th></th></tr></thead>
+        <tbody>${cats.map(c => `<tr>
+          <td>${c.nombre}</td>
+          <td><button class="btn btn-sm btn-danger" onclick="eliminarCategoria(${c.id})">🗑</button></td>
+        </tr>`).join('')}</tbody></table>
+      `;
+    }
+  } catch(e) { $('categoriasList').innerHTML = '<div class="empty"><p>Error</p></div>'; }
 }
 
-async function crearCategoria() {
-  const nombre = $('newCatName').value.trim();
-  if (!nombre) return;
-  const r = await apiPost('categorias', {nombre});
-  if (r.ok) { $('newCatName').value = ''; loadCategoriasAdmin(); cargarCategoriasSelect(); }
-  else alert('Error: '+(r.error||''));
+async function saveCategoria() {
+  const nombre = $('catNombre').value.trim();
+  if (!nombre) return toast('Escribe un nombre', 'error');
+  try {
+    await api('/api/categorias', 'POST', { nombre });
+    closeModal('categoria'); toast('Categoría creada ✓', 'success');
+    loadCategorias();
+    cargarCategoriasSelect();
+  } catch(e) {}
 }
 
 async function eliminarCategoria(id) {
-  if (!confirm('¿Eliminar esta categoría?')) return;
-  const r = await apiPost('categorias/eliminar', {id});
-  if (r.ok) { loadCategoriasAdmin(); cargarCategoriasSelect(); }
-  else alert(r.error||'Error');
+  if (!confirm('¿Eliminar esta categoría y sus subcategorías?')) return;
+  try {
+    await api('/api/categorias/eliminar', 'POST', { id });
+    toast('Categoría eliminada', 'success');
+    loadCategorias();
+    cargarCategoriasSelect();
+  } catch(e) {}
 }
 
-// ========== SUBCATEGORIAS ==========
-async function loadSubsAdmin() {
-  const r = await apiGet('subcategorias');
-  if (!r.ok) { $('subcategoriasList').innerHTML = '<p style="color:#dc2626">Error al cargar</p>'; return; }
-  const subs = r.result || [];
-  const rcat = await apiGet('categorias');
-  const cats = (rcat.ok ? rcat.result : []) || [];
-  let html = '<div class="card"><h3>🔖 Subcategorías existentes</h3><div class="table-wrap"><table><tr><th>Nombre</th><th>Categoría</th><th>Acción</th></tr>';
-  subs.forEach(s => {
-    const catName = (cats.find(c=>c.id==s.categoria_id)||{}).nombre || '—';
-    html += `<tr><td>${s.nombre}</td><td><span class="cat-badge">${catName}</span></td>`;
-    html += `<td><button class="btn btn-danger btn-sm" onclick="eliminarSubcategoria(${s.id})">🗑</button></td></tr>`;
-  });
-  html += '</table></div></div>';
-  $('subcategoriasList').innerHTML = html;
-  cargarCategoriasSelect();
+// ---- SUBCATEGORIAS ----
+async function loadSubcategorias() {
+  try {
+    const cats = await api('/api/categorias');
+    const d = await api('/api/subcategorias');
+    const subs = d.result || d.results || [];
+    const catMap = {};
+    (cats.result || cats.results || []).forEach(c => catMap[c.id] = c);
+    if (subs.length === 0) {
+      $('subcategoriasList').innerHTML = '<div class="empty"><div class="icon">📁</div><p>No hay subcategorías</p></div>';
+    } else {
+      $('subcategoriasList').innerHTML = `
+        <table><thead><tr><th>Nombre</th><th>Categoría</th><th></th></tr></thead>
+        <tbody>${subs.map(s => `<tr>
+          <td>${s.nombre}</td>
+          <td><span class="badge badge-blue">${(catMap[s.categoria_id]||{}).nombre || 'N/A'}</span></td>
+          <td><button class="btn btn-sm btn-danger" onclick="eliminarSubcategoria(${s.id})">🗑</button></td>
+        </tr>`).join('')}</tbody></table>
+      `;
+    }
+  } catch(e) { $('subcategoriasList').innerHTML = '<div class="empty"><p>Error</p></div>'; }
 }
 
-async function crearSubcategoria() {
-  const nombre = $('newSubName').value.trim();
-  const catId = $('newSubCat').value;
-  if (!nombre) return;
-  if (!catId) { alert('Selecciona una categoría padre'); return; }
-  const r = await apiPost('subcategorias', {nombre, categoria_id:parseInt(catId)});
-  if (r.ok) { $('newSubName').value = ''; loadSubsAdmin(); }
-  else alert('Error: '+(r.error||''));
+async function saveSubcategoria() {
+  const nombre = $('subcatNombre').value.trim();
+  const categoria_id = $('subcatCat').value ? parseInt($('subcatCat').value) : null;
+  if (!nombre || !categoria_id) return toast('Completa nombre y categoría', 'error');
+  try {
+    await api('/api/subcategorias', 'POST', { nombre, categoria_id });
+    closeModal('subcategoria'); toast('Subcategoría creada ✓', 'success');
+    loadSubcategorias();
+  } catch(e) {}
 }
 
 async function eliminarSubcategoria(id) {
   if (!confirm('¿Eliminar esta subcategoría?')) return;
-  const r = await apiPost('subcategorias/eliminar', {id});
-  if (r.ok) loadSubsAdmin();
-  else alert(r.error||'Error');
+  try {
+    await api('/api/subcategorias/eliminar', 'POST', { id });
+    toast('Subcategoría eliminada', 'success');
+    loadSubcategorias();
+  } catch(e) {}
 }
 
-// ========== REPORTES ==========
+// ---- REPORTES ----
 async function loadReportes() {
-  const empId = (document.querySelector('#repEmpresaSelector select')||{}).value || '';
-  const params = empId ? `?empresa_id=${empId}` : '';
-  const r = await apiGet(`reportes${params}`);
-  if (!r.ok) { $('reportesContenido').innerHTML = '<p style="color:#dc2626">Error al cargar reportes</p>'; return; }
-  const rep = r.result || {};
-  let html = '<div class="stats-grid" style="margin-bottom:16px">';
-  html += `<div class="stat-card"><div class="label">Total Ingresos</div><div class="value green">$${rep.total_ingresos||0}</div></div>`;
-  html += `<div class="stat-card"><div class="label">Total Gastos</div><div class="value orange">$${rep.total_gastos||0}</div></div>`;
-  html += `<div class="stat-card"><div class="label">Balance Neto</div><div class="value blue">$${rep.balance_neto||0}</div></div>`;
-  html += '</div>';
-  
-  if (rep.por_categoria && rep.por_categoria.length) {
-    html += '<h3 style="font-size:15px;font-weight:600;margin-bottom:8px">📊 Por categoría</h3>';
-    html += '<div class="table-wrap"><table><tr><th>Categoría</th><th>Ingresos</th><th>Gastos</th><th>Balance</th></tr>';
-    rep.por_categoria.forEach(c => {
-      html += `<tr><td><span class="cat-badge">${c.categoria||'Sin categoría'}</span></td><td>$${c.ingresos||0}</td><td>$${c.gastos||0}</td><td>$${c.balance||0}</td></tr>`;
+  try {
+    const d = await api('/api/tareas');
+    const tareas = d.result || d.results || [];
+    const ingresos = tareas.filter(t => t.tipo === 'ingreso').reduce((s,t) => s + (+t.monto||0), 0);
+    const gastos = tareas.filter(t => t.tipo === 'gasto').reduce((s,t) => s + (+t.monto||0), 0);
+    $('reportesStats').innerHTML = `
+      <div class="stat-card"><div class="label">Total Ingresos</div><div class="value green">${formatearMonto(ingresos)}</div></div>
+      <div class="stat-card"><div class="label">Total Gastos</div><div class="value red">${formatearMonto(gastos)}</div></div>
+      <div class="stat-card"><div class="label">Balance Neto</div><div class="value ${ingresos-gastos >= 0 ? 'blue':'red'}">${formatearMonto(ingresos-gastos)}</div></div>
+    `;
+    // Agrupar por categoría
+    const porCat = {};
+    tareas.forEach(t => {
+      const key = t.categoria_nombre || 'Sin categoría';
+      if (!porCat[key]) porCat[key] = { ingresos:0, gastos:0 };
+      if (t.tipo === 'ingreso') porCat[key].ingresos += (+t.monto||0);
+      else porCat[key].gastos += (+t.monto||0);
     });
-    html += '</table></div>';
-  }
-  $('reportesContenido').innerHTML = html;
+    const catRows = Object.entries(porCat);
+    if (catRows.length === 0) {
+      $('reportesList').innerHTML = '<div class="empty"><p>Sin datos</p></div>';
+    } else {
+      $('reportesList').innerHTML = `
+        <table><thead><tr><th>Categoría</th><th>Ingresos</th><th>Gastos</th><th>Balance</th></tr></thead>
+        <tbody>${catRows.map(([cat, vals]) => `<tr>
+          <td>${cat}</td>
+          <td class="green" style="color:#059669">${formatearMonto(vals.ingresos)}</td>
+          <td class="red" style="color:#dc2626">${formatearMonto(vals.gastos)}</td>
+          <td style="color:${vals.ingresos-vals.gastos>=0?'#059669':'#dc2626'}">${formatearMonto(vals.ingresos-vals.gastos)}</td>
+        </tr>`).join('')}</tbody></table>
+      `;
+    }
+  } catch(e) { $('reportesStats').innerHTML = '<p>Error al cargar reportes</p>'; }
 }
 
-// ========== CHECK LOGIN ==========
+// ---- SELECTS ----
+async function cargarCategoriasSelect() {
+  try {
+    const d = await api('/api/categorias');
+    const cats = d.result || d.results || [];
+    const opts = cats.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+    $('tareaCat').innerHTML = '<option value="">Sin categoría</option>' + opts;
+    $('subcatCat').innerHTML = '<option value="">Seleccionar...</option>' + opts;
+  } catch(e) {}
+}
+
+async function cargarEmpresasSelect() {
+  try {
+    const d = localStorage.getItem('cc_empresas');
+    const empresas = d ? JSON.parse(d) : [];
+    if (empresas.length === 0) {
+      try {
+        const r = await api('/api/empresas');
+        (r.result || r.results || []).forEach(e => empresas.push(e));
+      } catch(e) {}
+    }
+    $('tareaEmpresa').innerHTML = '<option value="">Sin empresa</option>' +
+      empresas.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('');
+  } catch(e) {}
+}
+
+// ---- UTILS ----
+function formatearMonto(n) {
+  n = +n || 0;
+  return '$' + n.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function formatearFecha(f) {
+  if (!f) return '-';
+  return new Date(f.replace(' ','T') + (f.includes('Z')?'':'Z')).toLocaleDateString('es-CO', { year:'numeric', month:'short', day:'numeric' });
+}
+
+// ---- INIT ----
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !$('sidebar').classList.contains('hidden') === false) {
+    // If in auth screen, login
+    if (!$('authContainer').classList.contains('hidden')) login();
+  }
+});
+
+document.getElementById('loginPass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') login();
+});
+
 (function() {
-  const token = localStorage.getItem('cc_token');
-  if (token) {
-    show('sidebar'); show('main'); hide('authContainer');
-    const user = JSON.parse(localStorage.getItem('cc_user')||'{}');
-    $('sidebarName').textContent = user.nombre || user.email || 'Admin';
-    $('sidebarRole').textContent = user.rol || 'admin';
+  const saved = localStorage.getItem('cc_token');
+  if (saved) {
+    token = saved;
+    try { currentUser = JSON.parse(localStorage.getItem('cc_user')||'{}'); } catch(e) {}
+    hide('authContainer'); show('sidebar'); show('main');
+    $('sidebarName').textContent = currentUser.nombre || currentUser.email || 'Admin';
+    $('sidebarRole').textContent = currentUser.rol || 'admin';
+    $('sidebarAvatar').textContent = (currentUser.nombre || currentUser.email || 'A')[0].toUpperCase();
     loadDashboard();
-    cargarSelectoresEmpresa();
     cargarCategoriasSelect();
+    cargarEmpresasSelect();
   }
 })();
 </script>
