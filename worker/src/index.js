@@ -40,7 +40,7 @@ export default {
         }
         if (method === 'POST') {
           const b = await request.json();
-          const r = await env.DB.prepare('INSERT INTO categorias (nombre, usuario_id) VALUES (?, ?)').bind(b.nombre, uid).run();
+          const r = await env.DB.prepare('INSERT INTO categorias (nombre) VALUES (?)').bind(b.nombre).run();
           return ok({ ok: true, id: r.meta.last_row_id });
         }
       }
