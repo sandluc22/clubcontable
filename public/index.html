@@ -311,6 +311,18 @@
       </div>
     </div>
 
+    <div class="login-box" id="acceso">
+      <h3>🔐 Accede al programa</h3>
+      <p>Ingresa con tu correo y contraseña para gestionar tus tareas contables.</p>
+      <form onsubmit="login(event)">
+        <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+        <input type="password" id="loginPass" placeholder="Contraseña" required>
+        <button type="submit">Ingresar</button>
+      </form>
+      <div class="toast" id="loginToast" style="display:none;"></div>
+      <p style="margin-top:12px;font-size:14px;color:#64748b;">¿No tienes cuenta? <a href="#suscripcion">Suscríbete aquí</a></p>
+    </div>
+
     <div class="suscribete-box" id="suscripcion">
       <h3>📩 Suscríbete y recibe información exclusiva</h3>
       <p>Déjanos tu correo y te enviaremos novedades contables, consejos y ofertas especiales para empezar con Club Contable.</p>
@@ -399,6 +411,22 @@
 </footer>
 
 <script>
+const API='https://clubcontable-api.crecimientofinancieroglobal.workers.dev';
+
+async function login(e){
+  e.preventDefault();
+  const em=document.getElementById('loginEmail').value.trim(),pw=document.getElementById('loginPass').value.trim();
+  if(!em||!pw)return showToast('loginToast','Completa todos los campos','error');
+  try{
+    const r=await fetch(API+'/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,password:pw})});
+    const d=await r.json();
+    if(d.ok&&d.token){showToast('loginToast','✅ Ingreso exitoso','ok');localStorage.setItem('token',d.token);localStorage.setItem('user',JSON.stringify(d.user||{}));setTimeout(()=>window.location.reload(),1000);}
+    else showToast('loginToast','❌ '+d.error,'error');
+  }catch(e){showToast('loginToast','❌ Error de conexión','error');}
+}
+
+function showToast(id,msg,type){const t=document.getElementById(id);t.textContent=msg;t.style.display='block';t.className='toast '+type;setTimeout(()=>t.style.display='none',4000);}
+
 function toggleFaq(el){const ans=el.nextElementSibling;ans.classList.toggle('open');el.querySelector('span').textContent=ans.classList.contains('open')?'−':'+';}
 function suscripcion(e){e.preventDefault();document.getElementById('subToast').style.display='block';document.getElementById('subEmail').value='';setTimeout(()=>document.getElementById('subToast').style.display='none',4000);}
 function contacto(e){e.preventDefault();document.getElementById('conToast').style.display='block';document.getElementById('conNombre').value='';document.getElementById('conEmail').value='';document.getElementById('conAsunto').value='';document.getElementById('conMsg').value='';setTimeout(()=>document.getElementById('conToast').style.display='none',4000);}
