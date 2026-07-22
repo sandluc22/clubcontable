@@ -270,7 +270,8 @@ async function api(path,opts){
 }
 
 // ── LOGIN ──
-async function login(){
+async function login(e){
+  e.preventDefault();
   const em=$('loginEmail').value.trim(),pw=$('loginPass').value.trim();
   if(!em||!pw)return toast('Completa todos los campos','error');
   const b=$('loginBtn');b.disabled=true;b.textContent='Ingresando...';
