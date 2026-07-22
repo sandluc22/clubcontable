@@ -139,7 +139,7 @@
   <div class="container">
     <h1>Gestión contable profesional<br>para <span>contadores</span> y <span>empresas</span></h1>
     <p>Administra tareas contables, organiza tu trabajo y mantén al día la contabilidad de tus clientes con Club Contable. La plataforma multiusuario diseñada para contadores en Colombia.</p>
-    <a href="#gestor" class="btn">Conocer el gestor →</a>
+    <a href="#acceso" class="btn">Acceder al gestor →</a>
   </div>
 </section>
 
@@ -284,6 +284,18 @@
       <a href="#suscripcion" class="btn-warning">Suscríbete ahora →</a>
     </div>
 
+    <div class="login-box" id="acceso">
+      <h3>🔐 Accede al gestor de tareas</h3>
+      <p>Ingresa con tu correo y contraseña para gestionar tus tareas.</p>
+      <form onsubmit="login(event)">
+        <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+        <input type="password" id="loginPass" placeholder="Contraseña" required>
+        <button type="submit">Ingresar</button>
+      </form>
+      <div class="toast" id="loginToast" style="display:none;"></div>
+      <p style="margin-top:12px;font-size:14px;color:#64748b;">¿No tienes cuenta? <a href="#suscripcion">Suscríbete aquí</a></p>
+    </div>
+
     <div class="precios-grid">
       <div class="precio-card">
         <div class="plan">Prueba</div>
@@ -309,18 +321,6 @@
         <div class="desc">Para firmas contables o empresas con varias sedes.</div>
         <a href="#suscripcion" class="btn-sm">Elegir plan</a>
       </div>
-    </div>
-
-    <div class="login-box" id="acceso">
-      <h3>🔐 Accede al gestor de tareas</h3>
-      <p>Ingresa con tu correo y contraseña para gestionar tus tareas.</p>
-      <form onsubmit="login(event)">
-        <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
-        <input type="password" id="loginPass" placeholder="Contraseña" required>
-        <button type="submit">Ingresar</button>
-      </form>
-      <div class="toast" id="loginToast" style="display:none;"></div>
-      <p style="margin-top:12px;font-size:14px;color:#64748b;">¿No tienes cuenta? <a href="#suscripcion">Suscríbete aquí</a></p>
     </div>
 
     <div class="suscribete-box" id="suscripcion">
