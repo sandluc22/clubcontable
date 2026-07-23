@@ -79,6 +79,11 @@
     footer { background: #1e293b; border-top: 1px solid #334155; padding: 30px 0; text-align: center; }
     footer p { color: #64748b; font-size: 14px; }
 
+    /* ── Panel gestor ── */
+    .panel-section { display: none; }
+    .panel-section:first-child { display: block; }
+    #panelGestor a:hover { background:#2563eb !important; color:#fff !important; }
+
     /* ── Responsive ── */
     @media (max-width: 640px) {
       .hero h1 { font-size: 28px; }
@@ -285,6 +290,110 @@
   </div>
 </section>
 
+<!-- ─── PANEL GESTOR (oculto hasta login) ─── -->
+<section id="panelGestor" style="display:none;">
+  <div class="container">
+    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+      
+      <!-- Sidebar -->
+      <div style="background:#1e293b;border-radius:12px;padding:20px;width:220px;min-width:180px;border:1px solid #334155;">
+        <div style="font-weight:700;font-size:16px;margin-bottom:16px;color:#f59e0b;">Panel de control</div>
+        <div style="font-size:13px;color:#94a3b8;margin-bottom:16px;" id="panelUserEmail">usuario@email.com</div>
+        <nav style="display:flex;flex-direction:column;gap:4px;">
+          <a onclick="mostrarSeccion('secDashboard')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">📊 Dashboard</a>
+          <a onclick="mostrarSeccion('secTareas')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">✅ Tareas</a>
+          <a onclick="mostrarSeccion('secCategorias')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">📁 Categorías</a>
+          <a onclick="mostrarSeccion('secSubcategorias')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">📂 Subcategorías</a>
+          <a onclick="mostrarSeccion('secReportes')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">📈 Reportes</a>
+          <a onclick="mostrarSeccion('secAdmin')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">⚙️ Admin</a>
+          <hr style="border-color:#334155;margin:8px 0;">
+          <a onclick="logout()" style="color:#ef4444;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">🚪 Cerrar sesión</a>
+        </nav>
+      </div>
+
+      <!-- Contenido del panel -->
+      <div style="flex:1;min-width:300px;">
+
+        <!-- Dashboard -->
+        <div id="secDashboard" class="panel-section">
+          <h2>📊 <span>Dashboard</span></h2>
+          <div id="dashboardContent"><p class="text-gray">Cargando...</p></div>
+        </div>
+
+        <!-- Tareas -->
+        <div id="secTareas" class="panel-section" style="display:none;">
+          <h2>✅ <span>Tareas</span></h2>
+          <div class="card" style="margin-bottom:16px;">
+            <h3>Nueva tarea</h3>
+            <div class="form-group"><input type="text" id="tareaNombre" placeholder="Nombre de la tarea"></div>
+            <div class="form-group">
+              <select id="tareaCategoria"><option value="">Sin categoría</option></select>
+            </div>
+            <div class="form-group">
+              <select id="empresaSelect"><option value="">Seleccionar empresa</option></select>
+            </div>
+            <button class="btn" onclick="crearTarea()">Crear tarea</button>
+          </div>
+          <div id="listaTareas"></div>
+        </div>
+
+        <!-- Categorías -->
+        <div id="secCategorias" class="panel-section" style="display:none;">
+          <h2>📁 <span>Categorías</span></h2>
+          <div class="card" style="margin-bottom:16px;">
+            <h3>Nueva categoría</h3>
+            <div class="form-group"><input type="text" id="catNombre" placeholder="Nombre de la categoría"></div>
+            <button class="btn" onclick="crearCategoria()">Crear</button>
+          </div>
+          <div id="listaCategorias"></div>
+        </div>
+
+        <!-- Subcategorías -->
+        <div id="secSubcategorias" class="panel-section" style="display:none;">
+          <h2>📂 <span>Subcategorías</span></h2>
+          <div class="card" style="margin-bottom:16px;">
+            <h3>Nueva subcategoría</h3>
+            <div class="form-group"><input type="text" id="subcatNombre" placeholder="Nombre"></div>
+            <div class="form-group">
+              <select id="subcatCategoria"><option value="">Seleccionar categoría</option></select>
+            </div>
+            <button class="btn" onclick="crearSubcategoria()">Crear</button>
+          </div>
+          <div id="listaSubcategorias"></div>
+        </div>
+
+        <!-- Reportes -->
+        <div id="secReportes" class="panel-section" style="display:none;">
+          <h2>📈 <span>Reportes</span></h2>
+          <div id="reportesContent"><p class="text-gray">Cargando...</p></div>
+        </div>
+
+        <!-- Admin -->
+        <div id="secAdmin" class="panel-section" style="display:none;">
+          <h2>⚙️ <span>Admin</span></h2>
+          <div class="card" style="margin-bottom:16px;">
+            <h3>Crear usuario</h3>
+            <div class="form-group"><input type="text" id="adminUserName" placeholder="Nombre"></div>
+            <div class="form-group"><input type="email" id="adminUserEmail" placeholder="Email"></div>
+            <div class="form-group"><input type="password" id="adminUserPass" placeholder="Contraseña"></div>
+            <button class="btn" onclick="crearUsuario()">Crear usuario</button>
+          </div>
+          <div class="card">
+            <h3>Crear empresa</h3>
+            <div class="form-group"><input type="text" id="adminEmpresaNombre" placeholder="Nombre empresa"></div>
+            <div class="form-group"><input type="text" id="adminEmpresaUserEmail" placeholder="Email del usuario"></div>
+            <button class="btn" onclick="crearEmpresa()">Crear empresa</button>
+          </div>
+          <div id="toastAdmin"></div>
+        </div>
+
+        <div id="panelToast" class="toast"></div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ─── FOOTER ─── -->
 <footer>
   <div class="container">
@@ -322,10 +431,11 @@ async function login(e) {
     const d = await r.json();
     
     if (d.ok && d.token) {
-      mostrarToast('loginToast', '✅ Ingreso exitoso. Redirigiendo...', 'ok');
       localStorage.setItem('token', d.token);
       localStorage.setItem('user', JSON.stringify(d.user || {}));
-      setTimeout(() => window.location.reload(), 1200);
+      token = d.token;
+      mostrarToast('loginToast', '✅ Ingreso exitoso. Accediendo...', 'ok');
+      setTimeout(() => entrarAlPanel(d.user || {}), 800);
     } else {
       mostrarToast('loginToast', '❌ ' + (d.error || 'Credenciales incorrectas'), 'error');
     }
@@ -401,6 +511,219 @@ async function contacto(e) {
   $('conMsg').value = '';
   if (btn) btn.disabled = false;
 }
+
+// ── Logout ──
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.reload();
+}
+
+// ── Redirigir tras login exitoso ──
+function entrarAlPanel(user) {
+  document.getElementById('acceso').style.display = 'none';
+  document.getElementById('panelGestor').style.display = 'block';
+  document.getElementById('panelUserEmail').textContent = user.email || 'Usuario';
+  cargarPanel();
+}
+
+// ── Cargar el panel ──
+let token = localStorage.getItem('token');
+
+async function cargarPanel() {
+  try {
+    const [tareas, cats, subcats, empresas] = await Promise.all([
+      fetchApi('/api/tareas'),
+      fetchApi('/api/categorias'),
+      fetchApi('/api/subcategorias'),
+      fetchApi('/api/empresas')
+    ]);
+    renderTareas(tareas);
+    renderCategorias(cats);
+    renderSubcategorias(subcats, cats);
+    llenarSelectCategorias(cats);
+    llenarSelectEmpresas(empresas);
+    renderReportes(tareas, cats);
+  } catch(e) { console.error(e); }
+}
+
+async function fetchApi(path) {
+  const r = await fetch(API + path, {
+    headers: { 'Authorization': 'Bearer ' + token }
+  });
+  const d = await r.json();
+  return d.ok ? (d.result || []) : [];
+}
+
+// ── Render ──
+function renderTareas(lista) {
+  const c = document.getElementById('listaTareas');
+  if (!c) return;
+  c.innerHTML = lista.map(t => 
+    '<div class="card" style="margin-bottom:8px;"><strong>' + t.nombre + '</strong> ' + (t.completada ? '✅' : '⏳') + '<br><small>' + (t.categoria_nombre || '') + ' · ' + (t.empresa_nombre || '') + '</small></div>'
+  ).join('') || '<p class="text-gray">Sin tareas</p>';
+}
+
+function renderCategorias(lista) {
+  const c = document.getElementById('listaCategorias');
+  if (!c) return;
+  c.innerHTML = lista.map(cat => '<div class="card" style="margin-bottom:8px;"><strong>' + cat.nombre + '</strong></div>').join('') || '<p class="text-gray">Sin categorías</p>';
+}
+
+function renderSubcategorias(lista, cats) {
+  const c = document.getElementById('listaSubcategorias');
+  if (!c) return;
+  c.innerHTML = lista.map(s => '<div class="card" style="margin-bottom:8px;"><strong>' + s.nombre + '</strong> <small>→ ' + (s.categoria_nombre || '') + '</small></div>').join('') || '<p class="text-gray">Sin subcategorías</p>';
+}
+
+function llenarSelectCategorias(cats) {
+  const sel1 = document.getElementById('tareaCategoria');
+  const sel2 = document.getElementById('subcatCategoria');
+  const opts = '<option value="">Sin categoría</option>' + cats.map(c => '<option value="' + c.id + '">' + c.nombre + '</option>').join('');
+  if (sel1) sel1.innerHTML = opts;
+  if (sel2) sel2.innerHTML = opts;
+}
+
+function llenarSelectEmpresas(empresas) {
+  const sel = document.getElementById('empresaSelect');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">Seleccionar empresa</option>' + empresas.map(e => '<option value="' + e.id + '">' + e.nombre + '</option>').join('');
+}
+
+function renderReportes(tareas, cats) {
+  const c = document.getElementById('reportesContent');
+  if (!c) return;
+  const total = tareas.length;
+  const completadas = tareas.filter(t => t.completada).length;
+  const pct = total ? Math.round(completadas / total * 100) : 0;
+  let html = '<div class="card" style="margin-bottom:12px;">📊 Completadas: ' + completadas + '/' + total + ' (' + pct + '%)</div>';
+  html += '<div style="background:#334155;border-radius:8px;height:12px;overflow:hidden;margin-bottom:16px;"><div style="background:#2563eb;height:100%;width:' + pct + '%;border-radius:8px;transition:width .5s;"></div></div>';
+  cats.forEach(cat => {
+    const ct = tareas.filter(t => t.categoria_id === cat.id);
+    const cc = ct.filter(t => t.completada).length;
+    const cp = ct.length ? Math.round(cc / ct.length * 100) : 0;
+    if (ct.length) html += '<div class="card" style="margin-bottom:8px;">' + cat.nombre + ': ' + cc + '/' + ct.length + ' (' + cp + '%)</div>';
+  });
+  c.innerHTML = html || '<p class="text-gray">Sin datos</p>';
+}
+
+// ── Crear tarea ──
+async function crearTarea() {
+  const nombre = document.getElementById('tareaNombre').value.trim();
+  const catId = document.getElementById('tareaCategoria').value;
+  const empId = document.getElementById('empresaSelect').value;
+  if (!nombre) return mostrarToast('panelToast', 'Escribe un nombre', 'error');
+  try {
+    const r = await fetch(API + '/api/tareas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ nombre, categoria_id: catId ? parseInt(catId) : null, empresa_id: empId ? parseInt(empId) : null })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      mostrarToast('panelToast', '✅ Tarea creada', 'ok');
+      document.getElementById('tareaNombre').value = '';
+      cargarPanel();
+    } else mostrarToast('panelToast', '❌ ' + (d.error || 'Error'), 'error');
+  } catch(e) { mostrarToast('panelToast', '❌ Error de conexión', 'error'); }
+}
+
+async function crearCategoria() {
+  const nombre = document.getElementById('catNombre').value.trim();
+  if (!nombre) return mostrarToast('panelToast', 'Escribe un nombre', 'error');
+  try {
+    const r = await fetch(API + '/api/categorias', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ nombre })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      mostrarToast('panelToast', '✅ Categoría creada', 'ok');
+      document.getElementById('catNombre').value = '';
+      cargarPanel();
+    } else mostrarToast('panelToast', '❌ ' + (d.error || 'Error'), 'error');
+  } catch(e) { mostrarToast('panelToast', '❌ Error de conexión', 'error'); }
+}
+
+async function crearSubcategoria() {
+  const nombre = document.getElementById('subcatNombre').value.trim();
+  const catId = document.getElementById('subcatCategoria').value;
+  if (!nombre || !catId) return mostrarToast('panelToast', 'Completa nombre y categoría', 'error');
+  try {
+    const r = await fetch(API + '/api/subcategorias', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ nombre, categoria_id: parseInt(catId) })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      mostrarToast('panelToast', '✅ Subcategoría creada', 'ok');
+      document.getElementById('subcatNombre').value = '';
+      cargarPanel();
+    } else mostrarToast('panelToast', '❌ ' + (d.error || 'Error'), 'error');
+  } catch(e) { mostrarToast('panelToast', '❌ Error de conexión', 'error'); }
+}
+
+async function crearUsuario() {
+  const nombre = document.getElementById('adminUserName').value.trim();
+  const email = document.getElementById('adminUserEmail').value.trim();
+  const pass = document.getElementById('adminUserPass').value.trim();
+  if (!nombre || !email || !pass) return mostrarToast('toastAdmin', 'Completa todos los campos', 'error');
+  try {
+    const r = await fetch(API + '/api/usuarios', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ nombre, email, password: pass })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      mostrarToast('toastAdmin', '✅ Usuario creado', 'ok');
+      document.getElementById('adminUserName').value = '';
+      document.getElementById('adminUserEmail').value = '';
+      document.getElementById('adminUserPass').value = '';
+    } else mostrarToast('toastAdmin', '❌ ' + (d.error || 'Error'), 'error');
+  } catch(e) { mostrarToast('toastAdmin', '❌ Error de conexión', 'error'); }
+}
+
+async function crearEmpresa() {
+  const nombre = document.getElementById('adminEmpresaNombre').value.trim();
+  const userEmail = document.getElementById('adminEmpresaUserEmail').value.trim();
+  if (!nombre || !userEmail) return mostrarToast('toastAdmin', 'Completa todos los campos', 'error');
+  try {
+    const r = await fetch(API + '/api/empresas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ nombre, user_email: userEmail })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      mostrarToast('toastAdmin', '✅ Empresa creada', 'ok');
+      document.getElementById('adminEmpresaNombre').value = '';
+      document.getElementById('adminEmpresaUserEmail').value = '';
+    } else mostrarToast('toastAdmin', '❌ ' + (d.error || 'Error'), 'error');
+  } catch(e) { mostrarToast('toastAdmin', '❌ Error de conexión', 'error'); }
+}
+
+// ── Navegación secciones ──
+function mostrarSeccion(id) {
+  document.querySelectorAll('.panel-section').forEach(s => s.style.display = 'none');
+  const sec = document.getElementById(id);
+  if (sec) sec.style.display = 'block';
+}
+
+// ── Auto-login al cargar ──
+document.addEventListener('DOMContentLoaded', function() {
+  const userData = localStorage.getItem('user');
+  if (token && userData) {
+    try {
+      const user = JSON.parse(userData);
+      if (user && user.email) {
+        entrarAlPanel(user);
+      }
+    } catch(e) { /* ignorar */ }
+  }
+});
 
 // ── FAQ ──
 function toggleFaq(el) {
