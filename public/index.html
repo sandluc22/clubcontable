@@ -10,7 +10,9 @@
     body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-    /* ── Header ── */
+    #panelGestor { display: none !important; }
+
+  /* ── Header ── */
     header { background: #1e293b; padding: 16px 0; border-bottom: 3px solid #2563eb; }
     header .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
     .logo { font-size: 24px; font-weight: 700; color: #f59e0b; text-decoration: none; }
@@ -291,7 +293,7 @@
 </section>
 
 <!-- ─── PANEL GESTOR (oculto hasta login) ─── -->
-<section id="panelGestor" style="display:none;">
+<section id="panelGestor" style="display:none !important;">
   <div class="container">
     <div style="display:flex;gap:24px;flex-wrap:wrap;">
       
@@ -523,6 +525,8 @@ function logout() {
 function entrarAlPanel(user) {
   document.getElementById('acceso').style.display = 'none';
   document.getElementById('panelGestor').style.display = 'block';
+  // Scroll al panel
+  document.getElementById('panelGestor').scrollIntoView({ behavior: 'smooth' });
   document.getElementById('panelUserEmail').textContent = user.email || 'Usuario';
   cargarPanel();
 }
