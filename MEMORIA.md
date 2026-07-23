@@ -186,3 +186,8 @@ Carpeta central con fichas de herramientas y scripts
 1. **CFG Seguros** — Publicar lun/mié/vie 6:30h. Revisar seguidores viernes 20h
 2. **crecimientofinancieroglobal.com** — Compartir en Facebook + esperar financeAds + artículos semanales
 3. **Club Contable** — Verificar login, preparar videos cortos YouTube, luego gestor de citas + zona relax
+
+## 📌 Recordatorio para mañana (24 jul)
+- Login Gestor de Tareas Club Contable — arreglarlo con Sandra
+- Viernes 24 jul 6:30h → post CFG Seguros
+- Viernes 24 jul 20:00h → revisar seguidores
