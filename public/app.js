@@ -2,6 +2,8 @@
 const API = 'https://clubcontable-api.crecimientofinancieroglobal.workers.dev';
 let token = localStorage.getItem('token');
 
+console.log('Club Contable - App cargada', token ? 'sesión detectada' : 'sin sesión');
+
 // ── Utilidades ──
 function showToast(id, msg, type) {
   const t = document.getElementById(id);
@@ -17,16 +19,22 @@ function $(id) { return document.getElementById(id); }
 // ── Login ──
 async function login(e) {
   e.preventDefault();
-  const em = $('loginEmail').value.trim();
-  const pw = $('loginPass').value.trim();
-  if (!em || !pw) return showToast('loginToast', 'Completa todos los campos', 'error');
+  console.log('login() llamada');
+  const em = $('loginEmail');
+  const pw = $('loginPass');
+  if (!em || !pw) { console.error('No se encontraron campos login'); return; }
+  const email = em.value.trim();
+  const pass = pw.value.trim();
+  if (!email || !pass) return showToast('loginToast', 'Completa todos los campos', 'error');
   try {
+    console.log('Enviando login...');
     const r = await fetch(API + '/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: em, password: pw })
+      body: JSON.stringify({ email, password: pass })
     });
     const d = await r.json();
+    console.log('Respuesta login:', d.ok);
     if (d.ok && d.token) {
       showToast('loginToast', '✅ Ingreso exitoso', 'ok');
       localStorage.setItem('token', d.token);
@@ -36,8 +44,8 @@ async function login(e) {
       showToast('loginToast', '❌ ' + (d.error || 'Credenciales incorrectas'), 'error');
     }
   } catch (e) {
+    console.error('Error login:', e);
     showToast('loginToast', '❌ Error de conexión', 'error');
-    console.error(e);
   }
 }
 
@@ -51,8 +59,9 @@ function logout() {
 // ── Suscripción newsletter (Web3Forms) ──
 async function suscripcion(e) {
   e.preventDefault();
+  console.log('suscripcion() llamada');
   const email = $('subEmail');
-  if (!email) return;
+  if (!email) { console.error('No se encontró subEmail'); return; }
   const val = email.value.trim();
   if (!val) return showToast('subToast', 'Escribe tu correo', 'error');
   const btn = e.target.querySelector('button');
@@ -70,14 +79,15 @@ async function suscripcion(e) {
       })
     });
     const d = await r.json();
+    console.log('Respuesta suscripcion:', d.success);
     if (d.success) {
       showToast('subToast', '✅ ¡Gracias! Te mantendremos al día.', 'ok');
     } else {
       showToast('subToast', '❌ Error al suscribirte. Intenta de nuevo.', 'error');
     }
   } catch (e) {
+    console.error('Error suscripcion:', e);
     showToast('subToast', '❌ Error de conexión.', 'error');
-    console.error(e);
   }
   email.value = '';
   if (btn) btn.disabled = false;
@@ -86,11 +96,12 @@ async function suscripcion(e) {
 // ── Contacto (Web3Forms) ──
 async function contacto(e) {
   e.preventDefault();
+  console.log('contacto() llamada');
   const nombre = $('conNombre');
   const email = $('conEmail');
   const asunto = $('conAsunto');
   const msg = $('conMsg');
-  if (!nombre || !email || !msg) return;
+  if (!nombre || !email || !msg) { console.error('No se encontraron campos contacto'); return; }
   const nv = nombre.value.trim();
   const ev = email.value.trim();
   const av = asunto.value.trim();
@@ -112,14 +123,15 @@ async function contacto(e) {
       })
     });
     const d = await r.json();
+    console.log('Respuesta contacto:', d.success);
     if (d.success) {
       showToast('conToast', '✅ Mensaje enviado. Te responderemos pronto.', 'ok');
     } else {
       showToast('conToast', '❌ Error al enviar. Intenta de nuevo.', 'error');
     }
   } catch (e) {
+    console.error('Error contacto:', e);
     showToast('conToast', '❌ Error de conexión.', 'error');
-    console.error(e);
   }
   nombre.value = '';
   email.value = '';
@@ -139,20 +151,25 @@ function toggleFaq(el) {
 }
 
 // ── Init ──
-document.addEventListener('DOMContentLoaded', function() {
-  // Limpiar cualquier token malo que haya quedado
-  const userData = localStorage.getItem('user');
-  if (token && userData) {
-    try {
-      const user = JSON.parse(userData);
-      if (user && user.email) {
+try {
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM cargado');
+    const userData = localStorage.getItem('user');
+    if (token && userData) {
+      try {
+        const user = JSON.parse(userData);
+        console.log('Usuario recuperado:', user.email);
         document.getElementById('acceso').style.display = 'none';
+      } catch (e) {
+        console.warn('Token corrupto, limpiando');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        token = null;
       }
-    } catch (e) {
-      // Token corrupto, limpiar
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      token = null;
     }
-  }
-});
+  });
+} catch(e) {
+  console.error('Error en init:', e);
+}
+
+console.log('App lista - funciones disponibles: login, suscripcion, contacto, toggleFaq, logout');
