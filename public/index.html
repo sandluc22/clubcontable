@@ -529,6 +529,7 @@ function entrarAlPanel(user) {
   document.getElementById('panelGestor').scrollIntoView({ behavior: 'smooth' });
   document.getElementById('panelUserEmail').textContent = user.email || 'Usuario';
   cargarPanel();
+  document.querySelectorAll('section:not(#panelGestor)').forEach(s => s.style.display = 'none');
 }
 
 // ── Cargar el panel ──
