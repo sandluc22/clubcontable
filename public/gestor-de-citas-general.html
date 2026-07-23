@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Citas Online | Agenda Virtual para Negocios | Club Contable</title>
+  <meta name="description" content="Tu negocio abierto 24/7 para recibir reservas. Sistema de citas online con página pública, recordatorios WhatsApp y confirmación por email. Agenda virtual para cualquier negocio.">
+  <meta name="keywords" content="sistema de citas online, agenda virtual para negocios, booking online Colombia, reserva de citas web, agendamiento de citas, software de agenda">
+  <meta name="google-site-verification" content="q_2bTqN_4j5Q0hbMQyBb6ZqKLKCJNsnz51t6XJKfl68">
+
+  <meta property="og:title" content="Sistema de Citas Online | Club Contable">
+  <meta property="og:description" content="Tu negocio abierto 24/7 para recibir reservas. Sistema de citas online con WhatsApp, email y página pública.">
+  <meta property="og:url" content="https://clubcontable.com/gestor-de-citas-general">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Club Contable">
+
+  <link rel="canonical" href="https://clubcontable.com/gestor-de-citas-general">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XVVBY349WZ"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XVVBY349WZ');</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Sistema de Citas Online - Club Contable",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "Plataforma de agendamiento de citas online para negocios de cualquier rubro con página pública, recordatorios y confirmación automática.",
+    "offers": {
+      "@type": "Offer",
+      "price": "9999",
+      "priceCurrency": "COP",
+      "priceValidUntil": "2027-12-31",
+      "availability": "https://schema.org/PreOrder"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Club Contable"
+    }
+  }
+  </script>
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; color:#1e293b; background:#f8fafc; line-height:1.6; }
+    a { color:#2563eb; text-decoration:none; }
+    .container { max-width:1100px; margin:0 auto; padding:0 20px; }
+
+    header { background:#0a1929; color:#fff; padding:14px 0; position:sticky; top:0; z-index:100; }
+    header .container { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+    header .logo { font-size:22px; font-weight:800; }
+    header .logo span { color:#ffd700; }
+    header nav { display:flex; gap:20px; flex-wrap:wrap; }
+    header nav a { color:#94a3b8; font-size:14px; font-weight:500; transition:color .15s; }
+    header nav a:hover { color:#ffd700; }
+
+    .hero { background:linear-gradient(135deg,#0a1929 0%,#1a2a4a 100%); color:#fff; padding:80px 0; text-align:center; }
+    .hero h1 { font-size:44px; font-weight:800; margin-bottom:16px; }
+    .hero h1 span { color:#ffd700; }
+    .hero p { font-size:19px; color:#94a3b8; max-width:650px; margin:0 auto 30px; }
+    .hero .btn { display:inline-block; background:#ffd700; color:#0a1929; font-weight:700; font-size:17px; padding:14px 36px; border-radius:8px; transition:all .2s; }
+    .hero .btn:hover { background:#ffed4a; transform:translateY(-2px); box-shadow:0 8px 25px rgba(255,215,0,.3); }
+
+    .features { padding:80px 0; }
+    .features h2 { text-align:center; font-size:32px; font-weight:700; margin-bottom:48px; color:#0a1929; }
+    .features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:24px; }
+    .feature-card { background:#fff; border-radius:12px; padding:30px; border:1px solid #e2e8f0; transition:all .2s; }
+    .feature-card:hover { box-shadow:0 8px 25px rgba(0,0,0,.08); transform:translateY(-4px); }
+    .feature-card .icon { font-size:36px; margin-bottom:14px; }
+    .feature-card h3 { font-size:18px; font-weight:700; margin-bottom:8px; color:#0a1929; }
+    .feature-card p { font-size:14px; color:#64748b; }
+
+    .beneficios { background:#fff; padding:80px 0; }
+    .beneficios h2 { text-align:center; font-size:32px; font-weight:700; margin-bottom:48px; color:#0a1929; }
+    .beneficios-list { max-width:750px; margin:0 auto; list-style:none; }
+    .beneficios-list li { padding:16px 0; border-bottom:1px solid #e2e8f0; display:flex; align-items:flex-start; gap:12px; font-size:16px; color:#334155; }
+    .beneficios-list li:last-child { border-bottom:none; }
+    .beneficios-list li::before { content:"✓"; color:#059669; font-weight:700; font-size:20px; flex-shrink:0; }
+
+    .precios { padding:80px 0; background:#f1f5f9; }
+    .precios h2 { text-align:center; font-size:32px; font-weight:700; margin-bottom:16px; color:#0a1929; }
+    .precios .subtitle { text-align:center; color:#64748b; font-size:16px; margin-bottom:48px; }
+    .precios-table { max-width:400px; margin:0 auto; background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.06); border:1px solid #e2e8f0; }
+    .precios-table .plan-header { background:#0a1929; color:#fff; padding:30px; text-align:center; }
+    .precios-table .plan-header h3 { font-size:22px; font-weight:700; }
+    .precios-table .plan-header .price { font-size:42px; font-weight:800; margin:10px 0 4px; }
+    .precios-table .plan-header .price span { font-size:18px; font-weight:400; color:#94a3b8; }
+    .precios-table .plan-header .tag { display:inline-block; background:#ffd700; color:#0a1929; font-size:12px; font-weight:700; padding:4px 12px; border-radius:20px; margin-top:6px; }
+    .precios-table .plan-features { padding:30px; }
+    .precios-table .plan-features li { padding:10px 0; list-style:none; display:flex; align-items:center; gap:10px; font-size:15px; color:#334155; border-bottom:1px solid #f1f5f9; }
+    .precios-table .plan-features li:last-child { border-bottom:none; }
+    .precios-table .plan-features li::before { content:"✓"; color:#059669; font-weight:700; }
+    .precios-table .plan-cta { padding:0 30px 30px; }
+    .precios-table .plan-cta .btn { display:block; text-align:center; background:#2563eb; color:#fff; padding:14px; border-radius:8px; font-weight:700; font-size:16px; transition:background .15s; }
+    .precios-table .plan-cta .btn:hover { background:#1d4ed8; }
+
+    .testimonios { padding:80px 0; }
+    .testimonios h2 { text-align:center; font-size:32px; font-weight:700; margin-bottom:48px; color:#0a1929; }
+    .testimonios-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; }
+    .testimonio-card { background:#fff; border-radius:12px; padding:28px; border:1px solid #e2e8f0; }
+    .testimonio-card .stars { color:#ffd700; font-size:18px; margin-bottom:10px; }
+    .testimonio-card .texto { font-size:15px; color:#475569; font-style:italic; margin-bottom:14px; }
+    .testimonio-card .autor { font-weight:600; font-size:14px; color:#0a1929; }
+    .testimonio-card .cargo { font-size:12px; color:#94a3b8; }
+
+    .faq { padding:80px 0; background:#fff; }
+    .faq h2 { text-align:center; font-size:32px; font-weight:700; margin-bottom:48px; color:#0a1929; }
+    .faq-list { max-width:750px; margin:0 auto; }
+    .faq-item { margin-bottom:12px; }
+    .faq-question { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px 20px; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; font-size:15px; color:#0a1929; }
+    .faq-question:hover { background:#f1f5f9; }
+    .faq-question::after { content:"+"; font-size:20px; color:#2563eb; }
+    .faq-question.open::after { content:"−"; }
+    .faq-answer { display:none; padding:16px 20px; color:#475569; font-size:15px; border:1px solid #e2e8f0; border-top:none; border-radius:0 0 8px 8px; }
+
+    .cta-final { background:linear-gradient(135deg,#0a1929 0%,#1a2a4a 100%); color:#fff; padding:80px 0; text-align:center; }
+    .cta-final h2 { font-size:34px; font-weight:800; margin-bottom:14px; }
+    .cta-final p { color:#94a3b8; font-size:18px; margin-bottom:30px; }
+    .cta-final .btn { display:inline-block; background:#ffd700; color:#0a1929; font-weight:700; font-size:17px; padding:14px 36px; border-radius:8px; transition:all .2s; }
+    .cta-final .btn:hover { background:#ffed4a; transform:translateY(-2px); }
+
+    .contact-form { max-width:500px; margin:0 auto; background:#fff; border-radius:12px; padding:30px; border:1px solid #e2e8f0; }
+    .contact-form input,.contact-form textarea { width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; margin-bottom:14px; }
+    .contact-form textarea { height:100px; resize:vertical; }
+    .contact-form button { width:100%; background:#2563eb; color:#fff; padding:14px; border:none; border-radius:8px; font-weight:700; font-size:16px; cursor:pointer; }
+    .contact-form button:hover { background:#1d4ed8; }
+
+    footer { background:#0a1929; color:#94a3b8; padding:40px 0; text-align:center; font-size:14px; }
+    footer a { color:#94a3b8; }
+    footer a:hover { color:#ffd700; }
+    footer .links { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-bottom:14px; }
+    footer .social { display:flex; justify-content:center; gap:16px; margin-bottom:14px; }
+    footer .social a { font-size:20px; }
+    footer .copy { font-size:13px; }
+
+    .wa-float { position:fixed; bottom:24px; right:24px; background:#25D366; color:#fff; width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; box-shadow:0 4px 12px rgba(37,211,102,.3); transition:all .2s; z-index:999; text-decoration:none; }
+    .wa-float:hover { transform:scale(1.1); box-shadow:0 6px 20px rgba(37,211,102,.4); }
+
+    .hidden { display:none !important; }
+
+    @media(max-width:768px) {
+      .hero h1 { font-size:30px; }
+      .hero p { font-size:16px; }
+      .features-grid { grid-template-columns:1fr; }
+      .testimonios-grid { grid-template-columns:1fr; }
+      .precios-table { max-width:100%; }
+      header .container { flex-direction:column; }
+      header nav { justify-content:center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <a href="https://clubcontable.com" class="logo">Club <span>Contable</span></a>
+      <nav>
+        <a href="https://clubcontable.com">Inicio</a>
+        <a href="gestor-de-tareas.html">Gestor Tareas</a>
+        <a href="gestor-de-citas.html">Gestor Citas</a>
+        <a href="precios.html">Precios</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Tu negocio abierto 24/7 <span>para recibir reservas</span></h1>
+      <p>Mientras tú trabajas, tus clientes agendan. Un sistema de citas online simple que funciona para cualquier tipo de negocio.</p>
+      <a href="#contacto" class="btn">Solicitar acceso</a>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <h2>Todo lo que necesitas para gestionar tus citas</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="icon">🌐</div>
+          <h3>Página pública de reservas</h3>
+          <p>Tus clientes ven tu disponibilidad en tiempo real y agendan sin llamar. Comparte el enlace en redes, web o WhatsApp.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📱</div>
+          <h3>Recordatorios automáticos</h3>
+          <p>Tus clientes reciben notificaciones por WhatsApp y email antes de cada cita. Reduces ausencias drásticamente.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📧</div>
+          <h3>Confirmación al instante</h3>
+          <p>Tanto tú como tu cliente reciben una confirmación automática con fecha, hora y todos los detalles agendados.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">⚙️</div>
+          <h3>Horarios personalizables</h3>
+          <p>Define tus días laborales, horarios, duración de cada cita y tiempos entre reservas. El sistema lo respeta todo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="beneficios">
+    <div class="container">
+      <h2>Beneficios para tu negocio</h2>
+      <ul class="beneficios-list">
+        <li>Tus clientes reservan sin depender de ti, los 7 días de la semana, a cualquier hora</li>
+        <li>Elimina las llamadas perdidas y los mensajes preguntando por disponibilidad</li>
+        <li>Reduce las ausencias con recordatorios automáticos antes de cada cita</li>
+        <li>Organiza tu tiempo con bloques definidos y agenda sin conflictos</li>
+        <li>Sin instalaciones, funciona en cualquier navegador desde cualquier dispositivo</li>
+        <li>Atención al cliente rápida por WhatsApp para resolver cualquier duda</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="precios">
+    <div class="container">
+      <h2>Precios accesibles para cualquier negocio</h2>
+      <p class="subtitle">Una suscripción baja para automatizar tus reservas.</p>
+      <div class="precios-table" itemscope itemtype="https://schema.org/Product">
+        <meta itemprop="name" content="Sistema de Citas Online - Club Contable">
+        <link itemprop="url" href="https://clubcontable.com/gestor-de-citas-general">
+        <div class="plan-header">
+          <h3>Plan Citas</h3>
+          <div class="price">$9.999 <span>/mes</span></div>
+          <div class="tag">Clientes ilimitados</div>
+        </div>
+        <ul class="plan-features">
+          <li>Página pública de reservas</li>
+          <li>Clientes ilimitados</li>
+          <li>Recordatorios WhatsApp</li>
+          <li>Confirmación por email</li>
+          <li>Horarios personalizables</li>
+          <li>Sin límite de reservas</li>
+        </ul>
+        <div class="plan-cta">
+          <a href="#contacto" class="btn">Solicitar acceso</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonios">
+    <div class="container">
+      <h2>Lo que dicen nuestros usuarios</h2>
+      <div class="testimonios-grid">
+        <div class="testimonio-card">
+          <div class="stars">★★★★★</div>
+          <p class="texto">"Mis clientes ahora reservan solos desde mi perfil de Instagram. Ya no pierdo tiempo coordinando horarios por mensaje."</p>
+          <p class="autor">Sofía M. Londoño</p>
+          <p class="cargo">Estilista, Pereira</p>
+        </div>
+        <div class="testimonio-card">
+          <div class="stars">★★★★★</div>
+          <p class="texto">"Las ausencias se redujeron muchísimo desde que implementamos los recordatorios automáticos por WhatsApp."</p>
+          <p class="autor">Pedro J. Castro</p>
+          <p class="cargo">Consultor, Bogotá</p>
+        </div>
+        <div class="testimonio-card">
+          <div class="stars">★★★★★</div>
+          <p class="texto">"Súper fácil de configurar. En 10 minutos ya tenía mi página de reservas funcionando. Mis clientes felices."</p>
+          <p class="autor">Manuela Restrepo</p>
+          <p class="cargo">Psicóloga, Medellín</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq">
+    <div class="container">
+      <h2>Preguntas frecuentes</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">¿Qué tipo de negocios pueden usarlo?</div>
+          <div class="faq-answer">Cualquier negocio que reciba clientes con cita previa: consultorías, clínicas, salones de belleza, asesorías, talleres, abogados, arquitectos, coaching, etc.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">¿Mis clientes necesitan registrarse?</div>
+          <div class="faq-answer">No, tus clientes solo ingresan al enlace público que compartes, eligen fecha y hora, llenan sus datos y confirman. Sin registro, sin descargas.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">¿Puedo personalizar la página con mi marca?</div>
+          <div class="faq-answer">Sí, puedes agregar tu logo, colores y un mensaje de bienvenida para que la experiencia de tus clientes sea profesional y coherente con tu marca.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">¿Cuándo se envían los recordatorios?</div>
+          <div class="faq-answer">Tú configuras el tiempo de anticipación. Pueden ser 24 horas antes, 2 horas antes, o cuando prefieras. El cliente recibe un WhatsApp y un email automáticos.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final" id="contacto">
+    <div class="container">
+      <h2>Empieza a recibir reservas hoy</h2>
+      <p>Déjanos tus datos y te contactaremos para activar tu agenda virtual.</p>
+      <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="2db4436a-448c-4a82-940c-12950eaf9b25">
+        <input type="hidden" name="subject" value="Nuevo lead - Gestor de Citas General">
+        <input type="hidden" name="redirect" value="https://clubcontable.com/gracias">
+        <input type="text" name="name" placeholder="Tu nombre" required>
+        <input type="email" name="email" placeholder="Tu correo electrónico" required>
+        <input type="tel" name="phone" placeholder="Tu WhatsApp" required>
+        <input type="text" name="company" placeholder="Nombre de tu negocio">
+        <textarea name="message" placeholder="Cuéntanos cómo gestionas tus citas actualmente..." rows="4"></textarea>
+        <button type="submit">Solicitar acceso</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="social">
+        <a href="#" aria-label="TikTok">🎵</a>
+        <a href="#" aria-label="Instagram">📸</a>
+        <a href="#" aria-label="LinkedIn">💼</a>
+      </div>
+      <div class="links">
+        <a href="https://clubcontable.com">Inicio</a>
+        <a href="gestor-de-tareas.html">Gestor de Tareas</a>
+        <a href="gestor-de-citas.html">Gestor de Citas</a>
+        <a href="precios.html">Precios</a>
+        <a href="#contacto">Contacto</a>
+        <a href="aviso-legal.html">Aviso Legal</a>
+        <a href="privacidad.html">Privacidad</a>
+      </div>
+      <p class="copy">&copy; 2026 Club Contable. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <a class="wa-float" href="https://wa.me/573001234567" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+
+  <script>
+    function toggleFaq(el) {
+      el.classList.toggle('open');
+      const answer = el.nextElementSibling;
+      answer.classList.toggle('open');
+      answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>
