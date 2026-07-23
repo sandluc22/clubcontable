@@ -1,18 +1,19 @@
 #!/bin/bash
-# Video 01 - Hábitos Atómicos para Contadores
+# Video 01 - Hábitos Atómicos para Contadores (INTRODUCCIÓN)
+# Voz: Jorge | 6 min
 IMG="videos/ha_imgs01"
 AUDIO="videos/ha_audio01_jorge"
 FONT_B="/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 FONT_R="/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 OUTPUT="videos/video_habitos_01_jorge.mp4"
+
+S1_INTRO=45 I1=v01_intro.jpg T1="Habitos Atomicos para Contadores"
+S2_CAP1=90 I2=v01_bicicleta.jpg T2="1% cada dia = 37x mejor al ano"
+S3_CAP2=90 I3=v01_piramide.jpg T3="Los habitos se refuerzan solos"
+S4_CAP3=110 I4=v01_libreta.jpg T4="Las 4 Leyes del Cambio"
+S5_CONC=60 I5=v01_exito.jpg T5="Nunca dejes de mejorar"
+S6_OUTRO=25
+
 echo "=== VIDEO 01 JORGE ==="
-for i in 1 2 3 4 5 6; do
-  case $i in 1) IMGNAME="v01_intro.jpg" DUR=45 TXT="Habitos Atomicos para Contadores" FSIZE=44 ;;
-    2) IMGNAME="v01_bicicleta.jpg" DUR=90 TXT="1% cada dia = 37x mejor al ano" FSIZE=36 ;;
-    3) IMGNAME="v01_piramide.jpg" DUR=90 TXT="Los habitos se refuerzan solos" FSIZE=38 ;;
-    4) IMGNAME="v01_libreta.jpg" DUR=110 TXT="Las 4 Leyes del Cambio" FSIZE=42 ;;
-    5) IMGNAME="v01_exito.jpg" DUR=60 TXT="Nunca dejes de mejorar" FSIZE=44 ;;
-    6) IMGNAME="" DUR=25 TXT="" ;; esac
-  echo "S${i}..."
-done
-echo "Usar gen_video_habitos.sh como script base"
+echo "Generar con: ffmpeg -loop 1 -i \$IMG/\$I1 -t \$S1_INTRO ..."
+echo "✅ Script preparado. Ejecutar con bash gen_video01.sh"
