@@ -7,6 +7,8 @@ export default {
     if (m === 'OPTIONS') return new Response(null, { headers: c });
     try {
       // LOGIN
+            // Asegurar que existe la tabla citas
+      await e.DB.exec('CREATE TABLE IF NOT EXISTS citas (id INTEGER PRIMARY KEY AUTOINCREMENT, cliente_nombre TEXT NOT NULL, cliente_email TEXT NOT NULL, cliente_telefono TEXT DEFAULT "", fecha TEXT NOT NULL, hora TEXT NOT NULL, motivo TEXT DEFAULT "", estado TEXT DEFAULT "pendiente", empresa_id INTEGER, usuario_id INTEGER, created_at TEXT DEFAULT (datetime("now")))');
       if (p === '/api/login' && m === 'POST') {
         const b = await r.json();
         const usr = await e.DB.prepare('SELECT * FROM usuarios WHERE email = ? AND password = ?').bind(b.email, b.password).first();
@@ -96,6 +98,46 @@ export default {
         return R({ ok: true });
       }
 
+      
+      // CITAS
+      if (p === '/api/citas') {
+        if (m === 'GET') {
+          if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+          let sql, params;
+          if (b_empresa_id) {
+            sql = 'SELECT * FROM citas WHERE empresa_id = ? ORDER BY fecha DESC, hora ASC';
+            params = [b_empresa_id];
+          } else {
+            sql = 'SELECT * FROM citas ORDER BY fecha DESC, hora ASC';
+            params = [];
+          }
+          const x = await e.DB.prepare(sql).bind(...params).all();
+          return R({ ok: true, citas: x.results });
+        }
+        if (m === 'POST') {
+          const b = await r.json();
+          if (!b.cliente_nombre || !b.cliente_email || !b.fecha || !b.hora)
+            return R({ ok: false, error: 'Faltan campos obligatorios' }, 400);
+          const x = await e.DB.prepare('INSERT INTO citas (cliente_nombre, cliente_email, cliente_telefono, fecha, hora, motivo, estado) VALUES (?, ?, ?, ?, ?, ?, ?)')
+            .bind(b.cliente_nombre, b.cliente_email, b.cliente_telefono || '', b.fecha, b.hora, b.motivo || '', 'pendiente').run();
+          return R({ ok: true, id: x.meta.last_row_id });
+        }
+        if (m === 'DELETE') {
+          if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+          const id = u.searchParams.get('id');
+          if (!id) return R({ ok: false, error: 'Falta id' }, 400);
+          await e.DB.prepare('DELETE FROM citas WHERE id = ?').bind(id).run();
+          return R({ ok: true });
+        }
+      }
+      if (p === '/api/citas/estado' && m === 'POST') {
+        if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+        const b = await r.json();
+        if (!['pendiente','confirmada','cancelada'].includes(b.estado))
+          return R({ ok: false, error: 'Estado invalido' }, 400);
+        await e.DB.prepare('UPDATE citas SET estado = ? WHERE id = ?').bind(b.estado, b.id).run();
+        return R({ ok: true });
+      }
       return new Response(JSON.stringify({ ok: false, error: 'No encontrada' }), { status: 404, headers: c });
     } catch (e) { return new Response(JSON.stringify({ ok: false, error: e.message }), { status: 500, headers: c }); }
   }

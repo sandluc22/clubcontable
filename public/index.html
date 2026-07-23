@@ -601,6 +601,9 @@ tr:hover td{background:#f8fafc}
     <a onclick="nav('subcategorias')"><span class="ico">📁</span><span class="txt">Subcategorías</span></a>
     <a onclick="nav('reportes')"><span class="ico">📊</span><span class="txt">Reportes</span></a>
     <a onclick="nav('admin')" id="lnkAdmin" style="display:none"><span class="ico">⚙️</span><span class="txt">Admin</span></a>
+    <a onclick="nav('productos')"><span class="ico">🛒</span><span class="txt">Productos</span></a>
+    <a onclick="nav('citas')"><span class="ico">📅</span><span class="txt">Gestor de Citas</span></a>
+    <a onclick="nav('relax')"><span class="ico">🏖️</span><span class="txt">Zona Relax</span></a>
   </div>
   <div class="sidebar-footer">
     <div class="user-row">
@@ -658,6 +661,62 @@ tr:hover td{background:#f8fafc}
     <div class="card" style="margin-top:20px"><div class="card-header"><h2>Empresas</h2><button class="btn btn-primary" onclick="openModalEmpresa()">+ Nueva empresa</button></div><div id="adminEmpresas">Cargando...</div></div>
   </div>
 </div>
+
+
+  <!-- PRODUCTOS -->
+  <div id="page-productos" class="page">
+    <div class="page-title">Nuestros Productos</div>
+    <div class="stats" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="stat-card" style="cursor:pointer" onclick="nav('tareas')">
+        <div style="font-size:36px;margin-bottom:8px">📋</div>
+        <div class="label">Gestor de Tareas</div>
+        <div class="value">Organiza tu trabajo</div>
+        <div style="margin-top:12px;font-size:12px;color:#ffd700">Ver más →</div>
+      </div>
+      <div class="stat-card" style="cursor:pointer" onclick="nav('citas')">
+        <div style="font-size:36px;margin-bottom:8px">📅</div>
+        <div class="label">Gestor de Citas</div>
+        <div class="value">Agenda y reservas</div>
+        <div style="margin-top:12px;font-size:12px;color:#ffd700">Ver más →</div>
+      </div>
+      <div class="stat-card" style="cursor:pointer;opacity:0.7">
+        <div style="font-size:36px;margin-bottom:8px">🔜</div>
+        <div class="label">Próximamente</div>
+        <div class="value">Nuevos gestores</div>
+        <div style="margin-top:12px;font-size:12px;color:#666">En desarrollo</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <div class="card-header"><h2>¿Qué es un gestor?</h2></div>
+      <p style="padding:15px;line-height:1.7;color:#cbd5e1">Cada gestor es una herramienta independiente que puedes contratar por separado. Eliges solo lo que necesitas, pagas solo por lo que usas. Todos los gestores funcionan dentro de Club Contable, con una cuenta única.</p>
+    </div>
+  </div>
+
+  <!-- GESTOR DE CITAS -->
+  <div id="page-citas" class="page">
+    <div class="page-title">📅 Gestor de Citas</div>
+    <div class="card">
+      <div class="card-header">
+        <h2>Todas las citas</h2>
+        <button class="btn btn-primary" onclick="document.getElementById('modalCita').style.display='flex'">+ Nueva cita</button>
+      </div>
+      <div id="tablaCitas">
+        <p style="color:#94a3b8;padding:20px">Cargando citas...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONA RELAX -->
+  <div id="page-relax" class="page">
+    <div class="page-title">🏖️ Zona Relax</div>
+    <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+      <button class="btn" onclick="relaxTab('musica')" id="tabMusica" style="background:#2563eb;color:white">🎵 Música</button>
+      <button class="btn" onclick="relaxTab('videos')" id="tabVideos">📺 Videos</button>
+      <button class="btn" onclick="relaxTab('humor')" id="tabHumor">😂 Humor</button>
+      <button class="btn" onclick="relaxTab('juegos')" id="tabJuegos">🎮 Juegos</button>
+    </div>
+    <div id="relaxContent" style="min-height:300px"></div>
+  </div>
 
 <!-- MODALS -->
 <div class="modal" id="modTarea"><div class="modal-content"><h3 id="modTitulo">Nueva tarea</h3>
@@ -991,6 +1050,236 @@ tr:hover td{background:#f8fafc}
       $(tipo === 'privacidad' ? 'secPrivacidad' : 'secAviso').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  </script>
+  
+function nav(section) {
+  const pages = document.querySelectorAll('.page');
+  pages.forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + section);
+  if (target) target.classList.add('active');
+  // Close sidebar on mobile
+  const sb = document.getElementById('sidebar');
+  if (sb && window.innerWidth <= 768) sb.classList.remove('open');
+  // Load section-specific content
+  if (section === 'citas') cargarCitas();
+  if (section === 'relax') relaxTab('musica');
+}
+
+// ===== GESTOR DE CITAS =====
+async function cargarCitas() {
+  const token = localStorage.getItem('token');
+  try {
+    const r = await fetch('https://clubcontable-api.crecimientofinancieroglobal.workers.dev/api/citas', {
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    });
+    const data = await r.json();
+    if (!data.success) throw new Error(data.error || 'Error al cargar citas');
+    let html = '<table><thead><tr><th>Cliente</th><th>Email</th><th>Teléfono</th><th>Fecha</th><th>Hora</th><th>Motivo</th><th>Estado</th><th>Acción</th></tr></thead><tbody>';
+    data.citas.forEach(c => {
+      const estilos = { pendiente: 'color:#f5a623', confirmada: 'color:#22c55e', cancelada: 'color:#ef4444' };
+      const est = estilos[c.estado] || 'color:#94a3b8';
+      let accion = '';
+      if (c.estado === 'pendiente' || c.estado === 'confirmada') {
+        accion = '<button class="btn btn-sm" onclick="cambiarEstadoCita(' + c.id + ",'" + (c.estado === 'pendiente' ? 'confirmada' : 'cancelada') + "')" style="margin-right:4px">' + (c.estado === 'pendiente' ? '✅ Confirmar' : '❌ Cancelar') + '</button>';
+      }
+      accion += '<button class="btn btn-sm" onclick="eliminarCita(' + c.id + ')" style="background:#ef4444;color:white">🗑️</button>';
+      html += '<tr><td>' + (c.cliente_nombre || '') + '</td><td>' + (c.cliente_email || '') + '</td><td>' + (c.cliente_telefono || '') + '</td><td>' + (c.fecha || '') + '</td><td>' + (c.hora || '') + '</td><td>' + (c.motivo || '') + '</td><td style="' + est + ';font-weight:600">' + c.estado + '</td><td>' + accion + '</td></tr>';
+    });
+    html += '</tbody></table>';
+    document.getElementById('tablaCitas').innerHTML = html;
+  } catch(e) {
+    document.getElementById('tablaCitas').innerHTML = '<p style="color:#ef4444">Error: ' + e.message + '</p>';
+  }
+}
+
+async function guardarCita() {
+  const data = {
+    cliente_nombre: document.getElementById('citaCliente').value,
+    cliente_email: document.getElementById('citaEmail').value,
+    cliente_telefono: document.getElementById('citaTel').value,
+    fecha: document.getElementById('citaFecha').value,
+    hora: document.getElementById('citaHora').value,
+    motivo: document.getElementById('citaMotivo').value
+  };
+  if (!data.cliente_nombre || !data.cliente_email || !data.fecha || !data.hora) {
+    alert('Completa los campos obligatorios (*)');
+    return;
+  }
+  try {
+    const r = await fetch('https://clubcontable-api.crecimientofinancieroglobal.workers.dev/api/citas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const res = await r.json();
+    if (!res.success) throw new Error(res.error || 'Error');
+    document.getElementById('modalCita').style.display = 'none';
+    ['citaCliente','citaEmail','citaTel','citaFecha','citaHora','citaMotivo'].forEach(id => document.getElementById(id).value = '');
+    if (document.getElementById('page-citas').classList.contains('active')) cargarCitas();
+    alert('✅ Cita creada');
+  } catch(e) {
+    alert('❌ ' + e.message);
+  }
+}
+
+async function cambiarEstadoCita(id, estado) {
+  const token = localStorage.getItem('token');
+  try {
+    const r = await fetch('https://clubcontable-api.crecimientofinancieroglobal.workers.dev/api/citas/estado', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ id, estado })
+    });
+    const res = await r.json();
+    if (!res.success) throw new Error(res.error);
+    cargarCitas();
+  } catch(e) { alert('❌ ' + e.message); }
+}
+
+async function eliminarCita(id) {
+  if (!confirm('¿Eliminar esta cita?')) return;
+  const token = localStorage.getItem('token');
+  try {
+    const r = await fetch('https://clubcontable-api.crecimientofinancieroglobal.workers.dev/api/citas?id=' + id, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const res = await r.json();
+    if (!res.success) throw new Error(res.error);
+    cargarCitas();
+  } catch(e) { alert('❌ ' + e.message); }
+}
+
+// ===== ZONA RELAX =====
+function relaxTab(tab) {
+  ['musica','videos','humor','juegos'].forEach(t => {
+    const el = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1));
+    el.style.background = t === tab ? '#2563eb' : '#1a2a4a';
+    el.style.color = t === tab ? 'white' : '#94a3b8';
+  });
+  
+  const content = document.getElementById('relaxContent');
+  const contents = {
+    musica: `<div style="text-align:center;padding:30px">
+      <div style="font-size:48px;margin-bottom:15px">🎵</div>
+      <h3 style="color:white;margin-bottom:12px">Música para concentrarse</h3>
+      <p style="color:#94a3b8;margin-bottom:20px">Pon música de fondo mientras trabajas</p>
+      <div style="display:grid;gap:12px;max-width:500px;margin:0 auto">
+        <div style="background:#1a2a4a;border-radius:10px;padding:15px;cursor:pointer" onclick="window.open('https://www.youtube.com/watch?v=jWPd2k-nYbE','_blank')">
+          🎹 Lofi Hip Hop · Música para trabajar
+        </div>
+        <div style="background:#1a2a4a;border-radius:10px;padding:15px;cursor:pointer" onclick="window.open('https://www.youtube.com/watch?v=5qap5aO4i9A','_blank')">
+          🌧️ Sonido de lluvia · Relajación
+        </div>
+        <div style="background:#1a2a4a;border-radius:10px;padding:15px;cursor:pointer" onclick="window.open('https://www.youtube.com/watch?v=DWcJFNfaw9c','_blank')">
+          🌿 Jazz tranquilo · Concentración
+        </div>
+      </div>
+    </div>`,
+    videos: `<div style="text-align:center;padding:30px">
+      <div style="font-size:48px;margin-bottom:15px">📺</div>
+      <h3 style="color:white;margin-bottom:12px">Videos motivacionales</h3>
+      <p style="color:#94a3b8;margin-bottom:20px">Tómate un respiro y recarga energía</p>
+      <div style="display:grid;gap:12px;max-width:500px;margin:0 auto">
+        <div style="background:#1a2a4a;border-radius:10px;padding:15px;cursor:pointer" onclick="window.open('https://www.youtube.com/watch?v=ZXsQAXx_ao0','_blank')">
+          🌅 Los mejores paisajes del mundo · 4K
+        </div>
+        <div style="background:#1a2a4a;border-radius:10px;padding:15px;cursor:pointer" onclick="window.open('https://www.youtube.com/watch?v=1k3NQ7DMkSg','_blank')">
+          🏔️ Montañas y naturaleza relajante
+        </div>
+        <div style="background:#1a2a4a;border-radius:10px;padding:15px;cursor:pointer" onclick="window.open('https://www.youtube.com/watch?v=tVj0ZTS4WF4','_blank')">
+          🌊 Mar y atardecer · 1 hora de paz
+        </div>
+      </div>
+    </div>`,
+    humor: `<div style="text-align:center;padding:30px">
+      <div style="font-size:48px;margin-bottom:15px">😂</div>
+      <h3 style="color:white;margin-bottom:12px">Humor contable</h3>
+      <p style="color:#94a3b8;margin-bottom:20px">Porque reírse también es parte del trabajo</p>
+      <div style="display:grid;gap:12px;max-width:500px;margin:0 auto">
+        <div style="background:#1a2a4a;border-radius:10px;padding:15px">
+          💼 "Soy contador: sí, tengo Excel en mis sueños"
+        </div>
+        <div style="background:#1a2a4a;border-radius:10px;padding:15px">
+          📊 "Nivel de estrés: cuando el balance no cuadra y son las 4:59pm"
+        </div>
+        <div style="background:#1a2a4a;border-radius:10px;padding:15px">
+          🧮 "Contable: la única persona que puede hacer llorar a un empresario con una hoja de cálculo"
+        </div>
+        <div style="background:#1a2a4a;border-radius:10px;padding:15px">
+          💰 "¿Por qué los contables son tan buenos en el escondite? Porque saben dónde esconder los ingresos"
+        </div>
+      </div>
+    </div>`,
+    juegos: `<div style="text-align:center;padding:30px">
+      <div style="font-size:48px;margin-bottom:15px">🎮</div>
+      <h3 style="color:white;margin-bottom:12px">Juegos rápidos</h3>
+      <p style="color:#94a3b8;margin-bottom:20px">Desconecta 5 minutos</p>
+      <div style="display:grid;gap:12px;max-width:500px;margin:0 auto">
+        <div style="background:#1a2a4a;border-radius:10px;padding:15px;cursor:pointer" onclick="window.open('https://es.wikipedia.org/wiki/Sudoku','_blank')">
+          🔢 Sudoku · Pon a prueba tu mente
+        </div>
+        <div style="background:#1a2a4a;border-radius:10px;padding:20px;text-align:center">
+          <div style="font-size:28px;margin-bottom:8px;color:#22c55e">WORDLE CONTABLE</div>
+          <p style="color:#94a3b8;margin-bottom:10px;font-size:14px">Adivina la palabra contable de 5 letras</p>
+          <div id="wordleGrid" style="display:flex;flex-direction:column;gap:4px;align-items:center;margin-bottom:12px">
+            <div id="wordleRow1" style="display:flex;gap:4px">
+              <span style="width:40px;height:40px;border:2px solid #334155;display:inline-flex;align-items:center;justify-content:center;background:#1e293b;color:white;font-weight:700;border-radius:4px">_</span>
+              <span style="width:40px;height:40px;border:2px solid #334155;display:inline-flex;align-items:center;justify-content:center;background:#1e293b;color:white;font-weight:700;border-radius:4px">_</span>
+              <span style="width:40px;height:40px;border:2px solid #334155;display:inline-flex;align-items:center;justify-content:center;background:#1e293b;color:white;font-weight:700;border-radius:4px">_</span>
+              <span style="width:40px;height:40px;border:2px solid #334155;display:inline-flex;align-items:center;justify-content:center;background:#1e293b;color:white;font-weight:700;border-radius:4px">_</span>
+              <span style="width:40px;height:40px;border:2px solid #334155;display:inline-flex;align-items:center;justify-content:center;background:#1e293b;color:white;font-weight:700;border-radius:4px">_</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:4px;justify-content:center;margin-bottom:8px">
+            <input id="wordleInput" maxlength="5" style="width:100px;padding:6px;text-align:center;background:#1e293b;border:1px solid #334155;color:white;border-radius:4px;text-transform:uppercase" placeholder="ACTIVO">
+            <button class="btn btn-sm" onclick="wordleGuess()" style="background:#22c55e;color:white">▶</button>
+          </div>
+          <div id="wordleMsg" style="font-size:13px;color:#94a3b8"></div>
+        </div>
+      </div>
+    </div>`
+  };
+  content.innerHTML = contents[tab] || '';
+}
+
+let wordlePalabra = '';
+let wordleIntentos = 0;
+const wordleLista = ['ACTIVO','BALAN','CAJAS','DEUDA','GASTO','HABER','IMPUT','LIBRO','NETOS','PAGOS','RENTA','SALDO','TOTAL','VALOR','ACTIV','AHORR','BONOS','CIERRE','CREDI','DEBIT','FONDO','FISCAL','IVA','LIQUD','PASIV','PLAZO','PENDT','PROVISION','TASA','UTILD'];
+
+function wordleGuess() {
+  const input = document.getElementById('wordleInput');
+  const guess = input.value.toUpperCase().trim();
+  if (guess.length !== 5) { document.getElementById('wordleMsg').textContent = 'Debe tener 5 letras'; return; }
+  if (!wordlePalabra) wordlePalabra = wordleLista[Math.floor(Math.random() * wordleLista.length)];
+  wordleIntentos++;
+  const row = document.getElementById('wordleRow1');
+  const spans = row.querySelectorAll('span');
+  for (let i = 0; i < 5; i++) {
+    spans[i].textContent = guess[i];
+    if (guess[i] === wordlePalabra[i]) {
+      spans[i].style.background = '#22c55e';
+    } else if (wordlePalabra.includes(guess[i])) {
+      spans[i].style.background = '#f5a623';
+    } else {
+      spans[i].style.background = '#334155';
+    }
+  }
+  if (guess === wordlePalabra) {
+    document.getElementById('wordleMsg').textContent = '🎉 ¡Acertaste!';
+    document.getElementById('wordleMsg').style.color = '#22c55e';
+    wordlePalabra = '';
+    wordleIntentos = 0;
+    setTimeout(() => {
+      document.getElementById('wordleRow1').querySelectorAll('span').forEach(s => { s.textContent = '_'; s.style.background = '#1e293b'; });
+      document.getElementById('wordleMsg').textContent = 'Nueva palabra lista!';
+    }, 3000);
+  } else {
+    document.getElementById('wordleMsg').textContent = '❌ Sigue intentando';
+    document.getElementById('wordleMsg').style.color = '#f5a623';
+  }
+  input.value = '';
+}
+
+</script>
 </body>
 </html>
