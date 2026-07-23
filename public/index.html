@@ -200,7 +200,7 @@
 </section>
 
 <!-- ─── ACCESO / LOGIN ─── -->
-<section id="acceso">
+<section id="acceso" style="display:block;">
   <div class="container">
     <h2>Inicia <span>sesión</span></h2>
     <form onsubmit="login(event)">
@@ -714,14 +714,21 @@ function mostrarSeccion(id) {
 
 // ── Auto-login al cargar ──
 document.addEventListener('DOMContentLoaded', function() {
+  // Limpiar tokens corruptos de sesiones anteriores
   const userData = localStorage.getItem('user');
   if (token && userData) {
     try {
       const user = JSON.parse(userData);
       if (user && user.email) {
+        // Verificar que el token sigue siendo válido
         entrarAlPanel(user);
       }
-    } catch(e) { /* ignorar */ }
+    } catch(e) {
+      // Token corrupto - limpiar y mostrar login
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      token = null;
+    }
   }
 });
 
