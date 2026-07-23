@@ -10,11 +10,17 @@ export default {
     try {
       // Obtener usuario autenticado
       let uid = 0, uemp = 0;
-      const auth = r.headers.get('Authorization') || '';
-      if (auth.startsWith('***')) {
-        const tk = auth.slice(3);
+      const a = r.headers.get('Authorization') || '';
+      // Accept Bearer prefix (standard) or *** prefix (legacy)
+      let hv = a.startsWith('Bearer ') ? a.slice(7) : a;
+      let tk = hv.startsWith('***') ? hv.slice(3) : hv;
+      if (tk) {
         const s = await e.DB.prepare('SELECT usuario_id, empresa_id FROM sesiones WHERE token = ?').bind(tk).first();
         if (s) { uid = s.usuario_id; uemp = s.empresa_id || 0; }
+        if (!s) {
+          const cs = await e.DB.prepare('SELECT cliente_id FROM clientes_sesiones WHERE token = ?').bind(tk).first();
+          if (cs) { uid = cs.cliente_id; uemp = -1; }
+        }
       }
 
       // Asegurar tablas
@@ -48,6 +54,11 @@ export default {
         email_plantilla_recordatorio TEXT DEFAULT "",
         created_at TEXT DEFAULT (datetime("now"))
       )`);
+    // Tablas de clientes
+    await e.DB.exec(`CREATE TABLE IF NOT EXISTS clientes (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, email TEXT UNIQUE, password TEXT, telefono TEXT, gestor_tareas INTEGER DEFAULT 0, gestor_citas INTEGER DEFAULT 0, activo INTEGER DEFAULT 1, created_at TEXT DEFAULT (datetime('now')))`);
+    await e.DB.exec(`CREATE TABLE IF NOT EXISTS clientes_sesiones (id INTEGER PRIMARY KEY AUTOINCREMENT, cliente_id INTEGER, token TEXT, created_at TEXT DEFAULT (datetime('now')))`);
+
+    await e.DB.exec(`CREATE TABLE IF NOT EXISTS tareas (id INTEGER PRIMARY KEY AUTOINCREMENT, cliente_id INTEGER DEFAULT 0, titulo TEXT, descripcion TEXT, prioridad TEXT DEFAULT 'Media', estado TEXT DEFAULT 'Pendiente', fecha_vencimiento TEXT, created_at TEXT DEFAULT (datetime('now')))`);
 
       // ==================== LOGIN ====================
       if (p === '/api/login' && m === 'POST') {
@@ -59,6 +70,20 @@ export default {
         await e.DB.prepare('INSERT INTO sesiones (usuario_id, token, empresa_id) VALUES (?, ?, ?)').bind(usr.id, token, usr.empresa_id || 0).run();
         return R({ ok: true, token, usuario: { id: usr.id, nombre: usr.nombre, email: usr.email, empresa_id: usr.empresa_id || 0 } });
       }
+
+  
+    // === CLIENT LOGIN (public) ===
+    if (p === '/api/clientes/login' && m === 'POST') {
+      try {
+        const b = await r.json();
+        if (!b.email || !b.password) return R({ ok: false, error: 'Email y contraseña requeridos' }, 400);
+        const cl = await e.DB.prepare('SELECT * FROM clientes WHERE email = ? AND password = ? AND activo = 1').bind(b.email, b.password).first();
+        if (!cl) return R({ ok: false, error: 'Credenciales inválidas o cuenta desactivada' }, 401);
+        const tok = '***cl_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+        await e.DB.prepare('INSERT INTO clientes_sesiones (cliente_id, token) VALUES (?, ?)').bind(cl.id, tok).run();
+        return R({ ok: true, token: tok, cliente: { id: cl.id, nombre: cl.nombre, email: cl.email, gestor_tareas: cl.gestor_tareas, gestor_citas: cl.gestor_citas } });
+      } catch (e) { return R({ ok: false, error: e.message }, 500); }
+    }
 
       // ==================== CITAS ====================
       if (p === '/api/citas') {
@@ -153,6 +178,102 @@ export default {
     } catch (e) { return R({ ok: false, error: e.message }, 500); }
   }
 };
+
+
+    // === CLIENTES: ADMIN ===
+    if (p === '/api/clientes' && m === 'GET') {
+      if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+      try {
+        const rs = await e.DB.prepare('SELECT id, nombre, email, telefono, gestor_tareas, gestor_citas, activo, created_at FROM clientes ORDER BY created_at DESC').all();
+        return R({ ok: true, clientes: rs.results || [] });
+      } catch (e) { return R({ ok: false, error: e.message }, 500); }
+    }
+
+    if (p === '/api/clientes/crear' && m === 'POST') {
+      if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+      try {
+        const b = await r.json();
+        if (!b.nombre || !b.email || !b.password) return R({ ok: false, error: 'Nombre, email y password requeridos' }, 400);
+        await e.DB.prepare('INSERT INTO clientes (nombre, email, password, telefono, gestor_tareas, gestor_citas) VALUES (?, ?, ?, ?, ?, ?)').bind(b.nombre, b.email, b.password, b.telefono || '', b.gestor_tareas || 0, b.gestor_citas || 0).run();
+        return R({ ok: true });
+      } catch (e) { return R({ ok: false, error: e.message }, 500); }
+    }
+
+    if (p === '/api/clientes/editar' && m === 'POST') {
+      if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+      try {
+        const b = await r.json();
+        await e.DB.prepare('UPDATE clientes SET nombre = ?, email = ?, telefono = ?, gestor_tareas = ?, gestor_citas = ? WHERE id = ?').bind(b.nombre, b.email, b.telefono || '', b.gestor_tareas || 0, b.gestor_citas || 0, b.id).run();
+        return R({ ok: true });
+      } catch (e) { return R({ ok: false, error: e.message }, 500); }
+    }
+
+    if (p === '/api/clientes/desactivar' && m === 'POST') {
+      if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+      try {
+        const b = await r.json();
+        await e.DB.prepare('UPDATE clientes SET activo = ? WHERE id = ?').bind(b.activo, b.id).run();
+        return R({ ok: true });
+      } catch (e) { return R({ ok: false, error: e.message }, 500); }
+    }
+
+    // === CLIENTES: SELF-SERVICE ===
+    if (p === '/api/mis-datos' && m === 'GET') {
+      if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+      try {
+        const cl = await e.DB.prepare('SELECT id, nombre, email, telefono, gestor_tareas, gestor_citas FROM clientes WHERE id = ?').bind(uid).first();
+        if (!cl) return R({ ok: false, error: 'Cliente no encontrado' }, 404);
+        return R({ ok: true, cliente: cl });
+      } catch (e) { return R({ ok: false, error: e.message }, 500); }
+    }
+
+    if (p === '/api/clientes/cambiar-password' && m === 'POST') {
+      if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+      try {
+        const b = await r.json();
+        if (!b.password_actual || !b.password_nuevo) return R({ ok: false, error: 'Contraseña actual y nueva requeridas' }, 400);
+        const cl = await e.DB.prepare('SELECT * FROM clientes WHERE id = ? AND password = ?').bind(uid, b.password_actual).first();
+        if (!cl) return R({ ok: false, error: 'Contraseña actual incorrecta' }, 401);
+        await e.DB.prepare('UPDATE clientes SET password = ? WHERE id = ?').bind(b.password_nuevo, uid).run();
+        return R({ ok: true });
+      } catch (e) { return R({ ok: false, error: e.message }, 500); }
+    }
+    // === TAREAS DEL CLIENTE ===
+    if (p === '/api/clientes/tareas' && m === 'GET') {
+      if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+      try {
+        const cl = await e.DB.prepare('SELECT gestor_tareas FROM clientes WHERE id = ?').bind(uid).first();
+        if (!cl || !cl.gestor_tareas) return R({ ok: false, error: 'No tienes acceso al gestor de tareas' }, 403);
+        const rs = await e.DB.prepare('SELECT * FROM tareas WHERE cliente_id = ? ORDER BY created_at DESC').bind(uid).all();
+        return R({ ok: true, tareas: rs.results || [] });
+      } catch (e) { return R({ ok: false, error: e.message }, 500); }
+    }
+
+    if (p === '/api/clientes/tareas' && m === 'POST') {
+      if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+      try {
+        const cl = await e.DB.prepare('SELECT gestor_tareas FROM clientes WHERE id = ?').bind(uid).first();
+        if (!cl || !cl.gestor_tareas) return R({ ok: false, error: 'No tienes acceso al gestor de tareas' }, 403);
+        const b = await r.json();
+        if (!b.titulo) return R({ ok: false, error: 'Título requerido' }, 400);
+        await e.DB.prepare('INSERT INTO tareas (cliente_id, titulo, descripcion, prioridad, estado, fecha_vencimiento) VALUES (?, ?, ?, ?, ?, ?)').bind(uid, b.titulo, b.descripcion || '', b.prioridad || 'Media', b.estado || 'Pendiente', b.fecha_vencimiento || null).run();
+        return R({ ok: true });
+      } catch (e) { return R({ ok: false, error: e.message }, 500); }
+    }
+
+    if (p === '/api/clientes/tareas' && m === 'DELETE') {
+      if (!uid) return R({ ok: false, error: 'No autorizado' }, 401);
+      try {
+        const u = new URL(r.url);
+        const id = u.searchParams.get('id');
+        if (!id) return R({ ok: false, error: 'ID requerido' }, 400);
+        await e.DB.prepare('DELETE FROM tareas WHERE id = ? AND cliente_id = ?').bind(id, uid).run();
+        return R({ ok: true });
+      } catch (e) { return R({ ok: false, error: e.message }, 500); }
+    }
+
+
+
 
 // ==================== FUNCIÓN DE NOTIFICACIONES ====================
 async function enviarNotificaciones(e, empresa_id, datos, citaId, esRecordatorio = false) {
