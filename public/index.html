@@ -623,6 +623,7 @@ tr:hover td{background:#f8fafc}
     <a onclick="nav('admin')" id="lnkAdmin" style="display:none"><span class="ico">⚙️</span><span class="txt">Admin</span></a>
     <a onclick="nav('productos')"><span class="ico">🛒</span><span class="txt">Productos</span></a>
     <a onclick="nav('citas')"><span class="ico">📅</span><span class="txt">Gestor de Citas</span></a>
+    <a onclick="nav('config-citas')"><span class="ico">🔧</span><span class="txt">Config. Citas</span></a>
     <a onclick="nav('relax')"><span class="ico">🏖️</span><span class="txt">Zona Relax</span></a>
   </div>
   <div class="sidebar-footer">
@@ -781,6 +782,63 @@ tr:hover td{background:#f8fafc}
                     <button class="btn btn-ghost" onclick="wordleReset()">🔄 Nueva palabra</button>
                   </div>
                 </div>
+  </div>
+
+  <!-- CONFIGURACIÓN CITAS -->
+  <div id="page-config-citas" class="page">
+    <div class="page-title">🔧 Configuración del Gestor de Citas</div>
+    <p style="color:#94a3b8;margin-bottom:20px">Configura las notificaciones automáticas para tus clientes. Cuando alguien pida cita, recibirán avisos por WhatsApp y/o email según configures.</p>
+    
+    <div class="card">
+      <div class="card-header"><h2>🏢 Datos del negocio</h2></div>
+      <div style="padding:15px">
+        <div class="fg"><label>Nombre del negocio *</label><input id="cfgNegocio" placeholder="Ej: Taller Mecánico Pérez"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+          <input type="checkbox" id="cfgWA" onchange="toggleWa()" style="width:18px;height:18px">
+          <h2 style="margin:0">📱 WhatsApp automático</h2>
+        </label>
+      </div>
+      <div id="waConfig" style="padding:15px;display:none">
+        <p style="color:#94a3b8;font-size:13px;margin-bottom:12px">Necesitas un token de WhatsApp Cloud API (gratis hasta 1.000 conversaciones/mes).<br>
+        <a href="#" onclick="window.open('https://developers.facebook.com/docs/whatsapp/cloud-api/get-started','_blank');return false" style="color:#60a5fa">📖 Guía rápida para obtener tu token</a></p>
+        <div class="fg"><label>Token de WhatsApp *</label><input id="cfgWAToken" type="password" placeholder="EAAT..."></div>
+        <div class="fg"><label>Número de teléfono del negocio *</label><input id="cfgWAPhone" placeholder="573001234567"></div>
+        <div class="fg"><label>Mensaje de confirmación</label>
+          <textarea id="cfgWAMsgConf" rows="2" placeholder="Hola {{cliente}}, te confirmamos tu cita en {{negocio}} para el {{fecha}} a las {{hora}}."></textarea>
+        </div>
+        <div class="fg"><label>Mensaje de recordatorio</label>
+          <textarea id="cfgWAMsgRec" rows="2" placeholder="📅 Recordatorio: {{cliente}}, mañana tienes cita en {{negocio}} a las {{hora}}."></textarea>
+        </div>
+        <p style="color:#64748b;font-size:12px">Variables disponibles: <code>{<!-- -->{cliente}}</code> <code>{<!-- -->{negocio}}</code> <code>{<!-- -->{fecha}}</code> <code>{<!-- -->{hora}}</code></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+          <input type="checkbox" id="cfgEmail" onchange="toggleEmail()" style="width:18px;height:18px">
+          <h2 style="margin:0">✉️ Email automático</h2>
+        </label>
+      </div>
+      <div id="emailConfig" style="padding:15px;display:none">
+        <p style="color:#94a3b8;font-size:13px;margin-bottom:12px">Usamos Resend (gratis 100 emails/día).<br>
+        <a href="#" onclick="window.open('https://resend.com','_blank');return false" style="color:#60a5fa">🔑 Crear cuenta gratis en Resend</a></p>
+        <div class="fg"><label>API Key de Resend *</label><input id="cfgEmailKey" type="password" placeholder="re_..."></div>
+        <div class="fg"><label>Email del negocio *</label><input id="cfgEmailFrom" placeholder="citas@tunegocio.com"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin:20px 0">
+      <button class="btn" onclick="cargarConfigCitas()">🔄 Recargar</button>
+      <button class="btn btn-primary" onclick="guardarConfigCitas()">💾 Guardar configuración</button>
+    </div>
+
+    <div id="cfgStatus" style="text-align:center;color:#22c55e;font-weight:600;min-height:24px"></div>
   </div>
 
 <!-- MODALS -->
@@ -1333,6 +1391,7 @@ function nav(section) {
   if (sb && window.innerWidth <= 768) sb.classList.remove('open');
   // Load section-specific content
   if (section === 'citas') cargarCitas();
+  if (section === 'config-citas') cargarConfigCitas();
   if (section === 'relax') relaxTab('musica');
 }
 
@@ -1352,8 +1411,9 @@ async function cargarCitas() {
       let accion = '';
       if (c.estado === 'pendiente' || c.estado === 'confirmada') {
         accion = '<button class="btn btn-sm" onclick="cambiarEstadoCita(' + c.id + ",'" + (c.estado === 'pendiente' ? 'confirmada' : 'cancelada') + "')" style="margin-right:4px">' + (c.estado === 'pendiente' ? '✅ Confirmar' : '❌ Cancelar') + '</button>';
+        accion += '<button class="btn btn-sm" onclick="enviarRecordatorio(' + c.id + ')" style="background:#2563eb;color:white;margin-right:4px">🔔 Recordatorio</button>';
       }
-      accion += '<button class="btn btn-sm" onclick="eliminarCita(' + c.id + ')" style="background:#ef4444;color:white">🗑️</button>';
+      accion += '<button class="btn btn-sm" onclick="eliminarCita(' + c.id + ')" style="background:#ef4444;color:white">�️</button>';
       html += '<tr><td>' + (c.cliente_nombre || '') + '</td><td>' + (c.cliente_email || '') + '</td><td>' + (c.cliente_telefono || '') + '</td><td>' + (c.fecha || '') + '</td><td>' + (c.hora || '') + '</td><td>' + (c.motivo || '') + '</td><td style="' + est + ';font-weight:600">' + c.estado + '</td><td>' + accion + '</td></tr>';
     });
     html += '</tbody></table>';
@@ -1404,6 +1464,20 @@ async function cambiarEstadoCita(id, estado) {
     const res = await r.json();
     if (!res.success) throw new Error(res.error);
     cargarCitas();
+  } catch(e) { alert('❌ ' + e.message); }
+}
+
+async function enviarRecordatorio(id) {
+  const token = localStorage.getItem('token');
+  try {
+    const r = await fetch('https://clubcontable-api.crecimientofinancieroglobal.workers.dev/api/citas/recordatorio', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': '***' + token },
+      body: JSON.stringify({ id })
+    });
+    const res = await r.json();
+    if (!res.success && !res.ok) throw new Error(res.error || 'Error');
+    alert('✅ Recordatorio enviado');
   } catch(e) { alert('❌ ' + e.message); }
 }
 
@@ -1550,6 +1624,61 @@ function wordleGuess() {
     document.getElementById('wordleMsg').style.color = '#f5a623';
   }
   input.value = '';
+}
+
+// ===== CONFIGURACIÓN DE CITAS (NOTIFICACIONES) =====
+function toggleWa() { document.getElementById('waConfig').style.display = document.getElementById('cfgWA').checked ? 'block' : 'none'; }
+function toggleEmail() { document.getElementById('emailConfig').style.display = document.getElementById('cfgEmail').checked ? 'block' : 'none'; }
+
+async function cargarConfigCitas() {
+  const token = localStorage.getItem('token');
+  try {
+    const r = await fetch('https://clubcontable-api.crecimientofinancieroglobal.workers.dev/api/citas/config', {
+      headers: { 'Authorization': '***' + token }
+    });
+    const res = await r.json();
+    if (!res.ok) throw new Error(res.error || 'Error');
+    if (res.config) {
+      const c = res.config;
+      document.getElementById('cfgNegocio').value = c.negocio_nombre || '';
+      document.getElementById('cfgWA').checked = c.whatsapp_activo == 1;
+      document.getElementById('cfgWAToken').value = c.whatsapp_token || '';
+      document.getElementById('cfgWAPhone').value = c.whatsapp_phone || '';
+      document.getElementById('cfgWAMsgConf').value = c.whatsapp_plantilla_confirmacion || '';
+      document.getElementById('cfgWAMsgRec').value = c.whatsapp_plantilla_recordatorio || '';
+      document.getElementById('cfgEmail').checked = c.email_activo == 1;
+      document.getElementById('cfgEmailKey').value = c.email_api_key || '';
+      document.getElementById('cfgEmailFrom').value = c.email_from || '';
+      toggleWa(); toggleEmail();
+    }
+    document.getElementById('cfgStatus').textContent = '✅ Configuración cargada';
+  } catch(e) { document.getElementById('cfgStatus').textContent = '❌ ' + e.message; }
+}
+
+async function guardarConfigCitas() {
+  const token = localStorage.getItem('token');
+  const cfg = {
+    negocio_nombre: document.getElementById('cfgNegocio').value,
+    whatsapp_activo: document.getElementById('cfgWA').checked,
+    whatsapp_token: document.getElementById('cfgWAToken').value,
+    whatsapp_phone: document.getElementById('cfgWAPhone').value,
+    whatsapp_plantilla_confirmacion: document.getElementById('cfgWAMsgConf').value,
+    whatsapp_plantilla_recordatorio: document.getElementById('cfgWAMsgRec').value,
+    email_activo: document.getElementById('cfgEmail').checked,
+    email_api_key: document.getElementById('cfgEmailKey').value,
+    email_from: document.getElementById('cfgEmailFrom').value
+  };
+  if (!cfg.negocio_nombre) { document.getElementById('cfgStatus').textContent = '❌ El nombre del negocio es obligatorio'; return; }
+  try {
+    const r = await fetch('https://clubcontable-api.crecimientofinancieroglobal.workers.dev/api/citas/config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': '***' + token },
+      body: JSON.stringify(cfg)
+    });
+    const res = await r.json();
+    if (!res.ok) throw new Error(res.error || 'Error');
+    document.getElementById('cfgStatus').textContent = '✅ Configuración guardada correctamente';
+  } catch(e) { document.getElementById('cfgStatus').textContent = '❌ ' + e.message; }
 }
 
 </script>
