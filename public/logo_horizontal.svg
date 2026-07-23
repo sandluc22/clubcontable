@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40">
+  <rect width="160" height="40" rx="8" fill="#1e3a5f"/>
+  <rect x="12" y="8" width="3" height="18" rx="1" fill="#f5a623"/>
+  <rect x="6" y="8" width="22" height="3" rx="1" fill="#f5a623"/>
+  <text x="12" y="32" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#f5a623" text-anchor="middle" letter-spacing="1">C</text>
+  <text x="22" y="32" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#f5a623" text-anchor="middle">$</text>
+  <text x="30" y="32" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#f5a623" text-anchor="middle">C</text>
+  <text x="48" y="26" font-family="Arial,sans-serif" font-size="18" font-weight="800" fill="white">Club</text>
+  <text x="90" y="26" font-family="Arial,sans-serif" font-size="18" font-weight="800" fill="#f5a623">Contable</text>
+</svg>

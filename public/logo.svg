@@ -1,34 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#2563eb"/>
-      <stop offset="100%" style="stop-color:#1d4ed8"/>
-    </linearGradient>
-    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#f59e0b"/>
-      <stop offset="100%" style="stop-color:#d97706"/>
-    </linearGradient>
-  </defs>
+  <!-- Fondo azul oscuro -->
+  <rect width="120" height="120" rx="24" fill="#1e3a5f"/>
   
-  <!-- Fondo redondeado -->
-  <rect width="120" height="120" rx="24" fill="url(#bg)"/>
+  <!-- Palo vertical de la T -->
+  <rect x="55" y="28" width="10" height="64" rx="2" fill="#f5a623"/>
   
-  <!-- Balanza de contabilidad simplificada -->
-  <!-- Base -->
-  <rect x="35" y="85" width="50" height="4" rx="2" fill="white" opacity="0.9"/>
-  <!-- Columna central -->
-  <rect x="57" y="40" width="6" height="45" rx="3" fill="white"/>
+  <!-- Línea horizontal de la T -->
+  <rect x="12" y="28" width="96" height="10" rx="2" fill="#f5a623"/>
   
-  <!-- Plato izquierdo (balance) -->
-  <path d="M 25 45 Q 32 38 40 45" stroke="url(#accent)" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Nums en plato izq -->
-  <text x="48" y="48" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#f59e0b" text-anchor="middle">$</text>
-  
-  <!-- Plato derecho (crecimiento) -->
-  <path d="M 80 45 Q 87 38 95 45" stroke="url(#accent)" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Flecha arriba -->
-  <polygon points="86,42 90,30 94,42" fill="#f59e0b"/>
-  
-  <!-- Initials CC pequeñas abajo -->
-  <text x="60" y="100" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="white" opacity="0.6" text-anchor="middle">CC</text>
+  <!-- C izquierda más pegada al palo -->
+  <text x="42" y="82" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#f5a623" text-anchor="middle">C</text>
+
+  <!-- $ más arriba, muy poco -->
+  <text x="60" y="84" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="#f5a623" text-anchor="middle">$</text>
+
+  <!-- C derecha más pegada al palo -->
+  <text x="78" y="82" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#f5a623" text-anchor="middle">C</text>
 </svg>
