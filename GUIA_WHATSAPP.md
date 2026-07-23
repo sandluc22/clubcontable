@@ -2,6 +2,10 @@
 
 **Tiempo: 5 minutos · Gratis**
 
+> ⚠️ **Importante:** NO necesitas tener WhatsApp Business. Funciona con tu WhatsApp normal.
+> Solo necesitas poder recibir un SMS o llamada para verificar tu número.
+> Si YA tienes WhatsApp normal instalado, puedes seguir usándolo.
+
 ---
 
 ## Paso 1: Entra a Facebook Developers
@@ -9,8 +13,6 @@
 1. Abre: **https://developers.facebook.com/**
 2. Inicia sesión con tu cuenta de **Facebook personal** (la que uses normalmente)
 3. Arriba a la derecha, haz clic en **"My Apps"** → **"Create App"**
-
-![Paso 1](https://img.icons8.com/color/48/facebook--v1.png)
 
 ---
 
@@ -24,7 +26,7 @@
 
 ## Paso 3: Añade el producto WhatsApp
 
-1. En el panel de la app, busca **"WhatsApp"** 
+1. En el panel de la app, busca **"WhatsApp"**
 2. Haz clic en **"Set Up"**
 3. Espera unos segundos a que se configure
 
@@ -32,10 +34,14 @@
 
 ## Paso 4: Configura tu número
 
-1. En la sección **"API Setup"**, verás un campo **"Phone number ID"**
+> 📱 **Tu WhatsApp normal sirve.** No necesitas instalar WhatsApp Business.
+> El sistema te pedirá verificar el número con un código por SMS o llamada.
+> Después puedes SEGUIR usando WhatsApp normal. La API funciona aparte.
+
+1. En la sección **"API Setup"**, busca "Phone number ID"
 2. Abajo verás **"Send and receive messages"**
 3. **Añade tu número de teléfono** (el que usas para WhatsApp)
-   - En formato internacional sin + : ejemplo **573001234567**
+   - Formato internacional sin + : ejemplo **573001234567**
 4. Recibirás un código por SMS o llamada
 5. **Verifica el número**
 
@@ -57,7 +63,7 @@
 3. Activa **WhatsApp**
 4. Pega:
    - **Token**: el token que copiaste
-   - **Teléfono**: tu número (573001234567)
+   - **Teléfono**: tu número (ej: 573001234567)
 
 ---
 
@@ -72,10 +78,11 @@ Cuando alguien pida cita:
 
 ### ❓ ¿Problemas?
 
-- Asegúrate de que tu número está verificado en WhatsApp Business
+- Asegúrate de que el número está en formato internacional: código de país + número (ej: 573001234567)
 - El token no tiene fecha de expiración si generas el **Permanent Token**
-- Si tu número ya está registrado en WhatsApp, igual funciona (no afecta tu WhatsApp personal)
+- Si tienes WhatsApp normal, NO lo pierdes. Puedes usar los dos.
+- Si no te llega el SMS, prueba con llamada telefónica
 
 ### 📩 ¿Necesitas ayuda?
 
-Escríbenos y te guiamos paso a paso. ¡No te tomará más de 5 minutos!
+Escríbenos y te guiamos paso a paso.
