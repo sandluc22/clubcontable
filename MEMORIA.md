@@ -54,98 +54,81 @@ Nunca digas "cerramos", "¿cerramos?", "¿algo más o cerramos?", "¿seguimos o 
 
 ---
 
-## 🟢 crecimientofinancieroglobal.com — COMPLETA ✅ (23 jul 2026)
+## 🟢 crecimientofinancieroglobal.com — COMPLETA ✅
 
-### Estado final
-- ✅ Diseño profesional responsive completo
-- ✅ Logo CFG en cabecera (logo-cfg-header.png) + favicon
-- ✅ 48 artículos en 7 categorías
-- ✅ Sección Estudiar España Colombia (7 artículos + testimonios)
-- ✅ 7 fotos reales Unsplash en Estudiar España
-- ✅ Newsletter suscripción (Web3Forms)
-- ✅ Portafolio PDF profesional para clientes
-- ✅ Guía PDF para compartir en Facebook (textos listos para copiar/pegar)
-- ✅ WhatsApp flotante + formulario contacto
-- ✅ Google Analytics (G-XVVBY349WZ) + Search Console
-- ✅ Sitemap 50 URLs
-- ✅ Quiénes somos + valores + estadísticas (95% visados, 50+ estudiantes)
-- ✅ Testimonios mejorados con badges de resultados
-- ✅ Redes sociales en footer
-- ✅ Páginas legales: Aviso Legal + Privacidad
-- ✅ Sin precios visibles en la web (consulta gratuita)
-- ✅ CTA "Solicitar presupuesto gratuito"
-- ✅ Sin Sandra/Galilea en contacto
+### ✅ Hecho
+- Diseño completo, 48 artículos, portafolio PDF, guía PDF, WhatsApp, formulario, GA, Search Console, sitemap, páginas legales, sin precios visibles
 
-### Lo que necesita para generar ingresos (no código)
-1. ⏳ Que **Sandra comparta en Facebook** (guía PDF ya tiene)
-2. ⏳ Que **financeAds acepte** para poner enlaces de afiliado
-3. ⏳ **Tiempo** para que Google posicione (2-3 semanas)
-4. ⏳ Publicar 1-2 artículos/semana para contenido fresco
-
-## 🟢 cfg-seguros.com — MEJORADO (23 jul 2026)
-- ✅ OG tags (og:title, og:description) en TODAS las páginas (16/16)
-- ✅ Schema.org (datos estructurados) en todas las páginas
-- ✅ CTAs "Solicitar presupuesto" visibles en cada producto y blog
-- ✅ Footer añadido a páginas de blog
-- ✅ Todo subido a GitHub y desplegado
+### ⏳ Pendiente
+1. Compartir en Facebook (guía PDF lista)
+2. Que financeAds acepte para afiliados
+3. Publicar 1-2 artículos/semana
+4. Esperar posicionamiento Google (2-3 sem)
 
 ---
 
-## 🟢 cfg-seguros.com — COMPLETO ✅
+## 🟢 CFG Seguros (cfg-seguros.com) — COMPLETO ✅
 
-### Estado actual
-- ✅ 16 páginas funcionando, formulario Web3Forms, WhatsApp flotante
-- ✅ 6 seguros (vida, salud, hogar, coche, empresas, ahorro-inversión)
-- ✅ Blog con 4 artículos
-- ✅ Redes sociales: IG @cfg_seguros_gg, FB CFG Seguros, LinkedIn cfg-seguros, TikTok @cfgsegurosgg
-- ✅ Google Search Console verificado
-- ✅ Google Business Profile en revisión
-- ✅ Deploy automático GitHub → Cloudflare Pages (sandluc22/cfg-seguros)
-- ✅ Supervende (bot "Lucía") configurado y activo
+### ✅ Hecho
+- 16 páginas, formulario Web3Forms, WhatsApp flotante, 6 seguros, blog (4 artículos)
+- Redes sociales configuradas (IG, FB, LinkedIn, TikTok)
+- Google Search Console verificado
+- Google Business Profile en revisión
+- Deploy automático GitHub → Cloudflare Pages
+- Supervende (Lucía) activo
 
-### Recordatorios activos
-- ✅ Saludo diario 6:30h — Activo
-- ✅ Publicar lun/mié/vie 6:30h — Activo (cron expr: 30 6 * * 1,3,5 Europe/Madrid)
-- ✅ Cierre del día 22:30h — Activo (cron expr: 30 22 * * * Europe/Madrid)
-
-### Próximos pasos
-- ⏳ Próxima tanda de posts: viernes 24 jul 6:30h
-- ⏳ Viernes 24 jul 20:00h — revisar seguidores
-- ⏳ Google Business Profile (esperando carta)
+### ⏳ Pendiente
+1. Viernes 24 jul 6:30h → próximo post
+2. Viernes 24 jul 20:00h → revisar seguidores
+3. Google Business Profile (esperando carta)
 
 ---
 
-## 🟢 Club Contable — MULTIEMPRESA ✅
+## 🟡 Club Contable (clubcontable.com) — EN DESARROLLO 🏗️
 
-### Estado
-- API backend v2 desplegada en Cloudflare Worker
-- D1 database con multiempresa operativa
-- Login: admin@clubcontable.com / admin2025
-- Frontend con colores CFG (azul #2563eb + amarillo hover)
-- Logo Cuenta T (T + C$C) con eslogan "Menos estrés, más control"
-- Web3Forms conectado (suscripción + contacto)
-- Ficha técnica actualizada
-- Panel gestor oculto hasta login
+### ✅ Hecho
+- API backend v2 en Cloudflare Worker
+- D1 database multiempresa operativa
+- Frontend desplegado en Cloudflare Pages
+- Gestor de Citas: API completa con CRUD + DB
+- Página pública agendar.html
+- Zona Relax: 4 pestañas (Música, Videos, Humor, Juegos)
+- Sección Productos con gestores disponibles
+- Notificaciones: WhatsApp Cloud API + Email (Resend)
+- Guía WhatsApp para clientes
+- 5 videos Hábitos Atómicos con Jorge ✅
+- Scripts y guiones en GitHub ✅
+- FICHA_TECNICA.md actualizada ✅
 
-### Migadu — Correos clubcontable.com
-- info@, ventas@, soporte@, financiero@clubcontable.com
+### 🏗️ En desarrollo
+1. 🏗️ **Login de clientes** — pendiente de arreglar/terminar
+2. 🏗️ Sistema de paneles independientes por cliente
+3. 🟡 Login Gestor de Tareas — pendiente de arreglar
 
-### Repositorio
-- GitHub: sandluc22/clubcontable (master) → Cloudflare Pages + Worker
-- URL: https://clubcontable.com
-- API: https://clubcontable-api.crecimientofinancieroglobal.workers.dev
+### ⏳ Pendiente Club Contable
+4. Desplegar Worker con endpoints de clientes (necesito token Cloudflare)
+5. Crear canal de YouTube "Club Contable"
+6. Subir los 5 videos de Hábitos Atómicos
+7. Crear página de Facebook Club Contable
+8. Google Sheets integración
+9. Sistema PSE / pagos Colombia
+10. Google Search Console clubcontable.com
+11. Buscar voz de doblaje automático Harvey Specter
 
-### Estado actual HOY (23 jul 2026) — EN DESARROLLO 🏗️
-- ✅ Gestor de Citas: API completa con endpoints CRUD + DB
-- ✅ Página pública agendar.html: clientes piden cita sin login
-- ✅ Zona Relax: 4 pestañas (Música, Videos, Humor, Juegos con Wordle Contable)
-- ✅ Sección Productos: tarjetas con gestores disponibles
-- ✅ Notificaciones automáticas: WhatsApp Cloud API + Email (Resend)
-- ✅ Guía WhatsApp para clientes
-- 🏗️ Sistema de clientes: login por cliente, paneles independientes
-- 🟡 Login Gestor de Tareas — pendiente de arreglar
-- ❌ Google Sheets (pendiente)
-- ❌ Sistema PSE / pagos Colombia (pendiente)
+### 🔮 Futuro
+- Podcast "Mindset Contable" con contadores
+
+---
+
+## 🟣 Gafi — Marketing de afiliados
+❌ Sin empezar
+
+---
+
+## OTRAS COSAS
+- Videos de aviación para el marido: 10 creados en `/home/node/workspace/aviacion/`
+- Proyectos Fiverr
+- SandraTech (marca)
 
 ---
 
