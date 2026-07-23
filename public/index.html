@@ -222,6 +222,77 @@
     </p>
   </div>
 </section>
+
+<!-- ─── CONTACTO ─── -->
+<section id="contacto">
+  <div class="container">
+    <h2>Escríbenos</h2>
+    <div class="grid" style="max-width:600px;margin:0 auto;">
+      <div class="card">
+        <form onsubmit="contacto(event)">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" id="conNombre" placeholder="Tu nombre" required>
+          </div>
+          <div class="form-group">
+            <label>Correo</label>
+            <input type="email" id="conEmail" placeholder="tu@correo.com" required>
+          </div>
+          <div class="form-group">
+            <label>Asunto</label>
+            <input type="text" id="conAsunto" placeholder="¿Sobre qué?">
+          </div>
+          <div class="form-group">
+            <label>Mensaje</label>
+            <textarea id="conMsg" rows="4" placeholder="Cuéntanos..." required></textarea>
+          </div>
+          <button type="submit" class="btn" style="width:100%;">Enviar mensaje</button>
+          <div id="conToast" class="toast"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SUSCRIPCIÓN / NEWSLETTER ─── -->
+<section>
+  <div class="container" style="text-align:center;">
+    <h2>No te pierdas <span>nada</span></h2>
+    <p style="max-width:500px;margin:0 auto 24px;">Suscríbete y recibe novedades, consejos y actualizaciones de Club Contable.</p>
+    <form onsubmit="suscripcion(event)" style="max-width:400px;margin:0 auto;">
+      <div style="display:flex;gap:8px;">
+        <input type="email" id="subEmail" placeholder="tu@correo.com" required style="flex:1;padding:12px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:15px;">
+        <button type="submit" class="btn">Suscribirme</button>
+      </div>
+      <div id="subToast" class="toast"></div>
+    </form>
+  </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section>
+  <div class="container">
+    <h2>Preguntas <span>frecuentes</span></h2>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">¿Qué es Club Contable? <span>+</span></div>
+      <div class="faq-a"><p>Es una plataforma que te ayuda a gestionar tareas contables, organizar empresas y dar seguimiento a tus pendientes desde un solo panel.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">¿Cómo empiezo? <span>+</span></div>
+      <div class="faq-a"><p>Regístrate arriba en "Acceso" o contáctanos y te creamos tu cuenta de prueba gratis por 7 días.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">¿Puedo añadir a mi contador? <span>+</span></div>
+      <div class="faq-a"><p>Sí. Con los planes multiempresa puedes invitar colaboradores y asignarles permisos específicos.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">¿Qué medios de pago aceptan? <span>+</span></div>
+      <div class="faq-a"><p>Aceptamos transferencias bancarias en Colombia y próximamente tarjetas y Nequi.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PANEL GESTOR (oculto hasta login) ─── -->
 <section id="panelGestor" style="display:none !important;">
   <div class="container">
     <div style="display:flex;gap:24px;flex-wrap:wrap;">
@@ -325,78 +396,6 @@
   </div>
 </section>
 
-
-
-<!-- ─── CONTACTO ─── -->
-<section id="contacto">
-  <div class="container">
-    <h2>Escríbenos</h2>
-    <div class="grid" style="max-width:600px;margin:0 auto;">
-      <div class="card">
-        <form onsubmit="contacto(event)">
-          <div class="form-group">
-            <label>Nombre</label>
-            <input type="text" id="conNombre" placeholder="Tu nombre" required>
-          </div>
-          <div class="form-group">
-            <label>Correo</label>
-            <input type="email" id="conEmail" placeholder="tu@correo.com" required>
-          </div>
-          <div class="form-group">
-            <label>Asunto</label>
-            <input type="text" id="conAsunto" placeholder="¿Sobre qué?">
-          </div>
-          <div class="form-group">
-            <label>Mensaje</label>
-            <textarea id="conMsg" rows="4" placeholder="Cuéntanos..." required></textarea>
-          </div>
-          <button type="submit" class="btn" style="width:100%;">Enviar mensaje</button>
-          <div id="conToast" class="toast"></div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── SUSCRIPCIÓN / NEWSLETTER ─── -->
-<section>
-  <div class="container" style="text-align:center;">
-    <h2>No te pierdas <span>nada</span></h2>
-    <p style="max-width:500px;margin:0 auto 24px;">Suscríbete y recibe novedades, consejos y actualizaciones de Club Contable.</p>
-    <form onsubmit="suscripcion(event)" style="max-width:400px;margin:0 auto;">
-      <div style="display:flex;gap:8px;">
-        <input type="email" id="subEmail" placeholder="tu@correo.com" required style="flex:1;padding:12px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:15px;">
-        <button type="submit" class="btn">Suscribirme</button>
-      </div>
-      <div id="subToast" class="toast"></div>
-    </form>
-  </div>
-</section>
-
-<!-- ─── FAQ ─── -->
-<section>
-  <div class="container">
-    <h2>Preguntas <span>frecuentes</span></h2>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">¿Qué es Club Contable? <span>+</span></div>
-      <div class="faq-a"><p>Es una plataforma que te ayuda a gestionar tareas contables, organizar empresas y dar seguimiento a tus pendientes desde un solo panel.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">¿Cómo empiezo? <span>+</span></div>
-      <div class="faq-a"><p>Regístrate arriba en "Acceso" o contáctanos y te creamos tu cuenta de prueba gratis por 7 días.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">¿Puedo añadir a mi contador? <span>+</span></div>
-      <div class="faq-a"><p>Sí. Con los planes multiempresa puedes invitar colaboradores y asignarles permisos específicos.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">¿Qué medios de pago aceptan? <span>+</span></div>
-      <div class="faq-a"><p>Aceptamos transferencias bancarias en Colombia y próximamente tarjetas y Nequi.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── PANEL GESTOR (oculto hasta login) ─── -->
 <!-- ─── FOOTER ─── -->
 <footer>
   <div class="container">
