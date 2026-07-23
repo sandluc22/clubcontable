@@ -529,8 +529,6 @@ function entrarAlPanel(user) {
   document.getElementById('panelGestor').scrollIntoView({ behavior: 'smooth' });
   document.getElementById('panelUserEmail').textContent = user.email || 'Usuario';
   cargarPanel();
-  // Scroll hasta el final donde está el panel
-  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
 
 // ── Cargar el panel ──
@@ -726,6 +724,7 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
       const user = JSON.parse(userData);
       if (user && user.email) {
+        // Verificar que el token sigue siendo válido
         entrarAlPanel(user);
       }
     } catch(e) {
