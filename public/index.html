@@ -243,6 +243,8 @@ tr:hover td{background:#f8fafc}
     body:not(.panel-mode) #main,
     body:not(.panel-mode) .toast { display: none !important; }
   </style>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/favicon.svg">
 </head>
 <body>
 
@@ -250,7 +252,7 @@ tr:hover td{background:#f8fafc}
   <div id="web-content">
 <header>
   <div class="container">
-    <div class="logo">🏢 Club <span>Contable</span></div>
+    <div class="logo"><img src="/logo.svg" alt="Club Contable" style="height:28px;vertical-align:middle;margin-right:4px;"></div>
     <div class="menu-icon" onclick="document.querySelector('header nav').classList.toggle('open')">☰</div>
     <nav>
       <a href="#inicio">Inicio</a>
@@ -591,7 +593,7 @@ tr:hover td{background:#f8fafc}
 
   <!-- ═══ PANEL GESTOR ═══ (oculto hasta login) -->
 <div id="sidebar">
-  <div class="sidebar-brand"><div class="icon">📊</div><span class="name">Club Contable</span></div>
+  <div class="sidebar-brand"><img src="/logo.svg" alt="CC" style="height:28px;"><span class="name">Club Contable</span></div>
   <div class="sidebar-menu">
     <a class="active" onclick="nav('dashboard')"><span class="ico">📈</span><span class="txt">Dashboard</span></a>
     <a onclick="nav('tareas')"><span class="ico">📋</span><span class="txt">Tareas</span></a>
