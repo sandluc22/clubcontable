@@ -242,6 +242,26 @@ tr:hover td{background:#f8fafc}
     body:not(.panel-mode) #sidebar,
     body:not(.panel-mode) #main,
     body:not(.panel-mode) .toast { display: none !important; }
+  .relax-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-top:12px; }
+  .relax-card { background:#f9fafb; border-radius:8px; padding:12px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  .relax-card p { margin:6px 0 0; font-size:14px; color:#555; }
+  .relax-tab h4 { margin-bottom:8px; font-size:18px; }
+  .tabs-relax { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .tabs-relax .tab-btn { padding:8px 16px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer; font-size:14px; transition:all .2s; }
+  .tabs-relax .tab-btn:hover { background:#f0f4ff; }
+  .tabs-relax .tab-btn.active { background:#4f7cf7; color:#fff; border-color:#4f7cf7; }
+  #wordle-grid .wg-row { display:flex; gap:6px; justify-content:center; margin:4px 0; }
+  #wordle-grid .wg-cell { width:44px; height:44px; border:2px solid #ddd; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:bold; text-transform:uppercase; }
+  #wordle-grid .wg-correct { background:#6aaa64; border-color:#6aaa64; color:#fff; }
+  #wordle-grid .wg-present { background:#c9b458; border-color:#c9b458; color:#fff; }
+  #wordle-grid .wg-absent { background:#787c7e; border-color:#787c7e; color:#fff; }
+  .citas-table { width:100%; border-collapse:collapse; margin-top:12px; }
+  .citas-table th, .citas-table td { padding:10px 8px; text-align:left; border-bottom:1px solid #eee; font-size:14px; }
+  .citas-table th { background:#f8fafc; font-weight:600; color:#444; }
+  .badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:500; }
+  .badge-pendiente { background:#fff3cd; color:#856404; }
+  .badge-confirmada { background:#d4edda; color:#155724; }
+  .badge-cancelada { background:#f8d7da; color:#721c24; }
   </style>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -716,6 +736,51 @@ tr:hover td{background:#f8fafc}
       <button class="btn" onclick="relaxTab('juegos')" id="tabJuegos">🎮 Juegos</button>
     </div>
     <div id="relaxContent" style="min-height:300px"></div>
+
+                <!-- Pestañas de Zona Relax -->
+                <div id="zona-musica" class="relax-tab" style="display:none">
+                  <h4>🎵 Música para concentrarse</h4>
+                  <div class="relax-grid">
+                    <div class="relax-card"><iframe width="100%" height="200" src="https://www.youtube.com/embed/jfKfPfyJRdk" title="Lofi study" frameborder="0" allowfullscreen></iframe><p>🎧 Lo-fi para estudiar</p></div>
+                    <div class="relax-card"><iframe width="100%" height="200" src="https://www.youtube.com/embed/5qap5aO4i9A" title="Jazz" frameborder="0" allowfullscreen></iframe><p>🎷 Jazz relajante</p></div>
+                    <div class="relax-card"><iframe width="100%" height="200" src="https://www.youtube.com/embed/DWcJFNfaw9c" title="Nature" frameborder="0" allowfullscreen></iframe><p>🌿 Sonidos de la naturaleza</p></div>
+                  </div>
+                </div>
+
+                <div id="zona-videos" class="relax-tab" style="display:none">
+                  <h4>📺 Videos motivacionales</h4>
+                  <div class="relax-grid">
+                    <div class="relax-card"><iframe width="100%" height="200" src="https://www.youtube.com/embed/aS1SxSNzT8s" title="Motivation" frameborder="0" allowfullscreen></iframe><p>💪 Motivación diaria</p></div>
+                    <div class="relax-card"><iframe width="100%" height="200" src="https://www.youtube.com/embed/rCq1nCz0DqI" title="Relax" frameborder="0" allowfullscreen></iframe><p>🧘 Meditación guiada</p></div>
+                    <div class="relax-card"><iframe width="100%" height="200" src="https://www.youtube.com/embed/7t2wSzVjnz8" title="Office humor" frameborder="0" allowfullscreen></iframe><p>😂 Humor office</p></div>
+                  </div>
+                </div>
+
+                <div id="zona-humor" class="relax-tab" style="display:none">
+                  <h4>😂 Humor contable</h4>
+                  <div class="relax-grid">
+                    <div class="relax-card"><p>🧾 <strong>¿Por qué los contadores son buenos en el bowling?</strong><br>Porque siempre calculan la pista correcta 🎳</p></div>
+                    <div class="relax-card"><p>📊 <strong>¿Cuál es el colmo de un contador?</strong><br>Que su hijo quiera ser artista y tenga que amortizarlo a 10 años 🎨</p></div>
+                    <div class="relax-card"><p>💼 <strong>¿Cómo se suicida un contador?</strong><br>Se tira por un balance general 📉</p></div>
+                    <div class="relax-card"><p>📅 <strong>¿Qué le dice un IVA a otro IVA?</strong><br>¡Nosotros nos repercutimos! 😂</p></div>
+                    <div class="relax-card"><p>⚖️ <strong>¿Cuál es la bebida favorita de un contador?</strong><br>El balance-ón 🍸</p></div>
+                    <div class="relax-card"><p>🔢 <strong>No estoy diciendo que seas un número más…</strong><br>pero tu departamento es el de contabilidad 😄</p></div>
+                  </div>
+                </div>
+
+                <div id="zona-juegos" class="relax-tab" style="display:none">
+                  <h4>🎮 Wordle Contable</h4>
+                  <p>Adivina la palabra contable en 5 intentos</p>
+                  <div id="wordle-game" style="text-align:center">
+                    <div id="wordle-grid" style="display:inline-block"></div>
+                    <div style="margin:10px 0">
+                      <input type="text" id="wordle-input" maxlength="5" style="text-transform:uppercase;font-size:18px;width:120px;text-align:center;padding:6px" placeholder="_____">
+                      <button class="btn btn-primary" onclick="wordleGuess()">Adivinar</button>
+                    </div>
+                    <p id="wordle-msg" style="font-size:14px;min-height:20px"></p>
+                    <button class="btn btn-ghost" onclick="wordleReset()">🔄 Nueva palabra</button>
+                  </div>
+                </div>
   </div>
 
 <!-- MODALS -->
@@ -756,6 +821,16 @@ tr:hover td{background:#f8fafc}
   <div class="fg"><label>Dirección</label><input id="fEmpDir" placeholder="Dirección"></div>
   <div class="fg"><label>Teléfono</label><input id="fEmpTel" placeholder="Teléfono"></div>
   <div class="modal-footer"><button class="btn btn-ghost" onclick="closeMod('modEmp')">Cancelar</button><button class="btn btn-primary" onclick="saveEmp()">Guardar</button></div>
+</div></div>
+
+<div class="modal" id="modCita"><div class="modal-content"><h3>Nueva cita</h3>
+  <div class="fg"><label>Cliente *</label><input id="fCitaNombre" placeholder="Nombre completo"></div>
+  <div class="fg"><label>Email *</label><input type="email" id="fCitaEmail" placeholder="cliente@ejemplo.com"></div>
+  <div class="fg"><label>Teléfono</label><input type="tel" id="fCitaTel" placeholder="+34 600 000 000"></div>
+  <div class="fg" style="display:flex;gap:8px"><div style="flex:1"><label>Fecha *</label><input type="date" id="fCitaFecha"></div><div style="flex:1"><label>Hora *</label><input type="time" id="fCitaHora"></div></div>
+  <div class="fg"><label>Motivo</label><textarea id="fCitaMotivo" rows="2" placeholder="Ej: Asesoría fiscal trimestral"></textarea></div>
+  <input type="hidden" id="fCitaId">
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeMod('modCita')">Cancelar</button><button class="btn btn-primary" onclick="saveCita()">Guardar cita</button></div>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -815,24 +890,26 @@ tr:hover td{background:#f8fafc}
       $('loginForm').style.display = 'none';
       $('panelGestor').style.display = 'block';
       $('panelUserEmail').textContent = user.email || 'Usuario';
-      mostrarSeccion('secDashboard');
+      nav('dashboard');
       cargarPanel();
     }
 
     // ── Cargar datos ──
     async function cargarPanel() {
       try {
-        const [tareas, cats, subcats, empresas] = await Promise.all([
+        const [tareas, cats, subcats, empresas, citas] = await Promise.all([
           fetchApi('/api/tareas'),
           fetchApi('/api/categorias'),
           fetchApi('/api/subcategorias'),
-          fetchApi('/api/empresas')
+          fetchApi('/api/empresas'),
+          fetchApi('/api/citas')
         ]);
         renderTareas(tareas);
         renderCategorias(cats);
         renderSubcategorias(subcats);
         llenarSelects(cats, empresas);
         renderReportes(tareas, cats);
+        renderCitas(citas);
       } catch (e) { console.error(e); }
     }
 
@@ -964,8 +1041,37 @@ tr:hover td{background:#f8fafc}
 
     function mostrarSeccion(id) {
       document.querySelectorAll('.panel-section').forEach(s => s.style.display = 'none');
+      document.querySelectorAll('.page').forEach(s => s.style.display = 'none');
       const sec = $(id);
-      if (sec) sec.style.display = 'block';
+      if (sec) {
+        sec.style.display = 'block';
+        sec.classList.add('active');
+      }
+    }
+
+    function escHtml(s) {
+      const div = document.createElement('div');
+      div.textContent = s || '';
+      return div.innerHTML;
+    }
+
+    // ── Navegación del panel ──
+    function nav(section) {
+      const container = document.getElementById('main');
+      if (container) {
+        container.querySelectorAll('.page').forEach(s => s.style.display = 'none');
+        container.querySelectorAll('.page').forEach(s => s.classList.remove('active'));
+      }
+      document.querySelectorAll('.panel-section').forEach(s => s.style.display = 'none');
+      const target = document.getElementById('page-' + section);
+      if (target) {
+        target.style.display = 'block';
+        target.classList.add('active');
+
+        // Cargar datos dinámicos según la sección
+        if (section === 'citas') renderCitas();
+        if (section === 'relax' && !window.relaxLoaded) { window.relaxLoaded = true; relaxTab('musica'); }
+      }
     }
 
     // ── Suscripción (Web3Forms) ──
@@ -1022,6 +1128,166 @@ tr:hover td{background:#f8fafc}
       }
     }
 
+    // ── Función para cambiar tabs de Zona Relax ──
+    function relaxTab(tab) {
+      document.querySelectorAll('.relax-tab').forEach(t => t.style.display = 'none');
+      document.getElementById('zona-' + tab).style.display = 'block';
+    }
+
+    // ── WORDLE Contable ──
+    const WORDLE_WORDS = ['IVA','BALAN','ACTIV','PASIV','GASTO','RENTA','DEUDA','FISCO','HABER','DEBEN','CIERRE','LIBRO','FACTO','NOMIN','CUOTA','IMPUES','VALOR','COSTO','PAGO','ABONO'];
+    const WORDLE_LEN = 5;
+    let wordleAnswer = '';
+    let wordleGuesses = [];
+    let wordleGameOver = false;
+
+    function wordleInit() {
+      wordleAnswer = WORDLE_WORDS[Math.floor(Math.random() * WORDLE_WORDS.length)];
+      wordleGuesses = [];
+      wordleGameOver = false;
+      wordleRender();
+    }
+
+    function wordleGuess() {
+      if (wordleGameOver) return;
+      const inp = document.getElementById('wordle-input');
+      const guess = (inp.value || '').trim().toUpperCase();
+      if (guess.length !== WORDLE_LEN) { document.getElementById('wordle-msg').textContent = '✏️ Escribe ' + WORDLE_LEN + ' letras'; return; }
+      wordleGuesses.push(guess);
+      inp.value = '';
+      if (guess === wordleAnswer) {
+        wordleGameOver = true;
+        wordleRender();
+        document.getElementById('wordle-msg').textContent = '🎉 ¡Correcto! Has adivinado la palabra.';
+      } else if (wordleGuesses.length >= 5) {
+        wordleGameOver = true;
+        wordleRender();
+        document.getElementById('wordle-msg').textContent = '😢 La palabra era: ' + wordleAnswer;
+      } else {
+        wordleRender();
+        document.getElementById('wordle-msg').textContent = wordleGuesses.length + '/5 intentos';
+      }
+    }
+
+    function wordleRender() {
+      const grid = document.getElementById('wordle-grid');
+      grid.innerHTML = '';
+      for (let g = 0; g < Math.max(5, wordleGuesses.length); g++) {
+        const row = document.createElement('div'); row.className = 'wg-row';
+        if (g < wordleGuesses.length) {
+          const chars = wordleGuesses[g].split('');
+          for (let c = 0; c < WORDLE_LEN; c++) {
+            const cell = document.createElement('div'); cell.className = 'wg-cell';
+            cell.textContent = chars[c] || '';
+            const guessChar = chars[c] || '';
+            const ansChar = wordleAnswer[c] || '';
+            if (wordleGuesses[g] === wordleAnswer) cell.classList.add('wg-correct');
+            else if (c < wordleAnswer.length && guessChar && guessChar === ansChar) cell.classList.add('wg-correct');
+            else if (wordleAnswer.includes(guessChar)) cell.classList.add('wg-present');
+            else if (guessChar) cell.classList.add('wg-absent');
+            row.appendChild(cell);
+          }
+        } else {
+          for (let c = 0; c < WORDLE_LEN; c++) {
+            const cell = document.createElement('div'); cell.className = 'wg-cell';
+            row.appendChild(cell);
+          }
+        }
+        grid.appendChild(row);
+      }
+    }
+
+    function wordleReset() {
+      wordleInit();
+      document.getElementById('wordle-msg').textContent = '';
+    }
+
+    // ── Citas API ──
+    function openNewCita() {
+      document.getElementById('fCitaId').value = '';
+      document.getElementById('fCitaNombre').value = '';
+      document.getElementById('fCitaEmail').value = '';
+      document.getElementById('fCitaTel').value = '';
+      document.getElementById('fCitaFecha').value = new Date().toISOString().split('T')[0];
+      document.getElementById('fCitaHora').value = '10:00';
+      document.getElementById('fCitaMotivo').value = '';
+      openMod('modCita');
+    }
+
+    async function saveCita() {
+      const nombre = document.getElementById('fCitaNombre').value.trim();
+      const email = document.getElementById('fCitaEmail').value.trim();
+      const fecha = document.getElementById('fCitaFecha').value;
+      const hora = document.getElementById('fCitaHora').value;
+      if (!nombre || !email || !fecha || !hora) { showToast('Completa los campos obligatorios'); return; }
+      const id = document.getElementById('fCitaId').value;
+      const body = {
+        cliente_nombre: nombre, cliente_email: email, cliente_telefono: document.getElementById('fCitaTel').value.trim(),
+        fecha, hora, motivo: document.getElementById('fCitaMotivo').value.trim()
+      };
+      const r = await fetch('/api/citas', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+      const d = await r.json();
+      if (d.ok !== false) {
+        closeMod('modCita'); showToast('✅ Cita creada'); renderCitas();
+      } else {
+        showToast('❌ Error: ' + (d.error || 'desconocido'));
+      }
+    }
+
+    async function cambiarEstadoCita(id, estado) {
+      const r = await fetch('/api/citas/estado', {
+        method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer ' + localStorage.getItem('token')},
+        body:JSON.stringify({id, estado})
+      });
+      const d = await r.json();
+      if (d.ok !== false) { showToast('✅ Estado actualizado'); renderCitas(); }
+      else showToast('❌ Error: ' + (d.error || 'desconocido'));
+    }
+
+    async function deleteCita(id) {
+      if (!confirm('¿Eliminar esta cita?')) return;
+      const r = await fetch('/api/citas', {
+        method:'DELETE', headers:{'Content-Type':'application/json', 'Authorization':'Bearer ' + localStorage.getItem('token')},
+        body:JSON.stringify({id})
+      });
+      const d = await r.json();
+      if (d.ok !== false) { showToast('🗑️ Cita eliminada'); renderCitas(); }
+      else showToast('❌ Error: ' + (d.error || 'desconocido'));
+    }
+
+    function renderCitas(list) {
+      const cont = document.getElementById('main-citas');
+      if (!cont) return;
+      if (!list || !Array.isArray(list)) {
+        cont.innerHTML = '<p style="color:#888;text-align:center;padding:20px">Cargando…</p>';
+        if (list === undefined) {
+          fetch('/api/citas', { headers:{'Authorization':'Bearer ' + localStorage.getItem('token')} })
+            .then(r => r.json()).then(d => { if (d.ok !== false) renderCitas(d.result); })
+            .catch(() => cont.innerHTML = '<p style="color:#e74c3c;text-align:center;padding:20px">Error de conexión</p>');
+        } else {
+          cont.innerHTML = '<p style="color:#888;text-align:center;padding:20px">No hay citas registradas.</p>';
+        }
+        return;
+      }
+      if (list.length === 0) {
+        cont.innerHTML = '<p style="color:#888;text-align:center;padding:20px">No hay citas registradas. Haz clic en "Nueva cita" para crear una.</p>';
+        return;
+      }
+      let html = '<table class="citas-table"><thead><tr><th>Cliente</th><th>Email</th><th>Fecha</th><th>Hora</th><th>Motivo</th><th>Estado</th><th>Acción</th></tr></thead><tbody>';
+      for (const c of list) {
+        const estadoClass = 'badge badge-' + (c.estado || 'pendiente');
+        const etiqueta = c.estado || 'pendiente';
+        html += '<tr><td>' + escHtml(c.cliente_nombre) + '</td><td>' + escHtml(c.cliente_email) + '</td><td>' + escHtml(c.fecha) + '</td><td>' + escHtml(c.hora) + '</td><td>' + escHtml(c.motivo || '') + '</td><td><span class="' + estadoClass + '">' + etiqueta + '</span></td><td>';
+        if (c.estado !== 'confirmada') html += '<button class="btn btn-xs btn-success" onclick="cambiarEstadoCita(' + c.id + ','confirmada')">✅ Confirmar</button> ';
+        if (c.estado !== 'cancelada') html += '<button class="btn btn-xs btn-warning" onclick="cambiarEstadoCita(' + c.id + ','cancelada')">❌ Cancelar</button> ';
+        html += '<button class="btn btn-xs btn-danger" onclick="deleteCita(' + c.id + ')">🗑️</button>';
+        html += '</td></tr>';
+      }
+      html += '</tbody></table>';
+      cont.innerHTML = html;
+    }
+
+    // ── Inicializar wordle y relax al cargar el DOM ──
     // ── Auto-login al cargar ──
     document.addEventListener('DOMContentLoaded', function() { console.log('DOMContentLoaded: ok');
       const userData = localStorage.getItem('user');
@@ -1035,6 +1301,12 @@ tr:hover td{background:#f8fafc}
           token = null;
         }
       }
+      // Inicializar Wordle
+      wordleInit();
+
+      document.getElementById('wordle-input')?.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') wordleGuess();
+      });
     });
 
 
