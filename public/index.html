@@ -3,749 +3,931 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Club Contable</title>
-  <link rel="icon" type="image/x-icon" href="https://clubcontable.com/favicon.ico">
+  <title>Club Contable - Gestión profesional para contadores y empresas</title>
+  <meta name="description" content="Club Contable: gestor de tareas contables multiusuario para contadores, pymes y empresas en Colombia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    /* === WEB INFORMATIVA === */
 
-    #panelGestor { display: none !important; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; color:#1e293b; background:#f8fafc; line-height:1.6; }
+    a { color:#2563eb; text-decoration:none; }
+    .container { max-width:1100px; margin:0 auto; padding:0 20px; }
 
-  /* ── Header ── */
-    header { background: #1e293b; padding: 16px 0; border-bottom: 3px solid #2563eb; }
-    header .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-    .logo { font-size: 24px; font-weight: 700; color: #f59e0b; text-decoration: none; }
-    .logo span { color: #2563eb; }
-    nav { display: flex; gap: 10px; flex-wrap: wrap; }
-    nav a { color: #94a3b8; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; transition: all .2s; cursor: pointer; }
-    nav a:hover { background: #2563eb; color: #fff; }
-
-    /* ── Secciones ── */
-    section { padding: 60px 0; }
-    section:nth-child(even) { background: #1e293b; }
-    h2 { font-size: 28px; margin-bottom: 24px; color: #f59e0b; }
-    h2 span { color: #2563eb; }
-    p, .text-gray { color: #94a3b8; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-    .card { background: #1e293b; border-radius: 12px; padding: 24px; border: 1px solid #334155; transition: all .2s; }
-    .card:hover { border-color: #2563eb; transform: translateY(-2px); }
-    .card h3 { color: #f59e0b; margin-bottom: 8px; }
-    .card .icon { font-size: 36px; margin-bottom: 12px; }
-
-    /* ── Hero ── */
-    .hero { text-align: center; padding: 80px 0; }
-    .hero h1 { font-size: 40px; margin-bottom: 16px; }
-    .hero h1 span { color: #2563eb; }
-    .hero p { font-size: 18px; max-width: 600px; margin: 0 auto 32px; }
-    .btn { display: inline-block; background: #2563eb; color: #fff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all .2s; border: none; cursor: pointer; font-size: 16px; }
-    .btn:hover { background: #f59e0b; color: #0f172a; }
-    .btn-outline { background: transparent; border: 2px solid #2563eb; color: #2563eb; }
-    .btn-outline:hover { background: #2563eb; color: #fff; }
-
-    /* ── Formularios ── */
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; margin-bottom: 6px; color: #94a3b8; font-size: 14px; }
-    .form-group input, .form-group textarea, .form-group select {
-      width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155;
-      border-radius: 8px; color: #e2e8f0; font-size: 15px; outline: none; transition: border .2s;
-    }
-    .form-group input:focus, .form-group textarea:focus { border-color: #2563eb; }
-    .form-group input::placeholder, .form-group textarea::placeholder { color: #475569; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-    /* ── Toast ── */
-    .toast { display: none; padding: 12px 20px; border-radius: 8px; margin-top: 12px; font-size: 14px; }
-    .toast.ok { display: block; background: #065f46; color: #6ee7b7; border: 1px solid #059669; }
-    .toast.error { display: block; background: #7f1d1d; color: #fca5a5; border: 1px solid #dc2626; }
-
-    /* ── Gestor (login) ── */
-    #acceso { max-width: 400px; margin: 0 auto; }
-    #acceso h2 { text-align: center; }
-
-    /* ── Precios ── */
-    .precio { font-size: 32px; font-weight: 700; color: #f59e0b; margin: 12px 0; }
-    .precio small { font-size: 14px; color: #64748b; font-weight: 400; }
-    .plan-destacado { border-color: #f59e0b; }
-
-    /* ── FAQ ── */
-    .faq-item { border: 1px solid #334155; border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
-    .faq-q { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; transition: background .2s; }
-    .faq-q:hover { background: #1e293b; }
-    .faq-q span { font-size: 20px; color: #2563eb; }
-    .faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: all .3s; }
-    .faq-a.open { padding: 0 20px 16px; max-height: 300px; }
-    .faq-a p { color: #94a3b8; }
-
-    /* ── Footer ── */
-    footer { background: #1e293b; border-top: 1px solid #334155; padding: 30px 0; text-align: center; }
-    footer p { color: #64748b; font-size: 14px; }
-
-    /* ── Panel gestor ── */
-    .panel-section { display: none; }
-    .panel-section:first-child { display: block; }
-    #panelGestor a:hover { background:#2563eb !important; color:#fff !important; }
-
-    /* ── Responsive ── */
-    @media (max-width: 640px) {
-      .hero h1 { font-size: 28px; }
-      .hero { padding: 50px 0; }
-      .form-row { grid-template-columns: 1fr; }
-      header .container { flex-direction: column; text-align: center; }
+    /* HEADER */
+    header { background:#1e293b; color:#fff; padding:12px 0; position:sticky; top:0; z-index:100; }
+    header .container { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+    header .logo { font-size:20px; font-weight:800; }
+    header .logo span { color:#f59e0b; }
+    header nav { display:flex; flex-wrap:wrap; gap:6px; }
+    header nav a { color:#cbd5e1; font-size:14px; padding:6px 12px; border-radius:6px; }
+    header nav a:hover { color:#fff; background:#334155; }
+    .menu-icon { display:none; cursor:pointer; font-size:24px; color:#fff; }
+    @media(max-width:768px){
+      header nav { display:none; width:100%; flex-direction:column; }
+      header nav.open { display:flex; }
+      .menu-icon { display:block; }
     }
 
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    /* HERO */
+    .hero { background:linear-gradient(135deg,#1e293b,#334155); color:#fff; padding:80px 0; text-align:center; }
+    .hero h1 { font-size:42px; font-weight:800; margin-bottom:16px; }
+    .hero h1 span { color:#f59e0b; }
+    .hero p { font-size:18px; color:#cbd5e1; max-width:600px; margin:0 auto 30px; }
+    .hero .btn { background:#2563eb; color:#fff; padding:14px 36px; border-radius:8px; font-weight:700; font-size:16px; display:inline-block; }
+    .hero .btn:hover { background:#1d4ed8; }
+    @media(max-width:640px){ .hero h1 { font-size:28px; } .hero { padding:50px 0; } }
+
+    /* SECCIONES GENERAL */
+    section { padding:60px 0; }
+    section .title { font-size:28px; font-weight:700; color:#1e293b; text-align:center; margin-bottom:40px; }
+    section .title span { color:#2563eb; }
+
+    /* INICIO - Cards */
+    .cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+    .card { background:#fff; border-radius:12px; padding:28px; box-shadow:0 1px 3px rgba(0,0,0,.08); border:1px solid #e2e8f0; }
+    .card .icon { font-size:36px; margin-bottom:12px; }
+    .card h3 { font-size:18px; font-weight:700; margin-bottom:8px; }
+    .card p { color:#64748b; font-size:15px; }
+
+    /* GUÍAS - Blog */
+    .blog-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; }
+    .post-card { background:#fff; border-radius:10px; padding:24px; border:1px solid #e2e8f0; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+    .post-card .cat { font-size:12px; font-weight:600; color:#2563eb; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+    .post-card h3 { font-size:18px; font-weight:700; margin-bottom:8px; }
+    .post-card h3 a { color:#1e293b; }
+    .post-card h3 a:hover { color:#2563eb; }
+    .post-card p { color:#64748b; font-size:14px; margin-bottom:12px; }
+    .post-card .meta { font-size:13px; color:#94a3b8; }
+
+    /* PROGRAMAS */
+    .programa-intro { background:linear-gradient(135deg,#1e293b,#334155); color:#fff; border-radius:12px; padding:40px; text-align:center; margin-bottom:30px; }
+    .programa-intro h2 { color:#fff; font-size:28px; margin-bottom:12px; }
+    .programa-intro p { color:#cbd5e1; max-width:600px; margin:0 auto 20px; }
+    .programa-intro .btn-warning { background:#f59e0b; color:#1e293b; padding:14px 36px; border-radius:8px; font-weight:700; font-size:16px; display:inline-block; }
+    .programa-intro .btn-warning:hover { background:#d97706; }
+    .precios-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin:30px 0; }
+    .precio-card { background:#fff; border:2px solid #e2e8f0; border-radius:12px; padding:24px; text-align:center; }
+    .precio-card.destacado { border-color:#2563eb; box-shadow:0 0 0 2px #2563eb; }
+    .precio-card .plan { font-size:14px; color:#64748b; font-weight:600; text-transform:uppercase; }
+    .precio-card .precio { font-size:32px; font-weight:800; color:#1e293b; margin:8px 0; }
+    .precio-card .precio small { font-size:16px; font-weight:400; color:#94a3b8; }
+    .precio-card .desc { font-size:14px; color:#64748b; margin-bottom:12px; }
+    .precio-card .btn-sm { background:#2563eb; color:#fff; padding:8px 24px; border-radius:6px; font-weight:600; font-size:14px; display:inline-block; }
+    .precio-card .btn-sm:hover { background:#1d4ed8; }
+    .suscribete-box { background:#fff; border-radius:12px; padding:30px; text-align:center; border:2px solid #e2e8f0; margin-top:30px; }
+    .suscribete-box h3 { font-size:22px; margin-bottom:8px; }
+    .suscribete-box p { color:#64748b; margin-bottom:20px; }
+    .suscribete-box form { display:flex; gap:12px; max-width:480px; margin:0 auto; flex-wrap:wrap; justify-content:center; }
+    .suscribete-box input[type=email] { flex:1; min-width:200px; padding:12px 16px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; }
+    .suscribete-box button { background:#2563eb; color:#fff; padding:12px 28px; border:none; border-radius:8px; font-weight:700; font-size:15px; cursor:pointer; }
+    .suscribete-box button:hover { background:#1d4ed8; }
+    .toast { display:none; background:#22c55e; color:#fff; padding:12px; border-radius:8px; margin-top:12px; }
+
+    /* EMPRESAS / CONTADORES */
+    .info-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; }
+
+    /* NOVEDADES */
+    .news-item { background:#fff; border-radius:10px; padding:20px 24px; margin-bottom:12px; border-left:4px solid #2563eb; }
+    .news-item .fecha { font-size:13px; color:#94a3b8; }
+    .news-item h4 { font-size:16px; margin:4px 0; }
+    .news-item p { color:#64748b; font-size:14px; }
+
+    /* FAQ */
+    .faq-item { margin-bottom:12px; }
+    .faq-question { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px 20px; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; }
+    .faq-question:hover { background:#f8fafc; }
+    .faq-answer { display:none; padding:16px 20px; color:#475569; font-size:15px; border:1px solid #e2e8f0; border-top:none; border-radius:0 0 8px 8px; }
+    .faq-answer.open { display:block; }
+
+    /* CONTACTO */
+    .contact-form { max-width:500px; margin:0 auto; background:#fff; border-radius:12px; padding:30px; border:1px solid #e2e8f0; }
+    .contact-form input,.contact-form textarea { width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; margin-bottom:14px; }
+    .contact-form textarea { height:120px; resize:vertical; }
+    .contact-form button { width:100%; background:#2563eb; color:#fff; padding:14px; border:none; border-radius:8px; font-weight:700; font-size:16px; cursor:pointer; }
+    .contact-form button:hover { background:#1d4ed8; }
+
+    /* FOOTER */
+    footer { background:#1e293b; color:#94a3b8; padding:40px 0; text-align:center; font-size:14px; }
+    footer a { color:#94a3b8; }
+    footer a:hover { color:#fff; }
+  
+    /* === PANEL GESTOR === */
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f1f5f9;min-height:100vh;color:#1e293b;display:flex}
+
+/* ── LOGIN ── */
+#auth{width:100%;display:flex;align-items:center;justify-content:center;min-height:100vh}
+#auth .card{background:#fff;padding:40px 30px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.08);width:380px;max-width:90%;text-align:center}
+#auth h1{color:#2563eb;font-size:26px;margin-bottom:4px}
+#auth .sub{color:#94a3b8;font-size:13px;margin-bottom:24px}
+#auth input{width:100%;padding:12px;margin-bottom:10px;border:2px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;transition:border .2s}
+#auth input:focus{border-color:#2563eb}
+#auth button{width:100%;padding:12px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s}
+#auth button:hover{background:#f59e0b}
+.auth-error{color:#dc2626;font-size:13px;display:none;margin-bottom:8px}
+
+/* ── SIDEBAR ── */
+#sidebar{width:240px;min-width:240px;height:100vh;background:#1e293b;display:none;flex-direction:column;position:fixed;top:0;left:0;z-index:100}
+.sidebar-brand{padding:20px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #334155}
+.sidebar-brand .icon{background:#2563eb;color:#fff;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:18px;flex-shrink:0}
+.sidebar-brand .name{color:#fff;font-weight:700;font-size:15px}
+.sidebar-menu{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:2px}
+.sidebar-menu a{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;cursor:pointer;color:#94a3b8;text-decoration:none;font-size:14px;transition:all .15s}
+.sidebar-menu a:hover{background:#334155;color:#fff}
+.sidebar-menu a.active{background:#2563eb;color:#fff;font-weight:600}
+.sidebar-menu a .ico{font-size:18px;width:22px;text-align:center;flex-shrink:0}
+.sidebar-footer{padding:14px 18px;border-top:1px solid #334155}
+.sidebar-footer .user-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sidebar-footer .avatar{width:34px;height:34px;background:#2563eb;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.sidebar-footer .un{color:#fff;font-size:13px;font-weight:600}
+.sidebar-footer .ur{color:#94a3b8;font-size:11px}
+#btnLogout{width:100%;padding:8px;background:#dc2626;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:background .15s}
+#btnLogout:hover{background:#b91c1c}
+
+/* ── MAIN ── */
+#main{margin-left:240px;flex:1;padding:30px;display:none}
+.page-title{font-size:24px;font-weight:700;color:#1e293b;margin-bottom:24px}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+.stat-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-left:4px solid #2563eb}
+.stat-card .label{font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.stat-card .value{font-size:30px;font-weight:700;color:#2563eb}
+.stat-card .value.green{color:#059669}
+.stat-card .value.orange{color:#ea580c}
+.stat-card .value.red{color:#dc2626}
+
+/* ── CARDS ── */
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;margin-bottom:20px}
+.card-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2e8f0}
+.card-header h2{font-size:16px;font-weight:600;color:#1e293b}
+
+/* ── TABLA ── */
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:10px 20px;font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;background:#f8fafc;border-bottom:1px solid #e2e8f0}
+td{padding:12px 20px;font-size:13px;color:#334155;border-bottom:1px solid #f1f5f9}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8fafc}
+
+/* ── BUTTONS ── */
+.btn{padding:8px 16px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.btn-sm{padding:5px 10px;font-size:11px}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-primary:hover{background:#f59e0b}
+.btn-danger{background:#fee2e2;color:#dc2626}
+.btn-danger:hover{background:#fecaca}
+.btn-success{background:#dcfce7;color:#059669}
+.btn-ghost{background:transparent;color:#64748b}
+.btn-ghost:hover{background:#f1f5f9}
+
+/* ── BADGES ── */
+.badge{display:inline-block;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600}
+.badge-ok{background:#dcfce7;color:#166534}
+.badge-pend{background:#fef3c7;color:#92400e}
+.badge-cat{background:#ede9fe;color:#5b21b6}
+.badge-emp{background:#fef3c7;color:#92400e}
+
+/* ── FORMS ── */
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px;text-transform:uppercase}
+.fg input,.fg select,.fg textarea{width:100%;padding:10px;border:2px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;font-family:inherit;background:#fff;color:#1e293b;transition:border .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#2563eb}
+.fg textarea{resize:vertical}
+
+/* ── MODAL ── */
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;z-index:999}
+.modal.show{display:flex}
+.modal-content{background:#fff;border-radius:16px;padding:30px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,.2)}
+.modal-content h3{margin-bottom:20px;font-size:18px}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:50px 20px;color:#94a3b8}
+.empty .ico{font-size:48px;margin-bottom:12px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;padding:14px 24px;border-radius:10px;font-size:14px;z-index:9999;opacity:0;transform:translateY(12px);transition:all .3s;font-weight:600}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.success{background:#059669;color:#fff}
+.toast.error{background:#dc2626;color:#fff}
+.toast.info{background:#2563eb;color:#fff}
+
+/* ── PAGES ── */
+.page{display:none}
+.page.active{display:block}
+
+/* ── PROGRESS BAR ── */
+.pbar-wrap{background:#e2e8f0;border-radius:8px;height:12px;margin:4px 0 8px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:8px;background:#2563eb;transition:width .4s}
+.pbar-fill.ok{background:#059669}
+.pbar-fill.med{background:#ea580c}
+.pbar-fill.low{background:#dc2626}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  #sidebar{width:64px;min-width:64px}
+  .sidebar-brand .name,.sidebar-menu a .txt,.sidebar-footer .user-row div,.sidebar-footer .un,.sidebar-footer .ur{display:none}
+  .sidebar-menu a{justify-content:center;padding:14px 10px}
+  .sidebar-menu a .ico{font-size:20px}
+  #main{margin-left:64px;padding:16px}
+  .stats{grid-template-columns:1fr 1fr}
+}
+
+    /* Las páginas del panel y la web NO pueden verse a la vez */
+    body.panel-mode #web-content { display: none !important; }
+    body:not(.panel-mode) #sidebar,
+    body:not(.panel-mode) #main,
+    body:not(.panel-mode) .toast { display: none !important; }
   </style>
 </head>
 <body>
 
-<!-- ─── HEADER ─── -->
+  <!-- ═══ WEB INFORMATIVA ═══ -->
+  <div id="web-content">
 <header>
   <div class="container">
-    <a href="#" class="logo">Club <span>Contable</span></a>
+    <div class="logo">🏢 Club <span>Contable</span></div>
+    <div class="menu-icon" onclick="document.querySelector('header nav').classList.toggle('open')">☰</div>
     <nav>
       <a href="#inicio">Inicio</a>
-      <a href="#funciones">Funciones</a>
-      <a href="#planes">Planes</a>
+      <a href="#guias">Guías</a>
+      <a href="#herramientas">Herramientas</a>
+      <a href="#empresas">Empresas</a>
+      <a href="#contadores">Contadores</a>
+      <a href="#gestor">Gestor</a>
+      <a href="#novedades">Novedades</a>
+      <a href="#faq">FAQ</a>
       <a href="#contacto">Contacto</a>
-      <a href="#acceso">Acceso</a>
     </nav>
   </div>
 </header>
 
-<!-- ─── HERO ─── -->
-<section id="inicio">
-  <div class="container hero">
-    <h1>Tu <span>contabilidad</span>, más simple que nunca</h1>
-    <p>Gestiona tus empresas, tareas y categorías en un solo lugar. Diseñado para contadores y dueños de negocio.</p>
-    <a href="#acceso" class="btn">Accede al gestor</a>
-    <a href="#funciones" class="btn btn-outline" style="margin-left:12px;">Conoce más</a>
+<!-- HERO / INICIO -->
+<section class="hero" id="inicio">
+  <div class="container">
+    <h1>Gestión contable profesional<br>para <span>contadores</span> y <span>empresas</span></h1>
+    <p>Administra tareas contables, organiza tu trabajo y mantén al día la contabilidad de tus clientes con Club Contable. La plataforma multiusuario diseñada para contadores en Colombia.</p>
+    <a href="#acceso" class="btn">Acceder al gestor →</a>
   </div>
 </section>
 
-<!-- ─── FUNCIONES ─── -->
-<section id="funciones">
+<!-- Cards Inicio -->
+<section>
   <div class="container">
-    <h2>¿Qué puedes <span>hacer</span>?</h2>
-    <div class="grid">
+    <div class="cards-grid">
       <div class="card">
-        <div class="icon">📊</div>
-        <h3>Dashboard</h3>
-        <p>Resumen de tu actividad con métricas y progreso en tiempo real.</p>
-      </div>
-      <div class="card">
-        <div class="icon">✅</div>
-        <h3>Tareas</h3>
-        <p>Crea y organiza tareas por categorías y empresas.</p>
+        <div class="icon">📋</div>
+        <h3>Gestión de tareas</h3>
+        <p>Organiza y da seguimiento a todas tus tareas contables por empresa y categoría.</p>
       </div>
       <div class="card">
         <div class="icon">🏢</div>
         <h3>Multiempresa</h3>
-        <p>Administra varias empresas desde un solo panel de control.</p>
+        <p>Administra múltiples empresas desde un solo panel. Cambia entre ellas al instante.</p>
       </div>
       <div class="card">
-        <div class="icon">📈</div>
+        <div class="icon">📊</div>
         <h3>Reportes</h3>
-        <p>Visualiza tu avance con reportes por categoría y empresa.</p>
+        <p>Visualiza el cumplimiento de tareas por categoría y empresa con reportes claros.</p>
       </div>
       <div class="card">
         <div class="icon">👥</div>
-        <h3>Equipos</h3>
-        <p>Invita a contadores y colaboradores a tu organización.</p>
-      </div>
-      <div class="card">
-        <div class="icon">🔒</div>
-        <h3>Seguro</h3>
-        <p>Tus datos protegidos con autenticación y roles de usuario.</p>
+        <h3>Multi-usuario</h3>
+        <p>Tu equipo puede trabajar junto con roles y permisos diferenciados.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── PLANES ─── -->
-<section id="planes">
+<!-- GUÍAS -->
+<section id="guias" style="background:#fff;">
   <div class="container">
-    <h2>Planes <span>flexibles</span></h2>
-    <div class="grid">
-      <div class="card plan-destacado">
-        <h3>🆓 Prueba</h3>
-        <p>7 días gratis</p>
-        <div class="precio">$0 <small>COP</small></div>
-        <p>Sin compromiso. Explora todas las funciones.</p>
+    <h2 class="title">📖 <span>Guías</span> de contabilidad</h2>
+    <div class="blog-grid">
+      <div class="post-card">
+        <div class="cat">Contabilidad</div>
+        <h3><a href="#guias">Contabilidad básica para pymes colombianas</a></h3>
+        <p>Todo lo que necesita saber una pequeña o mediana empresa para llevar su contabilidad al día: libros contables, obligaciones tributarias y plazos clave.</p>
+        <div class="meta">Actualizado: julio 2026</div>
       </div>
-      <div class="card">
-        <h3>🌟 1 empresa</h3>
-        <div class="precio">$12.999 <small>COP/mes</small></div>
-        <p>Perfecto para emprendedores individuales.</p>
+      <div class="post-card">
+        <div class="cat">Facturación</div>
+        <h3><a href="#guias">Facturación electrónica en Colombia: guía completa 2026</a></h3>
+        <p>Requisitos, plazos y pasos para implementar la facturación electrónica en tu empresa. Resolución vigente y obligaciones actualizadas.</p>
+        <div class="meta">Actualizado: julio 2026</div>
       </div>
-      <div class="card">
-        <h3>🚀 2-3 empresas</h3>
-        <div class="precio">$19.999 <small>COP/mes</small></div>
-        <p>Para pequeños despachos contables.</p>
-      </div>
-      <div class="card">
-        <h3>💼 4-10 empresas</h3>
-        <div class="precio">$29.999 <small>COP/mes</small></div>
-        <p>Para firmas en crecimiento.</p>
-      </div>
-      <div class="card">
-        <h3>🏢 +10 empresas</h3>
-        <div class="precio">$39.999 <small>COP/mes</small></div>
-        <p>Plan ilimitado para grandes organizaciones.</p>
+      <div class="post-card">
+        <div class="cat">Impuestos</div>
+        <h3><a href="#guias">Calendario tributario Colombia 2026</a></h3>
+        <p>Fechas clave para la declaración de renta, IVA, retefuente y demás impuestos. No te pierdas ningún plazo.</p>
+        <div class="meta">Actualizado: julio 2026</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── ACCESO / LOGIN ─── -->
-<section id="acceso" style="display:block;">
+<!-- HERRAMIENTAS -->
+<section id="herramientas">
   <div class="container">
-    <h2>Inicia <span>sesión</span></h2>
-    <form onsubmit="login(event)">
-      <div class="form-group">
-        <label>Correo electrónico</label>
-        <input type="email" id="loginEmail" placeholder="tu@correo.com" required autocomplete="email">
+    <h2 class="title">🛠️ <span>Herramientas</span> contables</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="icon">💰</div>
+        <h3>Calculadora de IVA</h3>
+        <p>Calcula el IVA incluido y excluido de tus facturas al instante.</p>
+        <a href="#herramientas" style="font-size:14px;">Próximamente →</a>
       </div>
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" id="loginPass" placeholder="••••••••" required autocomplete="current-password">
+      <div class="card">
+        <div class="icon">📅</div>
+        <h3>Calendario de vencimientos</h3>
+        <p>Visualiza las fechas clave de tus obligaciones tributarias mes a mes.</p>
+        <a href="#herramientas" style="font-size:14px;">Próximamente →</a>
       </div>
-      <button type="submit" class="btn" style="width:100%;">Ingresar</button>
-      <div id="loginToast" class="toast"></div>
-    </form>
-    <p style="text-align:center;margin-top:16px;font-size:13px;">
-      ¿No tienes cuenta? <a href="#contacto" style="color:#2563eb;">Contáctanos</a>
-    </p>
+      <div class="card">
+        <div class="icon">📄</div>
+        <h3>Formato de recibos</h3>
+        <p>Descarga plantillas editables de recibos, facturas y soportes contables.</p>
+        <a href="#herramientas" style="font-size:14px;">Próximamente →</a>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ─── CONTACTO ─── -->
+<!-- PARA EMPRESAS -->
+<section id="empresas" style="background:#fff;">
+  <div class="container">
+    <h2 class="title">🏢 <span>Para empresas</span></h2>
+    <div class="info-grid">
+      <div class="card">
+        <div class="icon">📋</div>
+        <h3>¿Qué libros contables debe tener una empresa en Colombia?</h3>
+        <p>Libros oficiales, libros auxiliares y soportes contables. Descubre cuáles son obligatorios según el tipo de empresa y régimen tributario.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📝</div>
+        <h3>Cómo llevar la contabilidad de tu negocio siendo autónomo</h3>
+        <p>Guía práctica para autónomos colombianos: obligaciones contables simplificadas, herramientas recomendadas y errores comunes.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💡</div>
+        <h3>Beneficios tributarios para pymes en Colombia</h3>
+        <p>Deducciones, descuentos y tratamientos especiales que pueden aplicar las pequeñas y medianas empresas en su declaración de renta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA CONTADORES -->
+<section id="contadores">
+  <div class="container">
+    <h2 class="title">👨‍💼 <span>Para contadores</span></h2>
+    <div class="info-grid">
+      <div class="card">
+        <div class="icon">👔</div>
+        <h3>Responsabilidades del contador público en Colombia</h3>
+        <p>Normativa vigente, obligaciones profesionales, sanciones y ética profesional. Todo lo que debe saber un contador en ejercicio.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📂</div>
+        <h3>Cómo organizar la documentación de varios clientes</h3>
+        <p>Métodos y herramientas para gestionar la contabilidad de múltiples empresas sin perder el control ni los plazos.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🖥️</div>
+        <h3>Software contable vs Excel: ¿qué conviene más?</h3>
+        <p>Comparativa objetiva entre usar hojas de cálculo y plataformas especializadas para la gestión contable profesional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GESTOR DE TAREAS -->
+<section id="gestor" style="background:#fff;">
+  <div class="container">
+    <h2 class="title">💻 <span>Gestor de tareas</span> — Club Contable</h2>
+    
+    <div class="programa-intro">
+      <h2>🎯 Organiza tu trabajo contable</h2>
+      <p>Club Contable es un gestor de tareas multiusuario diseñado para contadores, empresas y pymes en Colombia. Organiza tus tareas pendientes, asigna responsables por empresa, lleva el control de cada cliente y genera reportes de cumplimiento en tiempo real.</p>
+      <a href="#suscripcion" class="btn-warning">Suscríbete ahora →</a>
+    </div>
+
+    <div class="login-box" id="acceso">
+      <h3>🔐 Accede al gestor de tareas</h3>
+      <p>Ingresa con tu correo y contraseña para gestionar tus tareas.</p>
+      <form onsubmit="login(event)">
+        <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+        <input type="password" id="loginPass" placeholder="Contraseña" required>
+        <button type="submit">Ingresar</button>
+      </form>
+      <div class="toast" id="loginToast" style="display:none;"></div>
+      <p style="margin-top:12px;font-size:14px;color:#64748b;">¿No tienes cuenta? <a href="#suscripcion">Suscríbete aquí</a></p>
+    </div>
+
+    <div class="precios-grid">
+      <div class="precio-card">
+        <div class="plan">Prueba</div>
+        <div class="precio">Gratis <small>7 días</small></div>
+        <div class="desc">Acceso completo a todas las funciones durante 7 días sin compromiso.</div>
+        <a href="#suscripcion" class="btn-sm">Probar gratis</a>
+      </div>
+      <div class="precio-card destacado">
+        <div class="plan">1 empresa</div>
+        <div class="precio">$12.999 <small>/mes</small></div>
+        <div class="desc">Perfecto para contadores independientes o pequeñas empresas.</div>
+        <a href="#suscripcion" class="btn-sm">Elegir plan</a>
+      </div>
+      <div class="precio-card">
+        <div class="plan">2-3 empresas</div>
+        <div class="precio">$19.999 <small>/mes</small></div>
+        <div class="desc">Para contadores con varios clientes o pymes en crecimiento.</div>
+        <a href="#suscripcion" class="btn-sm">Elegir plan</a>
+      </div>
+      <div class="precio-card">
+        <div class="plan">4-10 empresas</div>
+        <div class="precio">$29.999 <small>/mes</small></div>
+        <div class="desc">Para firmas contables o empresas con varias sedes.</div>
+        <a href="#suscripcion" class="btn-sm">Elegir plan</a>
+      </div>
+    </div>
+
+    <div class="suscribete-box" id="suscripcion">
+      <h3>📩 Suscríbete y recibe información exclusiva</h3>
+      <p>Déjanos tu correo y te enviaremos novedades contables, consejos y ofertas especiales para empezar con Club Contable.</p>
+      <form onsubmit="suscripcion(event)">
+        <input type="email" id="subEmail" placeholder="Tu correo electrónico" required>
+        <button type="submit">Suscribirse</button>
+      </form>
+      <div class="toast" id="subToast">✅ ¡Gracias por suscribirte! Te mantendremos al tanto.</div>
+    </div>
+  </div>
+</section>
+
+<!-- NOVEDADES -->
+<section id="novedades">
+  <div class="container">
+    <h2 class="title">🆕 <span>Novedades</span> contables y fiscales</h2>
+    <div class="news-item">
+      <div class="fecha">15 julio 2026</div>
+      <h4>Resolución DIAN: nuevos plazos para facturación electrónica</h4>
+      <p>La DIAN actualizó los plazos de implementación para pequeños contribuyentes. Consulta si tu empresa está afectada.</p>
+    </div>
+    <div class="news-item">
+      <div class="fecha">1 julio 2026</div>
+      <h4>Declaración de renta 2025: fechas y novedades</h4>
+      <p>Ya están publicados los calendarios para la declaración de renta de personas jurídicas y naturales. Conoce las fechas clave.</p>
+    </div>
+    <div class="news-item">
+      <div class="fecha">15 junio 2026</div>
+      <h4>Uso de firma electrónica en documentos contables</h4>
+      <p>La legislación colombiana actualiza los requisitos para el uso de firma electrónica en soportes contables y estados financieros.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background:#fff;">
+  <div class="container">
+    <h2 class="title">❓ <span>Preguntas</span> frecuentes</h2>
+    
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">¿Qué es Club Contable? <span>+</span></div>
+      <div class="faq-answer">Club Contable es una plataforma de gestión contable multiusuario diseñada para contadores, empresas y pymes en Colombia. Permite organizar tareas contables, asignar responsables por empresa, y generar reportes de cumplimiento.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">¿Cuánto cuesta? <span>+</span></div>
+      <div class="faq-answer">Ofrecemos planes desde $12.999 COP/mes para 1 empresa, hasta $29.999 COP/mes para 4-10 empresas. También tienes 7 días de prueba gratuita sin compromiso.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">¿Es solo para contadores? <span>+</span></div>
+      <div class="faq-answer">No, está diseñado tanto para contadores profesionales como para empresas y pymes que quieran llevar su contabilidad de forma organizada. Cada perfil tiene acceso a las funcionalidades que necesita.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">¿Puedo probarlo antes de pagar? <span>+</span></div>
+      <div class="faq-answer">Sí, ofrecemos 7 días de prueba gratuita con acceso completo a todas las funciones del plan que elijas. Sin compromiso ni necesidad de dar datos de pago.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">¿Funciona para empresas colombianas? <span>+</span></div>
+      <div class="faq-answer">Sí, Club Contable está diseñado específicamente para el mercado colombiano, con soporte para la normativa contable y tributaria local.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
 <section id="contacto">
   <div class="container">
-    <h2>Escríbenos</h2>
-    <div class="grid" style="max-width:600px;margin:0 auto;">
-      <div class="card">
-        <form onsubmit="contacto(event)">
-          <div class="form-group">
-            <label>Nombre</label>
-            <input type="text" id="conNombre" placeholder="Tu nombre" required>
-          </div>
-          <div class="form-group">
-            <label>Correo</label>
-            <input type="email" id="conEmail" placeholder="tu@correo.com" required>
-          </div>
-          <div class="form-group">
-            <label>Asunto</label>
-            <input type="text" id="conAsunto" placeholder="¿Sobre qué?">
-          </div>
-          <div class="form-group">
-            <label>Mensaje</label>
-            <textarea id="conMsg" rows="4" placeholder="Cuéntanos..." required></textarea>
-          </div>
-          <button type="submit" class="btn" style="width:100%;">Enviar mensaje</button>
-          <div id="conToast" class="toast"></div>
-        </form>
-      </div>
+    <h2 class="title">📬 <span>Contacto</span></h2>
+    <div class="contact-form">
+      <form onsubmit="contacto(event)">
+        <input type="text" id="conNombre" placeholder="Nombre y apellido" required>
+        <input type="email" id="conEmail" placeholder="Correo electrónico" required>
+        <input type="text" id="conAsunto" placeholder="Asunto" required>
+        <textarea id="conMsg" placeholder="Escribe tu mensaje..." required></textarea>
+        <button type="submit">Enviar mensaje</button>
+      </form>
+      <div class="toast" id="conToast">✅ Mensaje enviado. Te responderemos pronto.</div>
     </div>
   </div>
 </section>
 
-<!-- ─── SUSCRIPCIÓN / NEWSLETTER ─── -->
-<section>
-  <div class="container" style="text-align:center;">
-    <h2>No te pierdas <span>nada</span></h2>
-    <p style="max-width:500px;margin:0 auto 24px;">Suscríbete y recibe novedades, consejos y actualizaciones de Club Contable.</p>
-    <form onsubmit="suscripcion(event)" style="max-width:400px;margin:0 auto;">
-      <div style="display:flex;gap:8px;">
-        <input type="email" id="subEmail" placeholder="tu@correo.com" required style="flex:1;padding:12px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:15px;">
-        <button type="submit" class="btn">Suscribirme</button>
-      </div>
-      <div id="subToast" class="toast"></div>
-    </form>
-  </div>
-</section>
-
-<!-- ─── FAQ ─── -->
-<section>
-  <div class="container">
-    <h2>Preguntas <span>frecuentes</span></h2>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">¿Qué es Club Contable? <span>+</span></div>
-      <div class="faq-a"><p>Es una plataforma que te ayuda a gestionar tareas contables, organizar empresas y dar seguimiento a tus pendientes desde un solo panel.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">¿Cómo empiezo? <span>+</span></div>
-      <div class="faq-a"><p>Regístrate arriba en "Acceso" o contáctanos y te creamos tu cuenta de prueba gratis por 7 días.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">¿Puedo añadir a mi contador? <span>+</span></div>
-      <div class="faq-a"><p>Sí. Con los planes multiempresa puedes invitar colaboradores y asignarles permisos específicos.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">¿Qué medios de pago aceptan? <span>+</span></div>
-      <div class="faq-a"><p>Aceptamos transferencias bancarias en Colombia y próximamente tarjetas y Nequi.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── PANEL GESTOR (oculto hasta login) ─── -->
-<section id="panelGestor" style="display:none !important;">
-  <div class="container">
-    <div style="display:flex;gap:24px;flex-wrap:wrap;">
-      
-      <!-- Sidebar -->
-      <div style="background:#1e293b;border-radius:12px;padding:20px;width:220px;min-width:180px;border:1px solid #334155;">
-        <div style="font-weight:700;font-size:16px;margin-bottom:16px;color:#f59e0b;">Panel de control</div>
-        <div style="font-size:13px;color:#94a3b8;margin-bottom:16px;" id="panelUserEmail">usuario@email.com</div>
-        <nav style="display:flex;flex-direction:column;gap:4px;">
-          <a onclick="mostrarSeccion('secDashboard')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">📊 Dashboard</a>
-          <a onclick="mostrarSeccion('secTareas')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">✅ Tareas</a>
-          <a onclick="mostrarSeccion('secCategorias')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">📁 Categorías</a>
-          <a onclick="mostrarSeccion('secSubcategorias')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">📂 Subcategorías</a>
-          <a onclick="mostrarSeccion('secReportes')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">📈 Reportes</a>
-          <a onclick="mostrarSeccion('secAdmin')" style="color:#94a3b8;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">⚙️ Admin</a>
-          <hr style="border-color:#334155;margin:8px 0;">
-          <a onclick="logout()" style="color:#ef4444;padding:10px 12px;border-radius:6px;cursor:pointer;text-decoration:none;font-size:14px;transition:all .2s;">🚪 Cerrar sesión</a>
-        </nav>
-      </div>
-
-      <!-- Contenido del panel -->
-      <div style="flex:1;min-width:300px;">
-
-        <!-- Dashboard -->
-        <div id="secDashboard" class="panel-section">
-          <h2>📊 <span>Dashboard</span></h2>
-          <div id="dashboardContent"><p class="text-gray">Cargando...</p></div>
-        </div>
-
-        <!-- Tareas -->
-        <div id="secTareas" class="panel-section" style="display:none;">
-          <h2>✅ <span>Tareas</span></h2>
-          <div class="card" style="margin-bottom:16px;">
-            <h3>Nueva tarea</h3>
-            <div class="form-group"><input type="text" id="tareaNombre" placeholder="Nombre de la tarea"></div>
-            <div class="form-group">
-              <select id="tareaCategoria"><option value="">Sin categoría</option></select>
-            </div>
-            <div class="form-group">
-              <select id="empresaSelect"><option value="">Seleccionar empresa</option></select>
-            </div>
-            <button class="btn" onclick="crearTarea()">Crear tarea</button>
-          </div>
-          <div id="listaTareas"></div>
-        </div>
-
-        <!-- Categorías -->
-        <div id="secCategorias" class="panel-section" style="display:none;">
-          <h2>📁 <span>Categorías</span></h2>
-          <div class="card" style="margin-bottom:16px;">
-            <h3>Nueva categoría</h3>
-            <div class="form-group"><input type="text" id="catNombre" placeholder="Nombre de la categoría"></div>
-            <button class="btn" onclick="crearCategoria()">Crear</button>
-          </div>
-          <div id="listaCategorias"></div>
-        </div>
-
-        <!-- Subcategorías -->
-        <div id="secSubcategorias" class="panel-section" style="display:none;">
-          <h2>📂 <span>Subcategorías</span></h2>
-          <div class="card" style="margin-bottom:16px;">
-            <h3>Nueva subcategoría</h3>
-            <div class="form-group"><input type="text" id="subcatNombre" placeholder="Nombre"></div>
-            <div class="form-group">
-              <select id="subcatCategoria"><option value="">Seleccionar categoría</option></select>
-            </div>
-            <button class="btn" onclick="crearSubcategoria()">Crear</button>
-          </div>
-          <div id="listaSubcategorias"></div>
-        </div>
-
-        <!-- Reportes -->
-        <div id="secReportes" class="panel-section" style="display:none;">
-          <h2>📈 <span>Reportes</span></h2>
-          <div id="reportesContent"><p class="text-gray">Cargando...</p></div>
-        </div>
-
-        <!-- Admin -->
-        <div id="secAdmin" class="panel-section" style="display:none;">
-          <h2>⚙️ <span>Admin</span></h2>
-          <div class="card" style="margin-bottom:16px;">
-            <h3>Crear usuario</h3>
-            <div class="form-group"><input type="text" id="adminUserName" placeholder="Nombre"></div>
-            <div class="form-group"><input type="email" id="adminUserEmail" placeholder="Email"></div>
-            <div class="form-group"><input type="password" id="adminUserPass" placeholder="Contraseña"></div>
-            <button class="btn" onclick="crearUsuario()">Crear usuario</button>
-          </div>
-          <div class="card">
-            <h3>Crear empresa</h3>
-            <div class="form-group"><input type="text" id="adminEmpresaNombre" placeholder="Nombre empresa"></div>
-            <div class="form-group"><input type="text" id="adminEmpresaUserEmail" placeholder="Email del usuario"></div>
-            <button class="btn" onclick="crearEmpresa()">Crear empresa</button>
-          </div>
-          <div id="toastAdmin"></div>
-        </div>
-
-        <div id="panelToast" class="toast"></div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── FOOTER ─── -->
 <footer>
   <div class="container">
-    <p>© 2026 Club Contable. Todos los derechos reservados. · <a href="#contacto" style="color:#2563eb;">Contacto</a></p>
+    <p><strong>Club Contable</strong> — Gestión profesional para contadores y empresas</p>
+    <p>Colombia | <a href="#contacto">Contacto</a></p>
+    <p style="margin-top:8px;font-size:12px;">&copy; 2026 Club Contable. Todos los derechos reservados.</p>
   </div>
 </footer>
+  </div>
 
-<!-- ─── SCRIPT ─── -->
-<script>
-const API = 'https://clubcontable-api.crecimientofinancieroglobal.workers.dev';
-const $ = id => document.getElementById(id);
+  <!-- ═══ PANEL GESTOR ═══ (oculto hasta login) -->
+<div id="sidebar">
+  <div class="sidebar-brand"><div class="icon">📊</div><span class="name">Club Contable</span></div>
+  <div class="sidebar-menu">
+    <a class="active" onclick="nav('dashboard')"><span class="ico">📈</span><span class="txt">Dashboard</span></a>
+    <a onclick="nav('tareas')"><span class="ico">📋</span><span class="txt">Tareas</span></a>
+    <a onclick="nav('categorias')"><span class="ico">📂</span><span class="txt">Categorías</span></a>
+    <a onclick="nav('subcategorias')"><span class="ico">📁</span><span class="txt">Subcategorías</span></a>
+    <a onclick="nav('reportes')"><span class="ico">📊</span><span class="txt">Reportes</span></a>
+    <a onclick="nav('admin')" id="lnkAdmin" style="display:none"><span class="ico">⚙️</span><span class="txt">Admin</span></a>
+  </div>
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="avatar" id="avatar">A</div>
+      <div><div class="un" id="sidebarName">Admin</div><div class="ur" id="sidebarRole">admin</div></div>
+    </div>
+    <button id="btnLogout">Cerrar sesión</button>
+  </div>
+</div>
 
-function mostrarToast(id, msg, tipo) {
-  const t = $(id);
-  if (!t) return;
-  t.textContent = msg;
-  t.style.display = 'block';
-  t.className = 'toast ' + tipo;
-  setTimeout(() => t.style.display = 'none', 4000);
-}
+<!-- MAIN -->
+<div id="main">
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="page active">
+    <div class="page-title">Dashboard</div>
+    <div class="stats" id="statsDash"></div>
+    <div class="card"><div class="card-header"><h2>Progreso general</h2></div><div style="padding:16px 20px" id="progresoBar"></div></div>
+    <div class="card"><div class="card-header"><h2>Últimas tareas</h2></div><div id="dashTasks">Cargando...</div></div>
+  </div>
 
-// ── Login ──
-async function login(e) {
-  e.preventDefault();
-  const email = $('loginEmail').value.trim();
-  const pass = $('loginPass').value.trim();
-  if (!email || !pass) return mostrarToast('loginToast', 'Completa todos los campos', 'error');
-  
-  try {
-    const r = await fetch(API + '/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password: pass })
-    });
-    const d = await r.json();
-    
-    if (d.ok && d.token) {
-      localStorage.setItem('token', d.token);
-      localStorage.setItem('user', JSON.stringify(d.user || {}));
-      token = d.token;
-      mostrarToast('loginToast', '✅ Ingreso exitoso. Accediendo...', 'ok');
-      setTimeout(() => entrarAlPanel(d.user || {}), 800);
-    } else {
-      mostrarToast('loginToast', '❌ ' + (d.error || 'Credenciales incorrectas'), 'error');
+  <!-- TAREAS -->
+  <div id="page-tareas" class="page">
+    <div class="page-title">Tareas</div>
+    <div class="card"><div class="card-header"><h2>Listado</h2><button class="btn btn-primary" onclick="openModalTarea()">+ Nueva tarea</button></div><div id="tareasList">Cargando...</div></div>
+  </div>
+
+  <!-- CATEGORIAS -->
+  <div id="page-categorias" class="page">
+    <div class="page-title">Categorías</div>
+    <div class="card"><div class="card-header"><h2>Listado</h2><button class="btn btn-primary" onclick="openModalCategoria()">+ Nueva</button></div><div id="categoriasList">Cargando...</div></div>
+  </div>
+
+  <!-- SUBCATEGORIAS -->
+  <div id="page-subcategorias" class="page">
+    <div class="page-title">Subcategorías</div>
+    <div class="card"><div class="card-header"><h2>Listado</h2><button class="btn btn-primary" onclick="openModalSubcat()">+ Nueva</button></div><div id="subcategoriasList">Cargando...</div></div>
+  </div>
+
+  <!-- REPORTES -->
+  <div id="page-reportes" class="page">
+    <div class="page-title">Reportes</div>
+    <div class="stats" id="statsReportes"></div>
+    <div class="card"><div class="card-header"><h2>Por categoría</h2></div><div id="reporteCat">Cargando...</div></div>
+    <div class="card" style="margin-top:20px"><div class="card-header"><h2>Por empresa</h2></div><div id="reporteEmp">Cargando...</div></div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="page-admin" class="page">
+    <div class="page-title">Panel de administración</div>
+    <div class="stats" style="grid-template-columns:1fr 1fr">
+      <div class="stat-card"><div class="label">Usuarios</div><div class="value" id="statUsuarios">-</div></div>
+      <div class="stat-card"><div class="label">Empresas</div><div class="value" id="statEmpresas">-</div></div>
+    </div>
+    <div class="card"><div class="card-header"><h2>Usuarios</h2><button class="btn btn-primary" onclick="openModalUsuario()">+ Nuevo usuario</button></div><div id="adminUsuarios">Cargando...</div></div>
+    <div class="card" style="margin-top:20px"><div class="card-header"><h2>Empresas</h2><button class="btn btn-primary" onclick="openModalEmpresa()">+ Nueva empresa</button></div><div id="adminEmpresas">Cargando...</div></div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal" id="modTarea"><div class="modal-content"><h3 id="modTitulo">Nueva tarea</h3>
+  <div class="fg"><label>Título *</label><input id="fTitulo" placeholder="Ej: Conciliación bancaria"></div>
+  <div class="fg"><label>Descripción</label><textarea id="fDesc" rows="2"></textarea></div>
+  <div class="fg"><label>Fecha límite</label><input type="date" id="fFecha"></div>
+  <div class="fg"><label>Categoría</label><select id="fCat"><option value="">Sin categoría</option></select></div>
+  <div class="fg"><label>Subcategoría</label><select id="fSubcat"><option value="">Sin subcategoría</option></select></div>
+  <div class="fg"><label>Empresa</label><select id="fEmpresa"><option value="">Sin empresa</option></select></div>
+  <input type="hidden" id="fId">
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeMod('modTarea')">Cancelar</button><button class="btn btn-primary" onclick="saveTarea()">Guardar</button></div>
+</div></div>
+
+<div class="modal" id="modCat"><div class="modal-content"><h3>Nueva categoría</h3>
+  <div class="fg"><label>Nombre</label><input id="fCatNombre" placeholder="Ej: Contabilidad"></div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeMod('modCat')">Cancelar</button><button class="btn btn-primary" onclick="saveCat()">Guardar</button></div>
+</div></div>
+
+<div class="modal" id="modSub"><div class="modal-content"><h3>Nueva subcategoría</h3>
+  <div class="fg"><label>Nombre</label><input id="fSubNombre" placeholder="Ej: Conciliaciones"></div>
+  <div class="fg"><label>Categoría</label><select id="fSubCatId"><option value="">Seleccionar...</option></select></div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeMod('modSub')">Cancelar</button><button class="btn btn-primary" onclick="saveSub()">Guardar</button></div>
+</div></div>
+
+<div class="modal" id="modUser"><div class="modal-content"><h3>Nuevo usuario</h3>
+  <div class="fg"><label>Nombre *</label><input id="fUserNombre" placeholder="Nombre completo"></div>
+  <div class="fg"><label>Email *</label><input type="email" id="fUserEmail" placeholder="correo@ejemplo.com"></div>
+  <div class="fg"><label>Contraseña *</label><input id="fUserPass" placeholder="Mínimo 6 caracteres"></div>
+  <div class="fg"><label>Rol</label><select id="fUserRol"><option value="usuario">Usuario</option><option value="admin">Admin</option></select></div>
+  <div class="fg"><label>Asignar empresa</label><select id="fUserEmp"><option value="">Sin empresa</option></select></div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeMod('modUser')">Cancelar</button><button class="btn btn-primary" onclick="saveUser()">Guardar</button></div>
+</div></div>
+
+<div class="modal" id="modEmp"><div class="modal-content"><h3>Nueva empresa</h3>
+  <div class="fg"><label>Nombre *</label><input id="fEmpNombre" placeholder="Nombre de la empresa"></div>
+  <div class="fg"><label>NIT</label><input id="fEmpNit" placeholder="NIT"></div>
+  <div class="fg"><label>Dirección</label><input id="fEmpDir" placeholder="Dirección"></div>
+  <div class="fg"><label>Teléfono</label><input id="fEmpTel" placeholder="Teléfono"></div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeMod('modEmp')">Cancelar</button><button class="btn btn-primary" onclick="saveEmp()">Guardar</button></div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+  <!-- ═══ SCRIPTS ═══ -->
+  <script>
+    const API = 'https://clubcontable-api.crecimientofinancieroglobal.workers.dev';
+    let token = localStorage.getItem('token');
+
+    const $ = id => document.getElementById(id);
+
+    function mostrarToast(id, msg, tipo) {
+      const t = $(id);
+      if (!t) return;
+      t.textContent = msg;
+      t.style.display = 'block';
+      t.className = 'toast ' + (tipo || 'info');
+      setTimeout(() => t.style.display = 'none', 4000);
     }
-  } catch (e) {
-    mostrarToast('loginToast', '❌ Error de conexión. Revisa tu internet.', 'error');
-  }
-}
 
-// ── Suscripción ──
-async function suscripcion(e) {
-  e.preventDefault();
-  const email = $('subEmail').value.trim();
-  if (!email) return mostrarToast('subToast', 'Escribe tu correo', 'error');
-  
-  const btn = e.target.querySelector('button');
-  if (btn) btn.disabled = true;
-  
-  try {
-    const r = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        access_key: '58b165d2-318b-4718-bb6a-9b46dbb4540d',
-        email,
-        subject: 'Club Contable - Nueva suscripción',
-        from_name: 'Club Contable Web'
-      })
-    });
-    const d = await r.json();
-    mostrarToast('subToast', d.success ? '✅ ¡Gracias! Te mantendremos al día.' : '❌ Error al suscribirte.', d.success ? 'ok' : 'error');
-  } catch (e) {
-    mostrarToast('subToast', '❌ Error de conexión.', 'error');
-  }
-  
-  $('subEmail').value = '';
-  if (btn) btn.disabled = false;
-}
-
-// ── Contacto ──
-async function contacto(e) {
-  e.preventDefault();
-  const nombre = $('conNombre').value.trim();
-  const email = $('conEmail').value.trim();
-  const asunto = $('conAsunto').value.trim();
-  const msg = $('conMsg').value.trim();
-  
-  if (!nombre || !email || !msg) return mostrarToast('conToast', 'Completa nombre, email y mensaje', 'error');
-  
-  const btn = e.target.querySelector('button');
-  if (btn) btn.disabled = true;
-  
-  try {
-    const r = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        access_key: '58b165d2-318b-4718-bb6a-9b46dbb4540d',
-        name: nombre,
-        email,
-        subject: 'Club Contable - Contacto: ' + (asunto || 'Sin asunto'),
-        message: msg
-      })
-    });
-    const d = await r.json();
-    mostrarToast('conToast', d.success ? '✅ Mensaje enviado. Te responderemos pronto.' : '❌ Error al enviar.', d.success ? 'ok' : 'error');
-  } catch (e) {
-    mostrarToast('conToast', '❌ Error de conexión.', 'error');
-  }
-  
-  $('conNombre').value = '';
-  $('conEmail').value = '';
-  $('conAsunto').value = '';
-  $('conMsg').value = '';
-  if (btn) btn.disabled = false;
-}
-
-// ── Logout ──
-function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  window.location.reload();
-}
-
-// ── Redirigir tras login exitoso ──
-function entrarAlPanel(user) {
-  document.getElementById('acceso').style.display = 'none';
-  document.getElementById('panelGestor').style.display = 'block';
-  // Scroll al panel
-  document.getElementById('panelGestor').scrollIntoView({ behavior: 'smooth' });
-  document.getElementById('panelUserEmail').textContent = user.email || 'Usuario';
-  cargarPanel();
-  document.querySelectorAll('section:not(#panelGestor)').forEach(s => s.style.display = 'none');
-}
-
-// ── Cargar el panel ──
-let token = localStorage.getItem('token');
-
-async function cargarPanel() {
-  try {
-    const [tareas, cats, subcats, empresas] = await Promise.all([
-      fetchApi('/api/tareas'),
-      fetchApi('/api/categorias'),
-      fetchApi('/api/subcategorias'),
-      fetchApi('/api/empresas')
-    ]);
-    renderTareas(tareas);
-    renderCategorias(cats);
-    renderSubcategorias(subcats, cats);
-    llenarSelectCategorias(cats);
-    llenarSelectEmpresas(empresas);
-    renderReportes(tareas, cats);
-  } catch(e) { console.error(e); }
-}
-
-async function fetchApi(path) {
-  const r = await fetch(API + path, {
-    headers: { 'Authorization': 'Bearer ' + token }
-  });
-  const d = await r.json();
-  return d.ok ? (d.result || []) : [];
-}
-
-// ── Render ──
-function renderTareas(lista) {
-  const c = document.getElementById('listaTareas');
-  if (!c) return;
-  c.innerHTML = lista.map(t => 
-    '<div class="card" style="margin-bottom:8px;"><strong>' + t.nombre + '</strong> ' + (t.completada ? '✅' : '⏳') + '<br><small>' + (t.categoria_nombre || '') + ' · ' + (t.empresa_nombre || '') + '</small></div>'
-  ).join('') || '<p class="text-gray">Sin tareas</p>';
-}
-
-function renderCategorias(lista) {
-  const c = document.getElementById('listaCategorias');
-  if (!c) return;
-  c.innerHTML = lista.map(cat => '<div class="card" style="margin-bottom:8px;"><strong>' + cat.nombre + '</strong></div>').join('') || '<p class="text-gray">Sin categorías</p>';
-}
-
-function renderSubcategorias(lista, cats) {
-  const c = document.getElementById('listaSubcategorias');
-  if (!c) return;
-  c.innerHTML = lista.map(s => '<div class="card" style="margin-bottom:8px;"><strong>' + s.nombre + '</strong> <small>→ ' + (s.categoria_nombre || '') + '</small></div>').join('') || '<p class="text-gray">Sin subcategorías</p>';
-}
-
-function llenarSelectCategorias(cats) {
-  const sel1 = document.getElementById('tareaCategoria');
-  const sel2 = document.getElementById('subcatCategoria');
-  const opts = '<option value="">Sin categoría</option>' + cats.map(c => '<option value="' + c.id + '">' + c.nombre + '</option>').join('');
-  if (sel1) sel1.innerHTML = opts;
-  if (sel2) sel2.innerHTML = opts;
-}
-
-function llenarSelectEmpresas(empresas) {
-  const sel = document.getElementById('empresaSelect');
-  if (!sel) return;
-  sel.innerHTML = '<option value="">Seleccionar empresa</option>' + empresas.map(e => '<option value="' + e.id + '">' + e.nombre + '</option>').join('');
-}
-
-function renderReportes(tareas, cats) {
-  const c = document.getElementById('reportesContent');
-  if (!c) return;
-  const total = tareas.length;
-  const completadas = tareas.filter(t => t.completada).length;
-  const pct = total ? Math.round(completadas / total * 100) : 0;
-  let html = '<div class="card" style="margin-bottom:12px;">📊 Completadas: ' + completadas + '/' + total + ' (' + pct + '%)</div>';
-  html += '<div style="background:#334155;border-radius:8px;height:12px;overflow:hidden;margin-bottom:16px;"><div style="background:#2563eb;height:100%;width:' + pct + '%;border-radius:8px;transition:width .5s;"></div></div>';
-  cats.forEach(cat => {
-    const ct = tareas.filter(t => t.categoria_id === cat.id);
-    const cc = ct.filter(t => t.completada).length;
-    const cp = ct.length ? Math.round(cc / ct.length * 100) : 0;
-    if (ct.length) html += '<div class="card" style="margin-bottom:8px;">' + cat.nombre + ': ' + cc + '/' + ct.length + ' (' + cp + '%)</div>';
-  });
-  c.innerHTML = html || '<p class="text-gray">Sin datos</p>';
-}
-
-// ── Crear tarea ──
-async function crearTarea() {
-  const nombre = document.getElementById('tareaNombre').value.trim();
-  const catId = document.getElementById('tareaCategoria').value;
-  const empId = document.getElementById('empresaSelect').value;
-  if (!nombre) return mostrarToast('panelToast', 'Escribe un nombre', 'error');
-  try {
-    const r = await fetch(API + '/api/tareas', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify({ nombre, categoria_id: catId ? parseInt(catId) : null, empresa_id: empId ? parseInt(empId) : null })
-    });
-    const d = await r.json();
-    if (d.ok) {
-      mostrarToast('panelToast', '✅ Tarea creada', 'ok');
-      document.getElementById('tareaNombre').value = '';
-      cargarPanel();
-    } else mostrarToast('panelToast', '❌ ' + (d.error || 'Error'), 'error');
-  } catch(e) { mostrarToast('panelToast', '❌ Error de conexión', 'error'); }
-}
-
-async function crearCategoria() {
-  const nombre = document.getElementById('catNombre').value.trim();
-  if (!nombre) return mostrarToast('panelToast', 'Escribe un nombre', 'error');
-  try {
-    const r = await fetch(API + '/api/categorias', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify({ nombre })
-    });
-    const d = await r.json();
-    if (d.ok) {
-      mostrarToast('panelToast', '✅ Categoría creada', 'ok');
-      document.getElementById('catNombre').value = '';
-      cargarPanel();
-    } else mostrarToast('panelToast', '❌ ' + (d.error || 'Error'), 'error');
-  } catch(e) { mostrarToast('panelToast', '❌ Error de conexión', 'error'); }
-}
-
-async function crearSubcategoria() {
-  const nombre = document.getElementById('subcatNombre').value.trim();
-  const catId = document.getElementById('subcatCategoria').value;
-  if (!nombre || !catId) return mostrarToast('panelToast', 'Completa nombre y categoría', 'error');
-  try {
-    const r = await fetch(API + '/api/subcategorias', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify({ nombre, categoria_id: parseInt(catId) })
-    });
-    const d = await r.json();
-    if (d.ok) {
-      mostrarToast('panelToast', '✅ Subcategoría creada', 'ok');
-      document.getElementById('subcatNombre').value = '';
-      cargarPanel();
-    } else mostrarToast('panelToast', '❌ ' + (d.error || 'Error'), 'error');
-  } catch(e) { mostrarToast('panelToast', '❌ Error de conexión', 'error'); }
-}
-
-async function crearUsuario() {
-  const nombre = document.getElementById('adminUserName').value.trim();
-  const email = document.getElementById('adminUserEmail').value.trim();
-  const pass = document.getElementById('adminUserPass').value.trim();
-  if (!nombre || !email || !pass) return mostrarToast('toastAdmin', 'Completa todos los campos', 'error');
-  try {
-    const r = await fetch(API + '/api/usuarios', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify({ nombre, email, password: pass })
-    });
-    const d = await r.json();
-    if (d.ok) {
-      mostrarToast('toastAdmin', '✅ Usuario creado', 'ok');
-      document.getElementById('adminUserName').value = '';
-      document.getElementById('adminUserEmail').value = '';
-      document.getElementById('adminUserPass').value = '';
-    } else mostrarToast('toastAdmin', '❌ ' + (d.error || 'Error'), 'error');
-  } catch(e) { mostrarToast('toastAdmin', '❌ Error de conexión', 'error'); }
-}
-
-async function crearEmpresa() {
-  const nombre = document.getElementById('adminEmpresaNombre').value.trim();
-  const userEmail = document.getElementById('adminEmpresaUserEmail').value.trim();
-  if (!nombre || !userEmail) return mostrarToast('toastAdmin', 'Completa todos los campos', 'error');
-  try {
-    const r = await fetch(API + '/api/empresas', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify({ nombre, user_email: userEmail })
-    });
-    const d = await r.json();
-    if (d.ok) {
-      mostrarToast('toastAdmin', '✅ Empresa creada', 'ok');
-      document.getElementById('adminEmpresaNombre').value = '';
-      document.getElementById('adminEmpresaUserEmail').value = '';
-    } else mostrarToast('toastAdmin', '❌ ' + (d.error || 'Error'), 'error');
-  } catch(e) { mostrarToast('toastAdmin', '❌ Error de conexión', 'error'); }
-}
-
-// ── Navegación secciones ──
-function mostrarSeccion(id) {
-  document.querySelectorAll('.panel-section').forEach(s => s.style.display = 'none');
-  const sec = document.getElementById(id);
-  if (sec) sec.style.display = 'block';
-}
-
-// ── Auto-login al cargar ──
-document.addEventListener('DOMContentLoaded', function() {
-  // Limpiar tokens corruptos de sesiones anteriores
-  const userData = localStorage.getItem('user');
-  if (token && userData) {
-    try {
-      const user = JSON.parse(userData);
-      if (user && user.email) {
-        // Verificar que el token sigue siendo válido
-        entrarAlPanel(user);
+    // ── Login ──
+    async function login(e) {
+      e.preventDefault();
+      const email = $('loginEmail').value.trim();
+      const pass = $('loginPass').value.trim();
+      if (!email || !pass) return mostrarToast('loginToast', 'Completa todos los campos', 'error');
+      try {
+        const r = await fetch(API + '/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password: pass })
+        });
+        const d = await r.json();
+        if (d.ok && d.token) {
+          localStorage.setItem('token', d.token);
+          localStorage.setItem('user', JSON.stringify(d.user || {}));
+          token = d.token;
+          mostrarToast('loginToast', '✅ Ingreso exitoso. Accediendo...', 'ok');
+          setTimeout(() => entrarAlPanel(d.user || {}), 500);
+        } else {
+          mostrarToast('loginToast', '❌ ' + (d.error || 'Credenciales incorrectas'), 'error');
+        }
+      } catch (e) {
+        mostrarToast('loginToast', '❌ Error de conexión', 'error');
       }
-    } catch(e) {
-      // Token corrupto - limpiar y mostrar login
+    }
+
+    // ── Logout ──
+    function logout() {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      token = null;
+      window.location.reload();
     }
-  }
-});
 
-// ── FAQ ──
-function toggleFaq(el) {
-  const ans = el.nextElementSibling;
-  if (!ans) return;
-  ans.classList.toggle('open');
-  const sp = el.querySelector('span');
-  if (sp) sp.textContent = ans.classList.contains('open') ? '−' : '+';
-}
-</script>
+    // ── Entrar al panel ──
+    function entrarAlPanel(user) {
+      $('loginForm').style.display = 'none';
+      $('panelGestor').style.display = 'block';
+      $('panelUserEmail').textContent = user.email || 'Usuario';
+      mostrarSeccion('secDashboard');
+      cargarPanel();
+    }
 
+    // ── Cargar datos ──
+    async function cargarPanel() {
+      try {
+        const [tareas, cats, subcats, empresas] = await Promise.all([
+          fetchApi('/api/tareas'),
+          fetchApi('/api/categorias'),
+          fetchApi('/api/subcategorias'),
+          fetchApi('/api/empresas')
+        ]);
+        renderTareas(tareas);
+        renderCategorias(cats);
+        renderSubcategorias(subcats);
+        llenarSelects(cats, empresas);
+        renderReportes(tareas, cats);
+      } catch (e) { console.error(e); }
+    }
+
+    async function fetchApi(path) {
+      try {
+        const r = await fetch(API + path, { headers: { 'Authorization': 'Bearer ' + token } });
+        const d = await r.json();
+        return d.ok ? (d.result || []) : [];
+      } catch (e) { return []; }
+    }
+
+    function renderTareas(lista) {
+      const c = $('listaTareas');
+      if (!c) return;
+      c.innerHTML = lista.map(t => '<div class="card-item"><strong>' + t.nombre + '</strong> ' + (t.completada ? '✅' : '⏳') + '<br><small>' + (t.categoria_nombre || '') + ' · ' + (t.empresa_nombre || '') + '</small></div>').join('') || '<p class="text-gray">Sin tareas</p>';
+    }
+
+    function renderCategorias(lista) {
+      const c = $('listaCategorias');
+      if (!c) return;
+      c.innerHTML = lista.map(cat => '<div class="card-item"><strong>' + cat.nombre + '</strong></div>').join('') || '<p class="text-gray">Sin categorías</p>';
+    }
+
+    function renderSubcategorias(lista) {
+      const c = $('listaSubcategorias');
+      if (!c) return;
+      c.innerHTML = lista.map(s => '<div class="card-item"><strong>' + s.nombre + '</strong> <small>→ ' + (s.categoria_nombre || '') + '</small></div>').join('') || '<p class="text-gray">Sin subcategorías</p>';
+    }
+
+    function llenarSelects(cats, empresas) {
+      ['tareaCategoria', 'subcatCategoria'].forEach(id => {
+        const sel = $(id);
+        if (sel) sel.innerHTML = '<option value="">Sin categoría</option>' + cats.map(c => '<option value="' + c.id + '">' + c.nombre + '</option>').join('');
+      });
+      const selEmp = $('empresaSelect');
+      if (selEmp) selEmp.innerHTML = '<option value="">Seleccionar empresa</option>' + empresas.map(e => '<option value="' + e.id + '">' + e.nombre + '</option>').join('');
+    }
+
+    function renderReportes(tareas, cats) {
+      const c = $('reportesContent');
+      if (!c) return;
+      const total = tareas.length;
+      const comp = tareas.filter(t => t.completada).length;
+      const pct = total ? Math.round(comp / total * 100) : 0;
+      let html = '<div class="card" style="margin-bottom:12px"><strong>📊 Completadas: ' + comp + '/' + total + ' (' + pct + '%)</strong></div>';
+      html += '<div class="barra" style="background:#334155;border-radius:8px;height:12px;margin-bottom:16px"><div style="background:#2563eb;height:100%;width:' + pct + '%;border-radius:8px"></div></div>';
+      cats.forEach(cat => {
+        const ct = tareas.filter(t => t.categoria_id === cat.id);
+        const cc = ct.filter(t => t.completada).length;
+        if (ct.length) html += '<div class="card" style="margin-bottom:8px">' + cat.nombre + ': ' + cc + '/' + ct.length + ' (' + Math.round(cc/ct.length*100) + '%)</div>';
+      });
+      c.innerHTML = html;
+    }
+
+    async function crearTarea() {
+      const nombre = $('tareaNombre').value.trim();
+      if (!nombre) return mostrarToast('panelToast', 'Escribe un nombre', 'error');
+      try {
+        const r = await fetch(API + '/api/tareas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ nombre, categoria_id: $('tareaCategoria').value ? parseInt($('tareaCategoria').value) : null, empresa_id: $('empresaSelect').value ? parseInt($('empresaSelect').value) : null })
+        });
+        const d = await r.json();
+        if (d.ok) { mostrarToast('panelToast', '✅ Tarea creada', 'ok'); $('tareaNombre').value = ''; cargarPanel(); }
+        else mostrarToast('panelToast', '❌ ' + (d.error || 'Error'), 'error');
+      } catch (e) { mostrarToast('panelToast', '❌ Error', 'error'); }
+    }
+
+    async function crearCategoria() {
+      const nombre = $('catNombre').value.trim();
+      if (!nombre) return mostrarToast('panelToast', 'Escribe un nombre', 'error');
+      try {
+        const r = await fetch(API + '/api/categorias', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ nombre })
+        });
+        const d = await r.json();
+        if (d.ok) { mostrarToast('panelToast', '✅ Categoría creada', 'ok'); $('catNombre').value = ''; cargarPanel(); }
+        else mostrarToast('panelToast', '❌ ' + (d.error || 'Error'), 'error');
+      } catch (e) { mostrarToast('panelToast', '❌ Error', 'error'); }
+    }
+
+    async function crearSubcategoria() {
+      const nombre = $('subcatNombre').value.trim();
+      const catId = $('subcatCategoria').value;
+      if (!nombre || !catId) return mostrarToast('panelToast', 'Completa todo', 'error');
+      try {
+        const r = await fetch(API + '/api/subcategorias', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ nombre, categoria_id: parseInt(catId) })
+        });
+        const d = await r.json();
+        if (d.ok) { mostrarToast('panelToast', '✅ Subcategoría creada', 'ok'); $('subcatNombre').value = ''; cargarPanel(); }
+        else mostrarToast('panelToast', '❌ ' + (d.error || 'Error'), 'error');
+      } catch (e) { mostrarToast('panelToast', '❌ Error', 'error'); }
+    }
+
+    async function crearUsuario() {
+      const n = $('adminUserName').value.trim();
+      const e = $('adminUserEmail').value.trim();
+      const p = $('adminUserPass').value.trim();
+      if (!n || !e || !p) return mostrarToast('toastAdmin', 'Completa todo', 'error');
+      try {
+        const r = await fetch(API + '/api/usuarios', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ nombre: n, email: e, password: p })
+        });
+        const d = await r.json();
+        if (d.ok) { mostrarToast('toastAdmin', '✅ Usuario creado', 'ok'); $('adminUserName').value = ''; $('adminUserEmail').value = ''; $('adminUserPass').value = ''; }
+        else mostrarToast('toastAdmin', '❌ ' + (d.error || 'Error'), 'error');
+      } catch (e) { mostrarToast('toastAdmin', '❌ Error', 'error'); }
+    }
+
+    async function crearEmpresa() {
+      const n = $('adminEmpresaNombre').value.trim();
+      const e = $('adminEmpresaUserEmail').value.trim();
+      if (!n || !e) return mostrarToast('toastAdmin', 'Completa todo', 'error');
+      try {
+        const r = await fetch(API + '/api/empresas', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ nombre: n, user_email: e })
+        });
+        const d = await r.json();
+        if (d.ok) { mostrarToast('toastAdmin', '✅ Empresa creada', 'ok'); $('adminEmpresaNombre').value = ''; $('adminEmpresaUserEmail').value = ''; }
+        else mostrarToast('toastAdmin', '❌ ' + (d.error || 'Error'), 'error');
+      } catch (e) { mostrarToast('toastAdmin', '❌ Error', 'error'); }
+    }
+
+    function mostrarSeccion(id) {
+      document.querySelectorAll('.panel-section').forEach(s => s.style.display = 'none');
+      const sec = $(id);
+      if (sec) sec.style.display = 'block';
+    }
+
+    // ── Suscripción (Web3Forms) ──
+    async function suscripcion(e) {
+      e.preventDefault();
+      const email = $('subEmail').value.trim();
+      if (!email) return;
+      const btn = e.target.querySelector('button');
+      if (btn) btn.disabled = true;
+      try {
+        const r = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ access_key: '58b165d2-318b-4718-bb6a-9b46dbb4540d', email, subject: 'Club Contable - Nueva suscripción', from_name: 'Club Contable Web', botcheck: '' })
+        });
+        const d = await r.json();
+        mostrarToast('subToast', d.success ? '✅ ¡Gracias! Te mantendremos al día.' : '❌ Error al suscribirte.', d.success ? 'ok' : 'error');
+      } catch (e) { mostrarToast('subToast', '❌ Error de conexión.', 'error'); }
+      $('subEmail').value = '';
+      if (btn) btn.disabled = false;
+    }
+
+    // ── Contacto (Web3Forms) ──
+    async function contacto(e) {
+      e.preventDefault();
+      const nombre = $('conNombre').value.trim();
+      const email = $('conEmail').value.trim();
+      const asunto = $('conAsunto').value.trim();
+      const msg = $('conMsg').value.trim();
+      if (!nombre || !email || !msg) return;
+      const btn = e.target.querySelector('button');
+      if (btn) btn.disabled = true;
+      try {
+        const r = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ access_key: '58b165d2-318b-4718-bb6a-9b46dbb4540d', name: nombre, email, subject: 'Club Contable - Contacto: ' + (asunto || 'Sin asunto'), message: msg, botcheck: '' })
+        });
+        const d = await r.json();
+        mostrarToast('conToast', d.success ? '✅ Mensaje enviado. Te responderemos pronto.' : '❌ Error al enviar.', d.success ? 'ok' : 'error');
+      } catch (e) { mostrarToast('conToast', '❌ Error de conexión.', 'error'); }
+      $('conNombre').value = '';
+      $('conEmail').value = '';
+      $('conAsunto').value = '';
+      $('conMsg').value = '';
+      if (btn) btn.disabled = false;
+    }
+
+    // ── FAQ ──
+    function toggleFaq(el) {
+      const ans = el.nextElementSibling;
+      if (ans) {
+        ans.classList.toggle('open');
+        const sp = el.querySelector('span');
+        if (sp) sp.textContent = ans.classList.contains('open') ? '−' : '+';
+      }
+    }
+
+    // ── Auto-login al cargar ──
+    document.addEventListener('DOMContentLoaded', function() {
+      const userData = localStorage.getItem('user');
+      if (token && userData) {
+        try {
+          const user = JSON.parse(userData);
+          if (user && user.email) entrarAlPanel(user);
+        } catch (e) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          token = null;
+        }
+      }
+    });
+  </script>
 </body>
 </html>
