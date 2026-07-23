@@ -1681,6 +1681,74 @@ async function guardarConfigCitas() {
   } catch(e) { document.getElementById('cfgStatus').textContent = '❌ ' + e.message; }
 }
 
+
+// ===== CLIENTE LOGIN =====
+async function clienteLogin() {
+  const email = document.getElementById('cliEmail').value;
+  const pass = document.getElementById('cliPass').value;
+  const status = document.getElementById('cliLoginStatus');
+  if (!email || !pass) { status.textContent = 'Completa todos los campos'; return; }
+  try {
+    const r = await fetch('https://clubcontable-api.crecimientofinancieroglobal.workers.dev/api/clientes/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pass })
+    });
+    const res = await r.json();
+    if (!res.ok) throw new Error(res.error || 'Credenciales invalidas');
+    localStorage.setItem('cli_token', res.token);
+    localStorage.setItem('cli_nombre', res.cliente.nombre);
+    localStorage.setItem('cli_data', JSON.stringify(res.cliente));
+    mostrarPanelCliente(res.cliente);
+  } catch(e) { status.textContent = '❌ ' + e.message; }
+}
+
+function mostrarPanelCliente(cliente) {
+  document.getElementById('clientLoginForm').style.display = 'none';
+  document.getElementById('clientPanel').style.display = 'block';
+  document.getElementById('cliLoginStatus').textContent = '';
+  document.getElementById('cliNombre').textContent = cliente.nombre;
+  
+  let gestores = '';
+  if (cliente.gestor_tareas) gestores += '<div class="stat-card" style="cursor:pointer" onclick="abrirGestorCliente(\'tareas\')"><div style="font-size:32px">📋</div><div class="label">Gestor de Tareas</div></div>';
+  if (cliente.gestor_citas) gestores += '<div class="stat-card" style="cursor:pointer" onclick="abrirGestorCliente(\'citas\')"><div style="font-size:32px">📅</div><div class="label">Gestor de Citas</div></div>';
+  if (!gestores) gestores = '<p style="color:#94a3b8;text-align:center">Aún no tienes gestores activos. Contacta a tu administrador.</p>';
+  document.getElementById('cliGestores').innerHTML = '<div class="stats" style="grid-template-columns:1fr 1fr">' + gestores + '</div>';
+  document.getElementById('cliGestionContent').style.display = 'none';
+}
+
+function clienteLogout() {
+  localStorage.removeItem('cli_token');
+  localStorage.removeItem('cli_nombre');
+  localStorage.removeItem('cli_data');
+  document.getElementById('clientLoginForm').style.display = 'block';
+  document.getElementById('clientPanel').style.display = 'none';
+  document.getElementById('cliPass').value = '';
+  document.getElementById('cliGestionContent').innerHTML = '';
+  document.getElementById('cliGestionContent').style.display = 'none';
+}
+
+function abrirGestorCliente(tipo) {
+  const content = document.getElementById('cliGestionContent');
+  content.style.display = 'block';
+  if (tipo === 'tareas') {
+    content.innerHTML = '<div style="background:#0f172a;border-radius:8px;padding:15px"><h3 style="color:white;margin-bottom:10px">📋 Gestor de Tareas</h3><p style="color:#94a3b8">Aquí irán tus tareas (en desarrollo)</p></div>';
+  } else if (tipo === 'citas') {
+    content.innerHTML = '<div style="background:#0f172a;border-radius:8px;padding:15px"><h3 style="color:white;margin-bottom:10px">📅 Gestor de Citas</h3><p style="color:#94a3b8">Aquí irán tus citas (en desarrollo)</p></div>';
+  }
+}
+
+// Check for existing client session
+window.addEventListener('DOMContentLoaded', function() {
+  const token = localStorage.getItem('cli_token');
+  if (token) {
+    try {
+      const data = JSON.parse(localStorage.getItem('cli_data') || '{}');
+      if (data.nombre) mostrarPanelCliente(data);
+    } catch(e) {}
+  }
+});
+
 </script>
 </body>
 </html>
