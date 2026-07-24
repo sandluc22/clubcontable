@@ -896,17 +896,6 @@ tr:hover td{background:#f8fafc}
   <script>
     const API = 'https://clubcontable-api.crecimientofinancieroglobal.workers.dev';
     let token = localStorage.getItem('token');
-    
-    // Si venimos de acceso.html con sesión iniciada, forzar mostrar gestor
-    if (token && localStorage.getItem('forcePanel')) {
-      localStorage.removeItem('forcePanel');
-      window.onload = function() {
-        setTimeout(() => {
-          const acceder = document.querySelector('a[href="#gestor"]');
-          if (acceder) acceder.click();
-        }, 500);
-      };
-    }
 
     const $ = id => document.getElementById(id);
 
