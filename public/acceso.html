@@ -155,7 +155,7 @@ loginForm.addEventListener('submit', async (e) => {
       localStorage.setItem('user', JSON.stringify(d.user || {}));
       showToast('✅ Ingreso exitoso. Redirigiendo...', 'ok');
       setTimeout(() => {
-        window.location.href = 'https://clubcontable.com/?token=' + d.token + '&panel=1';
+        window.location.href = 'https://clubcontable.com/';
       }, 1000);
     } else {
       showToast(d.error || '❌ Credenciales inválidas', 'error');
