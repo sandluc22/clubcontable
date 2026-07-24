@@ -899,21 +899,6 @@ tr:hover td{background:#f8fafc}
 
     const $ = id => document.getElementById(id);
 
-    // Si hay token al cargar la página, mostrar panel directamente
-    if (token) {
-      document.addEventListener('DOMContentLoaded', () => {
-        const loginSection = $('loginSection');
-        const panelSection = $('panelSection');
-        const mainHeader = document.querySelector('header');
-        const mainFooter = document.querySelector('footer');
-        if (loginSection) loginSection.style.display = 'none';
-        if (panelSection) panelSection.style.display = 'block';
-        if (mainHeader) mainHeader.style.display = 'none';
-        if (mainFooter) mainFooter.style.display = 'none';
-        cargarPanel();
-      });
-    }
-
     function mostrarToast(id, msg, tipo) {
       const t = $(id);
       if (!t) return;
