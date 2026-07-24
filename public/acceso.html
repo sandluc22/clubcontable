@@ -88,6 +88,16 @@ body {
   margin-top: 10px;
   color: #666;
 }
+.mensaje {
+  text-align: center;
+  margin-top: 20px;
+  padding: 20px;
+  background: #e8f5e9;
+  border-radius: 10px;
+  display: none;
+}
+.mensaje h3 { color: #2e7d32; margin-bottom: 10px; }
+.mensaje p { color: #333; font-size: 14px; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -109,8 +119,9 @@ body {
     <button type="submit" class="btn-login" id="loginBtn">Ingresar</button>
     <div class="loading" id="loadingText">⏳ Ingresando...</div>
   </form>
+  <div id="panelMensaje" class="mensaje"></div>
   <p style="text-align:center;margin-top:20px;font-size:13px;color:#999">
-    <a href="https://clubcontable.com" style="color:#302b63">← Volver a Club Contable</a>
+    <a href="https://www.clubcontable.com" style="color:#302b63">← Volver a Club Contable</a>
   </p>
 </div>
 
@@ -120,12 +131,20 @@ const loginForm = document.getElementById('loginForm');
 const loginBtn = document.getElementById('loginBtn');
 const loadingText = document.getElementById('loadingText');
 const toast = document.getElementById('loginToast');
+const panelMensaje = document.getElementById('panelMensaje');
 
 function showToast(msg, tipo) {
   toast.textContent = msg;
   toast.style.display = 'block';
   toast.className = 'toast ' + tipo;
   setTimeout(() => toast.style.display = 'none', 5000);
+}
+
+// Verificar si ya hay sesión activa
+const tokenExistente = localStorage.getItem('token');
+if (tokenExistente) {
+  panelMensaje.style.display = 'block';
+  panelMensaje.innerHTML = '<h3>🔓 Ya tienes sesión activa</h3><p>Ve directamente al <a href="https://www.clubcontable.com" style="color:#302b63;font-weight:600">Gestor de Tareas →</a></p><p style="margin-top:10px"><button onclick="localStorage.clear();location.reload()" style="background:#c62828;color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer">Cerrar sesión</button></p>';
 }
 
 loginForm.addEventListener('submit', async (e) => {
@@ -153,10 +172,13 @@ loginForm.addEventListener('submit', async (e) => {
     if (d.ok && d.token) {
       localStorage.setItem('token', d.token);
       localStorage.setItem('user', JSON.stringify(d.user || {}));
-      showToast('✅ Ingreso exitoso. Redirigiendo...', 'ok');
-      setTimeout(() => {
-        window.location.href = 'https://clubcontable.com/?token=' + d.token + '&panel=1';
-      }, 1000);
+      localStorage.setItem('empresa_actual', JSON.stringify(d.empresa || {}));
+      showToast('✅ Ingreso exitoso', 'ok');
+      // Mostrar enlace al gestor directamente
+      panelMensaje.style.display = 'block';
+      panelMensaje.innerHTML = '<h3>✅ Ingreso exitoso</h3><p style="font-size:18px;margin:10px 0">Haz clic aquí para ir al <a href="https://www.clubcontable.com" onclick="localStorage.setItem(\'forcePanel\',\'1\')" style="color:#302b63;font-weight:700;font-size:18px">GESTOR DE TAREAS →</a></p>';
+      loginBtn.style.display = 'none';
+      loadingText.style.display = 'none';
     } else {
       showToast(d.error || '❌ Credenciales inválidas', 'error');
       loginBtn.style.display = 'block';
