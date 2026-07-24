@@ -902,18 +902,15 @@ tr:hover td{background:#f8fafc}
     // Si hay token al cargar la página, mostrar panel directamente
     if (token) {
       document.addEventListener('DOMContentLoaded', () => {
-        try {
-          // Simular el clic en Acceder al gestor
-          const gestorSection = $('gestor');
-          const linkAcceder = document.querySelector('a[href="#gestor"]');
-          if (linkAcceder) linkAcceder.click();
-          // Si no hay link, forzar mostrar
-          if (gestorSection) {
-            document.querySelectorAll('section').forEach(s => { if (s.id !== 'gestor') s.style.display = 'none'; });
-            document.querySelectorAll('.hero, .features, .guias, .herramientas, .precios, .testimonios, .faq, .contacto, footer, header').forEach(el => { if (el) el.style.display = 'none'; });
-          }
-          cargarPanel();
-        } catch(e) { console.error('Error al mostrar panel:', e); }
+        const loginSection = $('loginSection');
+        const panelSection = $('panelSection');
+        const mainHeader = document.querySelector('header');
+        const mainFooter = document.querySelector('footer');
+        if (loginSection) loginSection.style.display = 'none';
+        if (panelSection) panelSection.style.display = 'block';
+        if (mainHeader) mainHeader.style.display = 'none';
+        if (mainFooter) mainFooter.style.display = 'none';
+        cargarPanel();
       });
     }
 
